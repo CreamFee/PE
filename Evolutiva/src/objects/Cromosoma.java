@@ -1,3 +1,4 @@
+package objects;
 
 import java.util.Random;
 public class Cromosoma {

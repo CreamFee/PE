@@ -1,5 +1,8 @@
+package logic;
 
 import java.util.Random;
+
+import objects.Cromosoma;
 
 
 public class Funcion1 {

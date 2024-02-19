@@ -1,4 +1,7 @@
+package selections;
 import java.util.Random;
+
+import objects.Cromosoma;
 public class SeleccionRuleta {
     public Cromosoma[] individuos;
     public int numIndividuos;

@@ -1,3 +1,6 @@
+package main;
+import logic.Funcion1;
+import selections.SeleccionRuleta;
 
 public class Main {
 	public static int poblacion = 100; //Cantidad de individuos
