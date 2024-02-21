@@ -122,12 +122,19 @@ public class Funcion1 {
     
     public void seleccionar(int[] seleccion) {
     	//Se renueva la lista de individuos con los que se han seleccionado
-    	Cromosoma [] nuevos = new Cromosoma[poblacion];
+    	Cromosoma [] antiguos = new Cromosoma[poblacion];
     	for(int i = 0; i < poblacion; i++) {
-    		nuevos[i] = individuos[seleccion[i]].copia();
+    		antiguos[i] = new Cromosoma (individuos[i]);
     	}
     	for(int i = 0; i < poblacion; i++) {
-    		individuos[i] = nuevos[i];
+    		individuos[i] = new Cromosoma(antiguos[seleccion[i]]); //Copia de las selecciones
     	}
+    }
+    public double[][] getFenotipos() {
+    	double[][] result = new double[this.poblacion][this.gens];
+    	for(int i = 0; i < this.poblacion; i++) {
+    		result[i] = individuos[i].translate(this.genSize);
+    	}
+    	return result;
     }
 }

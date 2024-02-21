@@ -2,7 +2,6 @@ package main;
 import java.util.Random;
 import logic.Funcion1;
 import selections.SeleccionRuleta;
-import view.MainWindow;
 
 public class Main {
 	public static int poblacion = 100; //Cantidad de individuos
@@ -31,7 +30,6 @@ public class Main {
     public static void main(String[] args) {
     	Main main = new Main();
     	main.ejecutar();
-    	MainWindow interfaz = new MainWindow(main);
     }
     
     public void init() {
@@ -72,7 +70,17 @@ public class Main {
         init();
         evaluarPoblacion();
         recogerDatos(0);
-        //System.out.println(maximums[0] + " " + absoluteMax[0] + " " + averages[0]);
+        /*
+        double[][] aux;
+    	aux = funcion.getFenotipos();
+        for(int i = 0; i < this.poblacion; i++) {
+        	System.out.println("X0 = " + aux[i][0] + " X1 = " + aux[i][1]);
+        }
+        */ //Print de todos los individuos
+        System.out.println("GENERACION: " + 0);
+        System.out.println("Maximo de la generacion: " + maximums[0]);
+        System.out.println("Maximo absoluto: " + absoluteMax[0]);
+        System.out.println("Media de la generacion: " + averages[0] + "\n");
         for (int i = 1; i < this.generaciones; i++) {
             // Seleccionar individuos
         	
@@ -81,27 +89,18 @@ public class Main {
         	mutar();
         	evaluarPoblacion();
         	recogerDatos(i);
-        	//System.out.println(maximums[i] + " " + absoluteMax[i] + " " + averages[i]);
-        	/*try {
-				Thread.sleep(1000);
+        	System.out.println("GENERACION: " + i);
+        	System.out.println("Maximo de la generacion: " + maximums[i]);
+            System.out.println("Maximo absoluto: " + absoluteMax[i]);
+            System.out.println("Media de la generacion: " + averages[i] + "\n");
+        	try {
+				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			}*/
+			}
         }
         
     }
     
-    public double[] getAvr() {
-    	
-    	return this.averages;
-    }
-	 public double[] getAbsMax() {
-	    	
-	    	return this.absoluteMax;
-	    }
-	 public double[] getMax() {
-	 	
-	 	return this.maximums;
-	 }
     
 }
