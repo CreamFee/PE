@@ -33,7 +33,7 @@ public class SeleccionRuleta {
             cuenta = 0;
             for(int j = 0; j < numIndividuos; j++){
                 cuenta += individuos[j].getFitness();
-                if(cuenta < total){
+                if(cuenta >= total){
                     seleccion[i] = j;
                     break;
                 }
