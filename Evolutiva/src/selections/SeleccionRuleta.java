@@ -48,5 +48,4 @@ public class SeleccionRuleta {
     public int[] getSelection() {
     	return this.seleccion;
     }
-    //TODO falta meter que se devuelva de alguna manera el array de seleccionados
 }

@@ -23,6 +23,14 @@ public class Cromosoma {
         this.ranges = ranges;
         this.r = r;
     }
+    public Cromosoma (Cromosoma a) {
+    	this.data = a.data;
+    	this.fitness = a.fitness;
+        this.tam = a.tam;
+        this.gens = a.gens;
+        this.ranges = a.ranges;
+        this.r = a.r;
+    }
     public void init(){
         double aux;
         for (int i = 0; i < tam; i++){
@@ -60,7 +68,6 @@ public class Cromosoma {
         return genes;
     }
     public void mutar(double prob){ //prob debe estar en decimales reales, no porcentaje
-        Random r = new Random (System.currentTimeMillis());
         double aux;
         for (int i = 0; i < tam; i++){
             aux = r.nextDouble();
@@ -70,7 +77,6 @@ public class Cromosoma {
         }
     }
     public void cruceMonopunto(Cromosoma pareja){ //El cruce monopunto lo haremos directamente aqui
-        Random r = new Random (System.currentTimeMillis());
         int pos = r.nextInt(this.tam - 1) + 1;
         for (int i = pos; i < this.tam; i++){
             boolean aux = this.data[i];
@@ -80,7 +86,6 @@ public class Cromosoma {
 
     }
     public void cruceUniforme(Cromosoma pareja){ //El cruce uniforme lo haremos directamente aqui
-        Random r = new Random (System.currentTimeMillis());
         for (int i = 0; i < this.tam; i++){
             if (r.nextDouble() < 0.5){
                 boolean aux = this.data[i];
