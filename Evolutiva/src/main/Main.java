@@ -2,6 +2,7 @@ package main;
 import java.util.Random;
 import logic.Funcion1;
 import selections.SeleccionRuleta;
+import view.MainWindow;
 
 public class Main {
 	public static int poblacion = 100; //Cantidad de individuos
@@ -30,6 +31,7 @@ public class Main {
     public static void main(String[] args) {
     	Main main = new Main();
     	main.ejecutar();
+    	MainWindow interfaz = new MainWindow(main);
     }
     
     public void init() {
@@ -101,6 +103,17 @@ public class Main {
         }
         
     }
+    
+    public double[] getAvr(){
+    	return this.averages;
+    }
+	 public double[] getAbsMax(){
+	    	return this.absoluteMax;
+	    }
+	 public double[] getMax(){
+	 	return this.maximums;
+	 }
+ 
     
     
 }
