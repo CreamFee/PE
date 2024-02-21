@@ -1,13 +1,13 @@
 package selections;
 import java.util.Random;
 
-import objects.Cromosoma;
+import objects.Cromosoma2;
 public class SeleccionRuleta {
-    public Cromosoma[] individuos;
+    public Cromosoma2[] individuos;
     public int numIndividuos;
     private int[] seleccion;
     public Random r;
-    public SeleccionRuleta(int tam, Cromosoma[] inds, Random r){
+    public SeleccionRuleta(int tam, Cromosoma2[] inds, Random r){
         this.numIndividuos = tam;
         this.individuos = inds;
         this.seleccion = new int[tam];
@@ -21,11 +21,11 @@ public class SeleccionRuleta {
         double cuenta;
         for(int i = 0; i < numIndividuos; i++){
             //suma total de las aptitudes
-            total += individuos[i].getFitness();
+            total += individuos[i].getAptitud();
         }
         for(int i = 0; i < numIndividuos; i++){
             //Vamos a calcular su probabilidad de seleccion de cada individuo
-            individuos[i].setFitness(individuos[i].getFitness() / total);
+            individuos[i].setAptitud(individuos[i].getAptitud() / total);
         }
         for(int i = 0; i < numIndividuos; i++){
             //Comprobaremos con el random cual ha sido seleccionado y lo aniadimos
@@ -33,7 +33,7 @@ public class SeleccionRuleta {
             total = r.nextDouble(); //Numero que toca
             cuenta = 0;
             for(int j = 0; j < numIndividuos; j++){
-                cuenta += individuos[j].getFitness();
+                cuenta += individuos[j].getAptitud();
                 if(cuenta >= total){ //Cuando alcanzamos el numero que toca, guardamos ese individuo
                     seleccion[i] = j;
                     break;

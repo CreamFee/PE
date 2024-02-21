@@ -9,7 +9,7 @@ public class Main {
     public static double mutar = 0.05; //probabilidad de mutacion
     public static double cruce = 0.6; //probabilidad de cruce
     public static double precision = 0.001; // double para indicar 
-    public static boolean tipoCruce = true; //false para monopunto, true para uniforme
+    public static boolean tipoCruce = false; //false para monopunto, true para uniforme
     public static int generaciones = 100; // numero de generaciones
     public static int seleccion = 1; // de 1 a 6
     
@@ -47,7 +47,7 @@ public class Main {
     }
     
     private void recogerDatos(int generacionActual) {
-    	this.averages[generacionActual] = funcion.getAverage();
+    	this.averages[generacionActual] = funcion.getPromedio();
     	this.maximums[generacionActual] = funcion.getMax();
     	if (generacionActual == 0)
     		this.absoluteMax[generacionActual] = this.maximums[generacionActual];
@@ -72,13 +72,15 @@ public class Main {
         init();
         evaluarPoblacion();
         recogerDatos(0);
+        
         /*
         double[][] aux;
     	aux = funcion.getFenotipos();
         for(int i = 0; i < this.poblacion; i++) {
         	System.out.println("X0 = " + aux[i][0] + " X1 = " + aux[i][1]);
         }
-        */ //Print de todos los individuos
+        */
+         //Print de todos los individuos
         System.out.println("GENERACION: " + 0);
         System.out.println("Maximo de la generacion: " + maximums[0]);
         System.out.println("Maximo absoluto: " + absoluteMax[0]);

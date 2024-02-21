@@ -2,139 +2,135 @@ package logic;
 
 import java.util.Random;
 
-import objects.Cromosoma;
+import interfaces.IFuncion;
+import objects.Cromosoma2;
 
-
-public class Funcion1 {
-    public int gens; //Numero de genes
-    public int[] genSize; //Tamanio de cad auno de los genes
-    public int sizeCrom; //Tamanio total del cromosoma
-    public double[] ranges; //Rangos de cada gen del cromosoma (cada gen puede tener unos valroes determinados
-    public int poblacion; //tamanio poblacion
-    public double mutar; //probabilidad de mutar
-    public double cruce; //probabilidad de cruce
-    private double precision = 0.001; //Precision de la representacion
-    private Cromosoma[] individuos;
+public class Funcion1 implements IFuncion{
+    public int genes; // Número de genes
+    public int[] tamGen; // Tamaño de cada uno de los genes
+    public int tamCrom; // Tamaño total del cromosoma
+    public double[] rangos; // Rangos de cada gen del cromosoma
+    public int poblacion; // Tamaño población
+    public double mutacion; // Probabilidad de mutación
+    public double cruce; // Probabilidad de cruce
+    private double precision = 0.001; // Precisión de la representación
+    private Cromosoma2[] individuos;
     private boolean tipoCruce;
     public Random r;
-    public Funcion1(int poblacion, double precision, double mutar, double cruce, boolean tipoCruce, Random r){
-        this.sizeCrom = 0;
-        this.gens = 2;
-        this.genSize = new int[gens];
-        this.ranges = new double[2*gens];
-        this.mutar = mutar;
+
+    public Funcion1(int poblacion, double precision, double mutacion, double cruce, boolean tipoCruce, Random r){
+        this.tamCrom = 0;
+        this.genes = 2;
+        this.tamGen = new int[genes];
+        this.rangos = new double[2*genes];
+        this.mutacion = mutacion;
         this.cruce = cruce;
         this.precision = precision;
         this.poblacion = poblacion;
         this.tipoCruce = tipoCruce;
         this.r = r;
-        init();
-        
+        iniciar();
     }
-    private void init(){ //TODO
-        //Inicializa la funcion 1 de la practica
 
-        ranges[0] = -10; //2n
-        ranges[1] = 10; //2n +1
-        ranges[2] = -10;
-        ranges[3] = 10;
-        for(int i = 0; i < gens; i++){
-            genSize[i] = calcSizeGen(precision, ranges[2 * i], ranges[2 * i + 1]);
+    private void iniciar(){ 
+        rangos[0] = -10; 
+        rangos[1] = 10; 
+        rangos[2] = -10;
+        rangos[3] = 10;
+        for(int i = 0; i < genes; i++){
+            tamGen[i] = calcularTamGen(precision, rangos[2 * i], rangos[2 * i + 1]);
         }
-        this.individuos = new Cromosoma[this.poblacion];
+        this.individuos = new Cromosoma2[this.poblacion];
         for(int i = 0; i < this.poblacion; i++){
-            this.individuos[i] = new Cromosoma (this.sizeCrom, this.gens, this.ranges, this.r); //Creamos todos los individuos
-            this.individuos[i].init(); //Arrancamos la poblacion aleatoria
+            this.individuos[i] = new Cromosoma2 (this.tamCrom, this.genes, this.rangos, this.r); 
+            this.individuos[i].inicializar(); 
         }
-
     };
-    private double evaluate (Cromosoma c){ 
-    	//Evalua el cromosoma C, calcula su fitness y lo guarda en su atributo correspondiente
-        //Evalua 1 cromosoma
-        double[] tmp = c.translate(genSize);
+    
+    private double evaluar (Cromosoma2 c){ 
+        double[] tmp = c.traducir(tamGen);
         double result = Math.pow(tmp[0], 2) + 2 * Math.pow(tmp[1],2);
-        c.setFitness(result);
+        c.setAptitud(result);
         return result;   
     }
     
     public void evaluarPoblacion (){ 
-    	//Evalua la poblacion completa y guarda sus valores en sus respectivos atributos
-    	for(int i = 0; i < poblacion; i++) {
-    		this.individuos[i].setFitness(evaluate(this.individuos[i]));
-    	}
+        for(int i = 0; i < poblacion; i++) {
+            this.individuos[i].setAptitud(evaluar(this.individuos[i]));
+        }
     }
     
-    public int calcSizeGen (double precision, double range0, double range1){
-        //Calcula el tamanio del gen en funcion d elos rangos y la precision
+    public int calcularTamGen (double precision, double rango0, double rango1){
         int x = 0;
-        x =  (int) (Math.log10(((range1 - range0) / precision) + 1) / Math.log10(2));
-        this.sizeCrom += x;
+        x =  (int) (Math.log10(((rango1 - rango0) / precision) + 1) / Math.log10(2));
+        this.tamCrom += x;
         return x;
     }
+    
     public double getMax(){ 
-    	//Devuelve el maximo de esta poblacion
         double max = 0, tmp = 0;
         for (int i = 0; i < poblacion; i++){
-            tmp = this.individuos[i].getFitness();
+            tmp = this.individuos[i].getAptitud();
             if (max < tmp){
                 max = tmp;
             }
         }
         return max;
     }
-    public double getAverage(){ 
-    	//Calcula la media aritmetica
-        double total = 0, avg = 0;
+    
+    public double getPromedio(){ 
+        double total = 0, promedio = 0;
         for (int i = 0; i < poblacion; i++){
-            total += this.individuos[i].getFitness();
+            total += this.individuos[i].getAptitud();
         }
-        avg = total / this.poblacion;
-        return avg;
+        promedio = total / this.poblacion;
+        return promedio;
     }
 
     public void cruzar(){
-    	//realiza el cruce de los individuos
-        Cromosoma pareja = null;
+        Cromosoma2 pareja = null;
         for(int i = 0; i < this.poblacion; i++){
             if(r.nextDouble() < this.cruce){
                 if(pareja != null){
-                    if(this.tipoCruce == true)
+                    if(this.tipoCruce){
                         this.individuos[i].cruceUniforme(pareja);
-                    else
+                    } else {
                         this.individuos[i].cruceMonopunto(pareja);
+                    }
                     pareja = null;
-                }
-                else 
+                } else {
                     pareja = this.individuos[i];
+                }
             }
         }
     }
+    
     public void mutar(){
-    	//Realiza la mutacion 
         for(int i = 0; i < this.poblacion; i++){
-            this.individuos[i].mutar(this.mutar);
+            this.individuos[i].mutar(this.mutacion);
         }
     }
 
-    public Cromosoma[] getIndividuos() {
-    	return this.individuos;
+    public Cromosoma2[] getIndividuos() {
+        return this.individuos;
     }
     
     public void seleccionar(int[] seleccion) {
-    	//Se renueva la lista de individuos con los que se han seleccionado
-    	Cromosoma [] antiguos = new Cromosoma[poblacion];
-    	for(int i = 0; i < poblacion; i++) {
-    		antiguos[i] = new Cromosoma (individuos[i]);
-    	}
-    	for(int i = 0; i < poblacion; i++) {
-    		individuos[i] = new Cromosoma(antiguos[seleccion[i]]); //Copia de las selecciones
-    	}
+        Cromosoma2 [] antiguos = new Cromosoma2[poblacion];
+        for(int i = 0; i < poblacion; i++) {
+            antiguos[i] = new Cromosoma2 (individuos[i]);
+        }
+        for(int i = 0; i < poblacion; i++) {
+            individuos[i] = new Cromosoma2(antiguos[seleccion[i]]); 
+        }
     }
+    
     public double[][] getFenotipos() {
-    	double[][] result = new double[this.poblacion][this.gens];
-    	for(int i = 0; i < this.poblacion; i++) {
-    		result[i] = individuos[i].translate(this.genSize);
-    	}
-    	return result;
+        double[][] result = new double[this.poblacion][this.genes];
+        for(int i = 0; i < this.poblacion; i++) {
+            result[i] = individuos[i].traducir(this.tamGen);
+        }
+        return result;
     }
+
 }
