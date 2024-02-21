@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -8,6 +9,9 @@ import java.awt.Font;
 import javax.swing.JTextField;
 
 import org.math.plot.Plot2DPanel;
+
+import main.Main;
+
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
@@ -23,11 +27,12 @@ public class MainWindow {
 	private JLabel lblNewLabel_6;
 	private JTextField textField;
 	private JTextField textField_6;
+	private Main main;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -38,12 +43,13 @@ public class MainWindow {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the application.
 	 */
-	public MainWindow() {
+	public MainWindow(Main main) {
+		this.main = main;
 		initialize();
 	}
 
@@ -114,6 +120,19 @@ public class MainWindow {
 		
 		plot = new Plot2DPanel();
 		plot.setBounds(158, 10, 562, 418);
+		
+		double[] avr = main.getAvr();
+		double[] abs = main.getAbsMax();
+		double[] max = main.getMax();
+		double[] x = new double[100];
+		for(int i = 0; i < 100; ++i) {
+			x[i] = i;
+		}
+		
+		plot.addLinePlot("Average", Color.GREEN, x, avr);
+		plot.addLinePlot("Absoulute Max", Color.BLACK, x, abs);
+		plot.addLinePlot("Maximums", Color.RED, x, max);
+			
 		frmPractica.getContentPane().add(plot);
 		
 		lblNewLabel_6 = new JLabel("Results:");
@@ -155,5 +174,8 @@ public class MainWindow {
 		lblNewLabel_5_1_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel_5_1_2.setBounds(22, 428, 126, 31);
 		frmPractica.getContentPane().add(lblNewLabel_5_1_2);
+		
+		
+		this.frmPractica.setVisible(true);
 	}
 }
