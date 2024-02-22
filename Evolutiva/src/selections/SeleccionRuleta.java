@@ -1,15 +1,16 @@
 package selections;
 import java.util.Random;
 
-import objects.Cromosoma2;
-public class SeleccionRuleta {
-    public Cromosoma2[] individuos;
+import interfaces.ICromosoma;
+import interfaces.ISeleccion;
+public class SeleccionRuleta implements ISeleccion{
+    public ICromosoma[] individuos;
     public int numIndividuos;
     private int[] seleccion;
     public Random r;
-    public SeleccionRuleta(int tam, Cromosoma2[] inds, Random r){
+    public SeleccionRuleta(int tam, ICromosoma[] iCromosomas, Random r){
         this.numIndividuos = tam;
-        this.individuos = inds;
+        this.individuos = iCromosomas;
         this.seleccion = new int[tam];
         this.r = r;
         init();

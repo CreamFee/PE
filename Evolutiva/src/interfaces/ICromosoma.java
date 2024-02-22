@@ -1,7 +1,5 @@
 package interfaces;
 
-import java.util.Random;
-
 public interface ICromosoma{
 	void inicializar();
     void mutar(double probabilidad);
@@ -16,5 +14,6 @@ public interface ICromosoma{
     int getTamano();
     int getGenes();
     double[] getRangos();
+	double[] traducir(int[] tamGen);
 	
 }

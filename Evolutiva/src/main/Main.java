@@ -1,6 +1,10 @@
 package main;
 import java.util.Random;
+
+import interfaces.IFuncion;
+import interfaces.ISeleccion;
 import logic.Funcion1;
+import logic.Funcion2;
 import selections.SeleccionRuleta;
 import view.MainWindow;
 
@@ -12,11 +16,11 @@ public class Main {
     public static boolean tipoCruce = false; //false para monopunto, true para uniforme
     public static int generaciones = 100; // numero de generaciones
     public static int seleccion = 1; // de 1 a 6
+    public static double elitismo = 0.02; //Elitismo, cantidad de poblacion que va a mantenerse de una a otra
+    public static int dimension = 1; // a partir de 1 para la funcion 5
     
-    public static int dimension = 1; // a partir de 1
-    
-    private Funcion1 funcion;
-    private SeleccionRuleta ruleta; //Crear el metodo preferido
+    private IFuncion funcion;
+    private ISeleccion ruleta; //Crear el metodo preferido
     
     
     private double[] maximums; //Guarda los maximos de cada generacion
@@ -39,7 +43,7 @@ public class Main {
         averages = new double [this.generaciones];
         absoluteMax = new double [this.generaciones];
         
-        this.funcion = new Funcion1(poblacion, precision, mutar, cruce, tipoCruce, r);
+        this.funcion = new Funcion2(poblacion, precision, mutar, cruce, tipoCruce, r, elitismo);
     }
     
     private void evaluarPoblacion() {
@@ -72,8 +76,12 @@ public class Main {
         init();
         evaluarPoblacion();
         recogerDatos(0);
-        
         /*
+        //Con esto comprobamos las direcciones d ememoria, efectivamente son diferentes
+        for(int i = 0; i < this.poblacion; i++) {
+    		System.out.println(this.funcion.getIndividuos()[i].getDatos());
+    	}
+        
         double[][] aux;
     	aux = funcion.getFenotipos();
         for(int i = 0; i < this.poblacion; i++) {
@@ -87,10 +95,11 @@ public class Main {
         System.out.println("Media de la generacion: " + averages[0] + "\n");
         for (int i = 1; i < this.generaciones; i++) {
             // Seleccionar individuos
-        	
+        	funcion.generarElite();
         	seleccionar();
         	cruzar();
         	mutar();
+        	funcion.introducirElite();
         	evaluarPoblacion();
         	recogerDatos(i);
         	System.out.println("GENERACION: " + i);

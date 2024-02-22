@@ -18,7 +18,11 @@ public class BooleanData {
 	}
 	public BooleanData (BooleanData a) {
 		this.tam = a.tam;
-		this.datos = a.datos;
+		this.datos = new boolean [this.tam];
+		for(int i = 0; i < this.tam; i++) {
+			this.datos[i] = a.datos[i];
+		}
+		
 	}
 	
 	//Gets y sets de los datos

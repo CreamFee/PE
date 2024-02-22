@@ -9,4 +9,6 @@ public interface IFuncion {
     ICromosoma[] getIndividuos();
     void seleccionar(int[] seleccion);
     double[][] getFenotipos();
+    void introducirElite();
+    void generarElite();
 }

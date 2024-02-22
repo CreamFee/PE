@@ -156,7 +156,7 @@ public class MainWindow {
 		frmPractica.getContentPane().add(textField);
 		
 		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Método de Selección", "Métodode Cruce", "Método de Mutación"}));
+		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Metodo de Seleccion", "Metodode Cruce", "Metodo de Mutacion"}));
 		comboBox_1.setBounds(22, 363, 96, 21);
 		frmPractica.getContentPane().add(comboBox_1);
 		

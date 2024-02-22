@@ -23,7 +23,7 @@ public class Cromosoma2 implements ICromosoma{
     }
     
     public Cromosoma2 (BooleanData datos, int tamano, int genes, double[] rangos, Random r, double aptitud){
-    	this.datos = datos;
+    	this.datos = new BooleanData(datos);
     	this.aptitud = aptitud;
         this.tamano = tamano;
         this.genes = genes;
@@ -136,14 +136,17 @@ public class Cromosoma2 implements ICromosoma{
 	}
 
 	@Override
-	public void cruceMonopunto(ICromosoma pareja) { 
-		//No hara nada en caso de funcion con reales
-		
+	public void cruceMonopunto(ICromosoma pareja) {
+		cruceMonopunto(pareja);
 	}
 
 	@Override
 	public void cruceUniforme(ICromosoma pareja) {
-		//No hara nada en caso de funcion con reales
+		cruceUniforme(pareja);
+	}
+
+	public BooleanData getDatos() {
 		
+		return this.datos;
 	}
 }
