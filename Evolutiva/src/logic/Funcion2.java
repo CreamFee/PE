@@ -15,11 +15,11 @@ public class Funcion2 implements IFuncion {
     private double mutacion; // Probabilidad de mutación
     private double cruce; // Probabilidad de cruce
     private double precision = 0.001; // Precisión de la representación
-    private Cromosoma2[] individuos;
-    private boolean tipoCruce;
-    private Random r;
-    private double elite;
-    private Cromosoma2[] elitistas;
+    private Cromosoma2[] individuos; //Lista de individuos
+    private boolean tipoCruce; //Tipo de cruce que vamos a tener
+    private Random r; //random para generaciones aleatorias
+    private double elite; //porcentaje de elite
+    private Cromosoma2[] elitistas; //Lista de individuos de la elite
     public Funcion2(int poblacion, double precision, double mutacion, double cruce, boolean tipoCruce, Random r, double elite){
         this.tamCrom = 0;
         this.genes = 2;
@@ -54,10 +54,16 @@ public class Funcion2 implements IFuncion {
     private double evaluar (ICromosoma c){ 
 
         double[] tmp = c.traducir(tamGen);
-        double result = Math.pow(Math.sin(Math.toRadians(tmp[1])), Math.pow(1 - Math.cos(Math.toRadians(tmp[0])), 2)) + 
-        		Math.pow(tmp[0] - tmp[1], 2) + //(x1-x2)^2
-        		Math.pow(Math.cos(Math.toRadians(tmp[1])), Math.pow(1 - Math.sin(Math.toRadians(tmp[1])), 2));
-        c.setAptitud(110 - result); 
+        double seno = Math.sin(tmp[1]); //sin(x2)
+        double coseno = Math.cos(tmp[0]); //cos (x1)
+        double potencia1 = Math.exp(Math.pow(1 - coseno, 2)); //exp1
+        double potencia2 = Math.exp(Math.pow(1 - seno, 2)); //exp2
+        
+        double result = seno * potencia1;
+        result += potencia2 * coseno;
+        result += (Math.pow(tmp[0] - tmp[1], 2));
+        
+        c.setAptitud(result);
         return result;   
     }
     
@@ -65,8 +71,17 @@ public class Funcion2 implements IFuncion {
         for(int i = 0; i < poblacion; i++) {
             evaluar(this.individuos[i]);
         }
+        corregirAptitud(); //Para minimizar y dar valores positivos
     }
-    
+    private void corregirAptitud() { //TODO modificar
+    	double min = getMin();
+    	min *= 1.1;
+    	if (min < 0) {
+    		for(int i = 0; i < this.poblacion; i++) {
+        		this.individuos[i].setAptitud(1 / (this.individuos[i].getAptitud() - min));
+        	}
+    	}
+    }
     public int calcularTamGen (double precision, double rango0, double rango1){
         int x = 0;
         x =  (int) (Math.log10(((rango1 - rango0) / precision) + 1) / Math.log10(2));
@@ -82,13 +97,21 @@ public class Funcion2 implements IFuncion {
                 max = tmp;
             }
         }
-        return max - 110; //offset 
+        return max;  
     }
-    
+    private double getMin() {
+    	double min = 0, tmp = 0;
+        for (int i = 0; i < poblacion; i++){
+            tmp = this.individuos[i].getAptitud();
+            if (min > tmp)
+                min = tmp;
+        }
+        return min;
+    }
     public double getPromedio(){ 
         double total = 0, promedio = 0;
         for (int i = 0; i < poblacion; i++){
-            total += (this.individuos[i].getAptitud() - 110);//offset
+            total += (100 / this.individuos[i].getAptitud());//inversa ya que hacemos la inversa al evaluar 
         }
         promedio = total / this.poblacion;
         return promedio;  

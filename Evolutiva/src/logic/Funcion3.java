@@ -59,7 +59,6 @@ public class Funcion3 implements IFuncion {
     	 
          double result = Math.sin(Math.toRadians(tmp[0])) * Math.pow(Math.cos(Math.toRadians(tmp[1])), aux);
          
-         
          if (result > 0)
         	 result = -result;
          c.setAptitud(result + 25); //offset de 25 para eliminar negativos

@@ -19,7 +19,7 @@ public class Main {
     public static double elitismo = 0.02; //Elitismo, cantidad de poblacion que va a mantenerse de una a otra
     public static int dimension = 1; // a partir de 1 para la funcion 5
     
-    private IFuncion funcion;
+    private IFuncion funcion; //Funcion con la que vamos a trabajar
     private ISeleccion ruleta; //Crear el metodo preferido
     
     
@@ -27,7 +27,7 @@ public class Main {
     private double[] averages; //Guarda las medias de cada generacion
     private double[] absoluteMax; //Guarda el absoluto maximo hasta el momento
     
-    private Random r;
+    private Random r; //Random utilizado en toda la ejecucion
     
     public Main(){
     	this.r = new Random (System.currentTimeMillis());
@@ -42,8 +42,8 @@ public class Main {
         maximums = new double [this.generaciones];
         averages = new double [this.generaciones];
         absoluteMax = new double [this.generaciones];
-        
-        this.funcion = new Funcion2(poblacion, precision, mutar, cruce, tipoCruce, r, elitismo);
+      //TODO Cambiar para poder elegir la funcion
+        this.funcion = new Funcion2(poblacion, precision, mutar, cruce, tipoCruce, r, elitismo); 
     }
     
     private void evaluarPoblacion() {
@@ -89,6 +89,7 @@ public class Main {
         }
         */
          //Print de todos los individuos
+        //Descomentar para debug las lineas de salida estandar del sistema
         System.out.println("GENERACION: " + 0);
         System.out.println("Maximo de la generacion: " + maximums[0]);
         System.out.println("Maximo absoluto: " + absoluteMax[0]);
