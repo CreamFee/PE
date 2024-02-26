@@ -272,7 +272,7 @@ public class MainWindow {
          			
          		frmPractica.getContentPane().add(plot);
          		
-         		label_RESULT.setText("Result: " + max[Main.poblacion - 1]); //add X and Y coords
+         		label_RESULT.setText("Result: " + abs[Main.poblacion - 1]); //add X and Y coords
             }
         };
 

@@ -34,7 +34,7 @@ public class Main {
     }
     public static void main(String[] args) {
     	Main main = new Main();
-    	main.ejecutar();
+    	//main.ejecutar();
     	MainWindow interfaz = new MainWindow(main);
     }
     
@@ -42,8 +42,6 @@ public class Main {
         maximums = new double [this.generaciones];
         averages = new double [this.generaciones];
         absoluteMax = new double [this.generaciones];
-      //TODO Cambiar para poder elegir la funcion
-        this.funcion = new Funcion2(poblacion, precision, mutar, cruce, tipoCruce, r, elitismo); 
     }
     
     private void evaluarPoblacion() {
@@ -119,13 +117,34 @@ public class Main {
     public double[] getAvr(){
     	return this.averages;
     }
-	 public double[] getAbsMax(){
+	public double[] getAbsMax(){
 	    	return this.absoluteMax;
 	    }
-	 public double[] getMax(){
+	public double[] getMax(){
 	 	return this.maximums;
 	 }
  
-    
+	public void set_funcion(int f) {
+		 switch (f) {
+	 	case 1:
+	 		this.funcion = new Funcion1(poblacion, precision, mutar, cruce, tipoCruce, r, elitismo);
+	 		break;
+	 	case 2:
+	 		this.funcion = new Funcion2(poblacion, precision, mutar, cruce, tipoCruce, r, elitismo);
+	 		break;
+	 	case 3:
+	 		//llamar funcion 3
+	 		break;
+	 	case 4:
+	 		//llamar funcion 4
+	 		break;
+	 	case 5:
+	 		//llamar funcion 4
+	 		break;
+	 
+     }
+		 this.ejecutar();
+	 }
+	 
     
 }
