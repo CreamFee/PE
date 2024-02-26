@@ -196,13 +196,15 @@ public class MainWindow {
             	//DELETE OTHER LINES
             	plot.removeAllPlots();
             	
+            	//ADD OPTIONS FOR EACH SELECTION
+            	
             	Main.poblacion = Integer.parseInt(textField_poblacion.getText());
             	Main.generaciones = Integer.parseInt(textField_generaciones.getText());
-            	Main.mutar = Integer.parseInt(textField_mutacion.getText())/100;
-            	Main.cruce = Integer.parseInt(textField_cruce.getText())/100;
+            	Main.mutar = (double)Integer.parseInt(textField_mutacion.getText())/100;
+            	Main.cruce = (double)Integer.parseInt(textField_cruce.getText())/100;
             	Main.precision = Double.parseDouble(textField_precision.getText());
             	Main.tipoCruce = Boolean.parseBoolean(textField_tipocruce.getText());
-              	Main.elitismo = Integer.parseInt(textField_elitismo.getText())/100;
+              	Main.elitismo = (double)Integer.parseInt(textField_elitismo.getText())/100;
             	Main.dimension = Integer.parseInt(textField_dimension.getText());
             	
             	switch ((String) comboBox_metodo.getSelectedItem()) {
