@@ -263,8 +263,8 @@ public class MainWindow {
          		double[] avr = main.getAvr();
          		double[] abs = main.getAbsMax();
          		double[] max = main.getMax();
-         		double[] x = new double[Main.poblacion];
-         		for(int i = 0; i < Main.poblacion; ++i) {
+         		double[] x = new double[Main.generaciones];
+         		for(int i = 0; i < Main.generaciones; ++i) {
          			x[i] = i;
          		}
          		
@@ -275,7 +275,7 @@ public class MainWindow {
          			
          		frmPractica.getContentPane().add(plot);
          		
-         		label_RESULT.setText("Result: " + abs[Main.poblacion - 1]); //add X and Y coords
+         		label_RESULT.setText("Result: " + abs[Main.generaciones - 1]); //add X and Y coords
             }
         };
 

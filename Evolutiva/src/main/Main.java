@@ -5,6 +5,9 @@ import interfaces.IFuncion;
 import interfaces.ISeleccion;
 import logic.Funcion1;
 import logic.Funcion2;
+import logic.Funcion3;
+import logic.Funcion4;
+import logic.Funcion5;
 import selections.SeleccionRuleta;
 import view.MainWindow;
 
@@ -151,13 +154,13 @@ public class Main {
  	 		this.funcion = new Funcion2(poblacion, precision, mutar, cruce, tipoCruce, r, elitismo);
  	 		break;
  	 	case 3:
- 	 		//llamar funcion 3
+ 	 		this.funcion = new Funcion3(poblacion, precision, mutar, cruce, tipoCruce, r, elitismo);
  	 		break;
  	 	case 4:
- 	 		//llamar funcion 4
+ 	 		this.funcion = new Funcion4(poblacion, precision, mutar, cruce, tipoCruce, r, elitismo);
  	 		break;
  	 	case 5:
- 	 		//llamar funcion 4
+ 	 		this.funcion = new Funcion5(poblacion, precision, mutar, cruce, tipoCruce, r, elitismo);
  	 		break;
  	 
       }

@@ -11,6 +11,7 @@ public class CromosomaDouble implements ICromosoma{
     private double[] rangos; //Valor inferior del rango de valores
     private double aptitud; //valor de fitness del cromosoma
     public Random r; //Random para generar los valores aleatorios
+    
     public CromosomaDouble (int tamanio, int gens, double[] rangos, Random r){
         this.tam = tamanio;
         this.genes = gens;
@@ -37,7 +38,7 @@ public class CromosomaDouble implements ICromosoma{
     public void inicializar(){
         double aux;
         double rango;
-        for (int i = 0; i < tam; i++){
+        for (int i = 0; i < this.genes; i++){
             aux = r.nextDouble();
             //Valculamos la posición en la que debería encontrarse
             //Total de valores posibles = incremento en los rangos dividido 
@@ -51,7 +52,7 @@ public class CromosomaDouble implements ICromosoma{
     public void mutar(double probabilidad){
         double aux;
         double rango;
-        for (int i = 0; i < tam; i++){
+        for (int i = 0; i < this.genes; i++){
             aux = r.nextDouble();
             if(aux <= probabilidad){ 
             	aux = r.nextDouble();

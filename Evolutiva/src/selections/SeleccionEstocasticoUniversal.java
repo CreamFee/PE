@@ -68,8 +68,7 @@ public class SeleccionEstocasticoUniversal implements ISeleccion{
         	aptaux = 0;
         	find = false;
         }
-        
-    	double inc = r.nextDouble(1/n);
+    	double inc = r.nextDouble() * 1/n;
     
         int i = 0;
  

@@ -1,13 +1,13 @@
-
 package logic;
 
 import java.util.Random;
 
 import interfaces.ICromosoma;
 import interfaces.IFuncion;
+import main.Main;
 import objects.Cromosoma2;
 
-public class Funcion3 implements IFuncion {
+public class Funcion4 implements IFuncion {
 	private int genes; // Numero de genes
     private int[] tamGen; // Tamano de cada uno de los genes
     private int tamCrom; // Tamano total del cromosoma
@@ -21,9 +21,10 @@ public class Funcion3 implements IFuncion {
     private Random r;
     private double elite;
     private Cromosoma2[] elitistas;
-    public Funcion3(int poblacion, double precision, double mutacion, double cruce, boolean tipoCruce, Random r, double elite){
+    private double m = 10;
+    public Funcion4(int poblacion, double precision, double mutacion, double cruce, boolean tipoCruce, Random r, double elite){
         this.tamCrom = 0;
-        this.genes = 2; 
+        this.genes = Main.dimension; 
         this.tamGen = new int[genes];
         this.rangos = new double[2*genes];
         this.mutacion = mutacion;
@@ -38,11 +39,11 @@ public class Funcion3 implements IFuncion {
     }
 
     private void iniciar(){ 
-    	rangos[0] = -10; 
-        rangos[1] = 10; 
-        rangos[2] = -10;
-        rangos[3] = 10;
-        for(int i = 0; i < genes; i++){
+    	for (int i = 0; i < this.genes; i++) {
+    		rangos[2 * i] = 0; 
+            rangos[2 * i + 1] = Math.PI;
+    	}
+    	for(int i = 0; i < genes; i++){
             tamGen[i] = calcularTamGen(precision, rangos[2 * i], rangos[2 * i + 1]);
         }
         this.individuos = new Cromosoma2[this.poblacion];
@@ -54,10 +55,12 @@ public class Funcion3 implements IFuncion {
     
     private double evaluar (ICromosoma c){
     	 double[] tmp = c.traducir(tamGen);
-    	 double aux = Math.abs(1 - (Math.sqrt(Math.pow(tmp[0], 2) + Math.pow(tmp[1], 2)) / Math.PI));
-         double result = - Math.abs(Math.sin(tmp[0]) * Math.cos(tmp[1]) * Math.exp(aux)); 
-         c.setAptitud(result);
-         return result;
+    	 double result = 0;
+    	 for (int i = 0; i < this.genes; i++) {
+    		 result += Math.sin(tmp[i]) * Math.pow(Math.sin(((i + 1) * Math.pow(tmp[i], 2)) / Math.PI), 2 * this.m);
+    	 }
+         c.setAptitud(-result);
+         return -result;
     }
     
     public void evaluarPoblacion (){
@@ -135,7 +138,7 @@ public class Funcion3 implements IFuncion {
     	int[] used = new int[(int)(this.elite * this.poblacion)];
     	int pos = 0;
     	boolean find = false;
-    	for (int i = 0; i < this.elite * this.poblacion; i++) { //Colocamos la elite
+    	for (int i = 0; i < (int)(this.elite * this.poblacion); i++) { //Colocamos la elite
         	for(int j = 0; j < this.poblacion; j++) {//Buscamos el mejor individuo
         		aptaux = individuos[j].getAptitud();
         		if(aptaux > aptMax) {
@@ -198,4 +201,5 @@ public class Funcion3 implements IFuncion {
         }
         return min;
     }
+
 }
