@@ -1,3 +1,4 @@
+
 package logic;
 
 import java.util.Random;
@@ -11,10 +12,10 @@ public class Funcion3 implements IFuncion {
     private int[] tamGen; // Tamano de cada uno de los genes
     private int tamCrom; // Tamano total del cromosoma
     private double[] rangos; // Rangos de cada gen del cromosoma
-    private int poblacion; // Tamano población
+    private int poblacion; // Tamano poblaciï¿½n
     private double mutacion; // Probabilidad de mutacion
     private double cruce; // Probabilidad de cruce
-    private double precision = 0.001; // Precision de la representación
+    private double precision = 0.001; // Precision de la representaciï¿½n
     private Cromosoma2[] individuos;
     private boolean tipoCruce;
     private Random r;
@@ -51,7 +52,7 @@ public class Funcion3 implements IFuncion {
         }
     };
     
-    private double evaluar (ICromosoma c){ //TODO Comprobar funcionamiento
+    private double evaluar (ICromosoma c){
     	 double[] tmp = c.traducir(tamGen);
     	 double aux = 1 - (Math.sqrt(Math.pow(tmp[0], 2) + Math.pow(tmp[1], 2)) / Math.PI);
     	 if (aux < 0)
@@ -70,7 +71,18 @@ public class Funcion3 implements IFuncion {
             evaluar(this.individuos[i]);
         }
     }
-    
+
+    public void corregirAptitud() { 
+    	double max = getMax();
+    	if (max < 0) 
+    		max *= 0.9; //Si max es negativo, le restamos un 10% para que los valores sean todos positivos
+    	else
+    		max *= 1.1; //Si es positivo, le sumamos un 10% por el mismo objetivo
+    	
+		for(int i = 0; i < this.poblacion; i++) {
+    		this.individuos[i].setAptitud(max - this.individuos[i].getAptitud());
+    	}
+    }
     public int calcularTamGen (double precision, double rango0, double rango1){
         int x = 0;
         x =  (int) (Math.log10(((rango1 - rango0) / precision) + 1) / Math.log10(2));
@@ -183,5 +195,14 @@ public class Funcion3 implements IFuncion {
             result[i] = individuos[i].traducir(this.tamGen);
         }
         return result;
+    }
+    public double getMin() { //Sera util cuando queramos maximizar una funcion con numeros negativos
+    	double min = 0, tmp = 0;
+        for (int i = 0; i < poblacion; i++){
+            tmp = this.individuos[i].getAptitud();
+            if (min > tmp)
+                min = tmp;
+        }
+        return min;
     }
 }

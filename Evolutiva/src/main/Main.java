@@ -18,8 +18,10 @@ public class Main {
     public static int seleccion = 1; // de 1 a 6
     public static double elitismo = 0.02; //Elitismo, cantidad de poblacion que va a mantenerse de una a otra
     public static int dimension = 1; // a partir de 1 para la funcion 5
+
+    public static int funcionElegida = 2; // de 1 a 5 para elegir funcion
     
-    private IFuncion funcion; //Funcion con la que vamos a trabajar
+    private IFuncion funcion;
     private ISeleccion ruleta; //Crear el metodo preferido
     
     
@@ -49,14 +51,28 @@ public class Main {
     
     private void recogerDatos(int generacionActual) {
     	this.averages[generacionActual] = funcion.getPromedio();
-    	this.maximums[generacionActual] = funcion.getMax();
-    	if (generacionActual == 0)
-    		this.absoluteMax[generacionActual] = this.maximums[generacionActual];
-    	else if (this.maximums[generacionActual] > this.absoluteMax[generacionActual - 1])
-    		this.absoluteMax[generacionActual] = this.maximums[generacionActual];
+
+    	if(funcionElegida == 1) {
+    		this.maximums[generacionActual] = funcion.getMax();	
+    		if (generacionActual == 0)
+        		this.absoluteMax[generacionActual] = this.maximums[generacionActual];
+        	else if (this.maximums[generacionActual] > this.absoluteMax[generacionActual - 1])
+        		this.absoluteMax[generacionActual] = this.maximums[generacionActual];
+        	
+        	else
+        		this.absoluteMax[generacionActual] = this.absoluteMax[generacionActual - 1];
+    	}
+    	else {
+    		this.maximums[generacionActual] = funcion.getMin();	
+    		if (generacionActual == 0)
+        		this.absoluteMax[generacionActual] = this.maximums[generacionActual];
+        	else if (this.maximums[generacionActual] < this.absoluteMax[generacionActual - 1])
+        		this.absoluteMax[generacionActual] = this.maximums[generacionActual];
+        	
+        	else
+        		this.absoluteMax[generacionActual] = this.absoluteMax[generacionActual - 1];
+    	}
     	
-    	else
-    		this.absoluteMax[generacionActual] = this.absoluteMax[generacionActual - 1];
     }
     private void cruzar () {
     	funcion.cruzar();
@@ -66,6 +82,7 @@ public class Main {
     }
     
     private void seleccionar() {
+    	this.funcion.corregirAptitud();
     	ruleta = new SeleccionRuleta(this.poblacion, funcion.getIndividuos(), this.r);
     	funcion.seleccionar(ruleta.getSelection());
     }
@@ -86,18 +103,18 @@ public class Main {
         }
         */
          //Print de todos los individuos
-        //Descomentar para debug las lineas de salida estandar del sistema
         System.out.println("GENERACION: " + 0);
         System.out.println("Maximo de la generacion: " + maximums[0]);
         System.out.println("Maximo absoluto: " + absoluteMax[0]);
         System.out.println("Media de la generacion: " + averages[0] + "\n");
         for (int i = 1; i < this.generaciones; i++) {
             // Seleccionar individuos
-        	funcion.generarElite();
+        	this.funcion.corregirAptitud();
+        	this.funcion.generarElite();
         	seleccionar();
         	cruzar();
         	mutar();
-        	funcion.introducirElite();
+        	this.funcion.introducirElite();
         	evaluarPoblacion();
         	recogerDatos(i);
         	System.out.println("GENERACION: " + i);
@@ -116,34 +133,48 @@ public class Main {
     public double[] getAvr(){
     	return this.averages;
     }
-	public double[] getAbsMax(){
+
+	 public double[] getAbsMax(){
 	    	return this.absoluteMax;
 	    }
-	public double[] getMax(){
+	 public double[] getMax(){
 	 	return this.maximums;
 	 }
- 
-	public void set_funcion(int f) {
-		 switch (f) {
-	 	case 1:
-	 		this.funcion = new Funcion1(poblacion, precision, mutar, cruce, tipoCruce, r, elitismo);
-	 		break;
-	 	case 2:
-	 		this.funcion = new Funcion2(poblacion, precision, mutar, cruce, tipoCruce, r, elitismo);
-	 		break;
-	 	case 3:
-	 		//llamar funcion 3
-	 		break;
-	 	case 4:
-	 		//llamar funcion 4
-	 		break;
-	 	case 5:
-	 		//llamar funcion 4
-	 		break;
 	 
-     }
+	 public void set_funcion(int f) {
+		 this.funcionElegida = f;
+		 switch (f) {
+ 	 	case 1:
+ 	 		this.funcion = new Funcion1(poblacion, precision, mutar, cruce, tipoCruce, r, elitismo);
+ 	 		break;
+ 	 	case 2:
+ 	 		this.funcion = new Funcion2(poblacion, precision, mutar, cruce, tipoCruce, r, elitismo);
+ 	 		break;
+ 	 	case 3:
+ 	 		//llamar funcion 3
+ 	 		break;
+ 	 	case 4:
+ 	 		//llamar funcion 4
+ 	 		break;
+ 	 	case 5:
+ 	 		//llamar funcion 4
+ 	 		break;
+ 	 
+      }
 		 this.ejecutar();
 	 }
 	 
+    /*
+     public static int poblacion = 100; //Cantidad de individuos
+    public static double mutar = 0.05; //probabilidad de mutacion
+    public static double cruce = 0.6; //probabilidad de cruce
+    public static double precision = 0.001; // double para indicar 
+    public static boolean tipoCruce = false; //false para monopunto, true para uniforme
+    public static int generaciones = 100; // numero de generaciones
+    public static int seleccion = 1; // de 1 a 6
+    public static double elitismo = 0.02; //Elitismo, cantidad de poblacion que va a mantenerse de una a otra
+    public static int dimension = 1; // a partir de 1 para la funcion 5
+    
+     */
     
 }

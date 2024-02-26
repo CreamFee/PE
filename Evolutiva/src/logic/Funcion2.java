@@ -1,3 +1,5 @@
+
+
 package logic;
 
 import java.util.Random;
@@ -7,14 +9,14 @@ import interfaces.IFuncion;
 import objects.Cromosoma2;
 
 public class Funcion2 implements IFuncion {
-	private int genes; // Número de genes
-    private int[] tamGen; // Tamaño de cada uno de los genes
-    private int tamCrom; // Tamaño total del cromosoma
+	private int genes; // Numero de genes
+    private int[] tamGen; // Tamano de cada uno de los genes
+    private int tamCrom; // Tamano total del cromosoma
     private double[] rangos; // Rangos de cada gen del cromosoma
-    private int poblacion; // Tamaño población
-    private double mutacion; // Probabilidad de mutación
+    private int poblacion; // Tamano poblacion
+    private double mutacion; // Probabilidad de mutacion
     private double cruce; // Probabilidad de cruce
-    private double precision = 0.001; // Precisión de la representación
+    private double precision = 0.001; // Precision de la representacion
     private Cromosoma2[] individuos; //Lista de individuos
     private boolean tipoCruce; //Tipo de cruce que vamos a tener
     private Random r; //random para generaciones aleatorias
@@ -71,15 +73,16 @@ public class Funcion2 implements IFuncion {
         for(int i = 0; i < poblacion; i++) {
             evaluar(this.individuos[i]);
         }
-        corregirAptitud(); //Para minimizar y dar valores positivos
     }
-    private void corregirAptitud() { //TODO modificar
-    	double min = getMin();
-    	min *= 1.1;
-    	if (min < 0) {
-    		for(int i = 0; i < this.poblacion; i++) {
-        		this.individuos[i].setAptitud(1 / (this.individuos[i].getAptitud() - min));
-        	}
+    public void corregirAptitud() { 
+    	double max = getMax();
+    	if (max < 0) 
+    		max *= 0.9; //Si max es negativo, le restamos un 10% para que los valores sean todos positivos
+    	else
+    		max *= 1.1; //Si es positivo, le sumamos un 10% por el mismo objetivo
+    	
+		for(int i = 0; i < this.poblacion; i++) {
+    		this.individuos[i].setAptitud(max - this.individuos[i].getAptitud());
     	}
     }
     public int calcularTamGen (double precision, double rango0, double rango1){
@@ -99,7 +102,7 @@ public class Funcion2 implements IFuncion {
         }
         return max;  
     }
-    private double getMin() {
+    public double getMin() { //Sera util cuando queramos maximizar una funcion con numeros negativos
     	double min = 0, tmp = 0;
         for (int i = 0; i < poblacion; i++){
             tmp = this.individuos[i].getAptitud();
@@ -111,7 +114,7 @@ public class Funcion2 implements IFuncion {
     public double getPromedio(){ 
         double total = 0, promedio = 0;
         for (int i = 0; i < poblacion; i++){
-            total += (100 / this.individuos[i].getAptitud());//inversa ya que hacemos la inversa al evaluar 
+            total += (this.individuos[i].getAptitud());//inversa ya que hacemos la inversa al evaluar 
         }
         promedio = total / this.poblacion;
         return promedio;  

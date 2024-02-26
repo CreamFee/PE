@@ -1,3 +1,4 @@
+
 package interfaces;
 
 public interface IFuncion {
@@ -11,4 +12,7 @@ public interface IFuncion {
     double[][] getFenotipos();
     void introducirElite();
     void generarElite();
+	void corregirAptitud();
+	double getMin();
+
 }

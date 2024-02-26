@@ -1,3 +1,4 @@
+
 package view;
 
 import java.awt.Color;
@@ -285,3 +286,4 @@ public class MainWindow {
 		this.frmPractica.setVisible(true);
 	}
 }
+

@@ -158,6 +158,7 @@ public class Funcion1 implements IFuncion{
     	for(int i = 0; i < (int)(this.elite * this.poblacion); i++) {
     		individuos[i] = new Cromosoma2(elitistas[i]);
     	}
+
     }
     public void seleccionar(int[] seleccion) {
     	
@@ -169,6 +170,7 @@ public class Funcion1 implements IFuncion{
             individuos[i + (int) this.elite * this.poblacion] = new Cromosoma2(antiguos[seleccion[i]]); 
         }
     }
+
     
     public double[][] getFenotipos() {
         double[][] result = new double[this.poblacion][this.genes];
@@ -177,4 +179,18 @@ public class Funcion1 implements IFuncion{
         }
         return result;
     }
+    public double getMin() { //Sera util cuando queramos maximizar una funcion con numeros negativos
+    	double min = 0, tmp = 0;
+        for (int i = 0; i < poblacion; i++){
+            tmp = this.individuos[i].getAptitud();
+            if (min > tmp)
+                min = tmp;
+        }
+        return min;
+    }
+	@Override
+	public void corregirAptitud() {
+		// No se corrige, todos son positivos
+		
+	}
 }
