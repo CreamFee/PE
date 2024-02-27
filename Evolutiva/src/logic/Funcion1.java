@@ -126,7 +126,7 @@ public class Funcion1 implements IFuncion{
     	int[] used = new int[(int)(this.elite * this.poblacion)];
     	int pos = 0;
     	boolean find = false;
-    	for (int i = 0; i < this.elite * this.poblacion; i++) { //Colocamos la elite
+    	for (int i = 0; i < (int) (this.elite * this.poblacion); i++) { //Colocamos la elite
         	for(int j = 0; j < this.poblacion; j++) {//Buscamos el mejor individuo
         		aptaux = individuos[j].getAptitud();
         		if(aptaux > aptMax) {
