@@ -47,7 +47,7 @@ public class Funcion5 implements IFuncion {
             rangos[2 * i + 1] = Math.PI;
     	}
     	for(int i = 0; i < genes; i++){
-            tamGen[i] = calcularTamGen(precision, rangos[2 * i], rangos[2 * i + 1]);
+            tamGen[i] = 1;
         }
         this.individuos = new CromosomaDouble[this.poblacion];
         for(int i = 0; i < this.poblacion; i++){
@@ -143,7 +143,7 @@ public class Funcion5 implements IFuncion {
     	int[] used = new int[(int)(this.elite * this.poblacion)];
     	int pos = 0;
     	boolean find = false;
-    	for (int i = 0; i < this.elite * this.poblacion; i++) { //Colocamos la elite
+    	for (int i = 0; i < (int) (this.elite * this.poblacion); i++) { //Colocamos la elite
         	for(int j = 0; j < this.poblacion; j++) {//Buscamos el mejor individuo
         		aptaux = individuos[j].getAptitud();
         		if(aptaux > aptMax) {

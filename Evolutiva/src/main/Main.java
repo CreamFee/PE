@@ -139,10 +139,10 @@ public class Main {
         }
         */
          //Print de todos los individuos
-        System.out.println("GENERACION: " + 0);
-        System.out.println("Maximo de la generacion: " + maximums[0]);
-        System.out.println("Maximo absoluto: " + absoluteMax[0]);
-        System.out.println("Media de la generacion: " + averages[0] + "\n");
+//        System.out.println("GENERACION: " + 0);
+//        System.out.println("Maximo de la generacion: " + maximums[0]);
+//        System.out.println("Maximo absoluto: " + absoluteMax[0]);
+//        System.out.println("Media de la generacion: " + averages[0] + "\n");
         for (int i = 1; i < this.generaciones; i++) {
             // Seleccionar individuos
         	this.funcion.corregirAptitud();
@@ -153,7 +153,7 @@ public class Main {
         	this.funcion.introducirElite();
         	evaluarPoblacion();
         	recogerDatos(i);
-        	System.out.println("GENERACION: " + i);
+        	/*System.out.println("GENERACION: " + i); //usado para pruebas
         	System.out.println("Maximo de la generacion: " + maximums[i]);
             System.out.println("Maximo absoluto: " + absoluteMax[i]);
             System.out.println("Media de la generacion: " + averages[i] + "\n");
@@ -161,7 +161,7 @@ public class Main {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			}
+			}*/
         }
         
     }
@@ -206,17 +206,5 @@ public class Main {
 		 this.ejecutar();
 	 }
 	 
-    /*
-     public static int poblacion = 100; //Cantidad de individuos
-    public static double mutar = 0.05; //probabilidad de mutacion
-    public static double cruce = 0.6; //probabilidad de cruce
-    public static double precision = 0.001; // double para indicar 
-    public static boolean tipoCruce = false; //false para monopunto, true para uniforme
-    public static int generaciones = 100; // numero de generaciones
-    public static int seleccion = 1; // de 1 a 6
-    public static double elitismo = 0.02; //Elitismo, cantidad de poblacion que va a mantenerse de una a otra
-    public static int dimension = 1; // a partir de 1 para la funcion 5
-    
-     */
     
 }

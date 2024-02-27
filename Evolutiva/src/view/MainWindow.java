@@ -66,7 +66,7 @@ public class MainWindow {
 	private void initialize() {
 		frmPractica = new JFrame();
 		frmPractica.setTitle("Practica 1");
-		frmPractica.setBounds(100, 100, 937, 712);
+		frmPractica.setBounds(100, 100, 937, 607);
 		frmPractica.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmPractica.getContentPane().setLayout(null);
 		
@@ -178,7 +178,7 @@ public class MainWindow {
 		frmPractica.getContentPane().add(lblNewLabel_5_1_2);
 		
 		JButton btnNewButton = new JButton("EXEC");
-		btnNewButton.setBounds(22, 590, 85, 21);
+		btnNewButton.setBounds(22, 543, 85, 21);
 		frmPractica.getContentPane().add(btnNewButton);
 		
 		JLabel lblNewLabel_5_2 = new JLabel("Tipo Cruce");

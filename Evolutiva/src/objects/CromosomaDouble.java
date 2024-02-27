@@ -16,7 +16,7 @@ public class CromosomaDouble implements ICromosoma{
         this.tam = tamanio;
         this.genes = gens;
         this.rangos = rangos;
-        this.datos = new DoubleData(this.tam);
+        this.datos = new DoubleData(this.genes);
         this.r = r;
     }
     public CromosomaDouble (DoubleData data, int tamanio, int gens, double[] rangos, Random r, double aptitud){
@@ -40,7 +40,7 @@ public class CromosomaDouble implements ICromosoma{
         double rango;
         for (int i = 0; i < this.genes; i++){
             aux = r.nextDouble();
-            //Valculamos la posición en la que debería encontrarse
+            //Valculamos la posiciï¿½n en la que deberï¿½a encontrarse
             //Total de valores posibles = incremento en los rangos dividido 
             rango = rangos[2 * i + 1] - rangos[2 * i]; //Final menos inicial
             aux *= rango; //Ahora aux contiene el valor comprendido en nuestro rango desplazado, solo hay que desplazarlo de nuevo
@@ -67,8 +67,8 @@ public class CromosomaDouble implements ICromosoma{
     }
     
     public void cruceMonopunto(CromosomaDouble pareja){
-        int posicion = r.nextInt(this.tam - 1) + 1;
-        for (int i = posicion; i < this.tam; i++){
+        int posicion = r.nextInt(this.genes - 1) + 1;
+        for (int i = posicion; i < this.genes; i++){
         	double aux = this.datos.getDatoI(i);
             this.datos.setDatoI(pareja.getDatos().getDatoI(i), i);
             this.datos.setDatoI(pareja.datos.getDatoI(i), i);
