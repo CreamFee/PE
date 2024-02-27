@@ -36,7 +36,7 @@ public class Main {
     private double[] maximums; //Guarda los maximos de cada generacion
     private double[] averages; //Guarda las medias de cada generacion
     private double[] absoluteMax; //Guarda el absoluto maximo hasta el momento
-    private double[][] puntosX;//guarda el resultaod de las x
+    private double[] puntosX;//guarda el resultaod de las x
     private int cont; //para saber cuantos resultados iguales hay
     
     private Random r; //Random utilizado en toda la ejecucion
@@ -53,8 +53,7 @@ public class Main {
         maximums = new double [this.generaciones];
         averages = new double [this.generaciones];
         absoluteMax = new double [this.generaciones];
-        puntosX = new double [this.generaciones][32];
-        cont = 0;
+        puntosX = new double [32];
     }
     
     private void evaluarPoblacion() {
@@ -68,21 +67,14 @@ public class Main {
     		this.maximums[generacionActual] = funcion.getMax();	
     		if (generacionActual == 0) {
         		this.absoluteMax[generacionActual] = this.maximums[generacionActual];
-    			this.puntosX[cont] = funcion.getXX();
+    			this.puntosX = funcion.getXX();
     		}
         	else if (this.maximums[generacionActual] > this.absoluteMax[generacionActual - 1]) {
         		this.absoluteMax[generacionActual] = this.maximums[generacionActual];
-        		this.cont = 0;
-    			this.puntosX[cont] = funcion.getXX();
+    			this.puntosX = funcion.getXX();
     			
         	}
-        	else if (this.maximums[generacionActual] == this.absoluteMax[generacionActual - 1]) {
-        		this.absoluteMax[generacionActual] = this.absoluteMax[generacionActual - 1];
-        		if (this.puntosX[cont][0] != funcion.getXX()[0] || this.puntosX[cont][1] != funcion.getXX()[1]) {
-        			++cont;
-        			this.puntosX[cont] = funcion.getXX();
-        		}
-        	}
+
         	else
         		this.absoluteMax[generacionActual] = this.absoluteMax[generacionActual - 1];
     	}
@@ -90,20 +82,13 @@ public class Main {
     		this.maximums[generacionActual] = funcion.getMin();	
     		if (generacionActual == 0) {
         		this.absoluteMax[generacionActual] = this.maximums[generacionActual];
-    			this.puntosX[cont] = funcion.getXX();
+    			this.puntosX = funcion.getXX();
     		}
         	else if (this.maximums[generacionActual] < this.absoluteMax[generacionActual - 1]) {
         		this.absoluteMax[generacionActual] = this.maximums[generacionActual];
-        		this.cont = 0;
-    			this.puntosX[cont] = funcion.getXX();
+    			this.puntosX = funcion.getXX();
         	}
-        	else if (this.maximums[generacionActual] == this.absoluteMax[generacionActual - 1]) {
-        		this.absoluteMax[generacionActual] = this.absoluteMax[generacionActual - 1];
-        		if (this.puntosX[cont][0] != funcion.getXX()[0] || this.puntosX[cont][1] != funcion.getXX()[1]) {
-        			++cont;
-        			this.puntosX[cont] = funcion.getXX();
-        		}
-        	}
+
         	else
         		this.absoluteMax[generacionActual] = this.absoluteMax[generacionActual - 1];
     	}
@@ -194,7 +179,7 @@ public class Main {
 	 public int getCont() {
 		 return this.cont;
 	 }
-	 public double[][] getXfinal() {
+	 public double[] getXfinal() {
 		 return this.puntosX;
 	 }
 	 

@@ -288,7 +288,7 @@ public class MainWindow {
          		
          		
          		for (int i = 0; i < main.getCont() + 1; ++i) {
-         			t = main.getXfinal()[i];
+         			t = main.getXfinal();
          			for (int j = 0; j < t.length; ++j) {
          				if (j == t.length - 1) sb.append(" X" + j + "[" + t[j] + "]");
          				else sb.append(" X" + j + "[" + t[j] + "]" + ", ");
