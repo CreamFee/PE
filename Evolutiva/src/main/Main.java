@@ -8,7 +8,12 @@ import logic.Funcion2;
 import logic.Funcion3;
 import logic.Funcion4;
 import logic.Funcion5;
+import selections.SeleccionEstocasticoUniversal;
+import selections.SeleccionRestos;
 import selections.SeleccionRuleta;
+import selections.SeleccionTorneoDet;
+import selections.SeleccionTorneoProb;
+import selections.SeleccionTruncamiento;
 import view.MainWindow;
 
 public class Main {
@@ -25,7 +30,7 @@ public class Main {
     public static int funcionElegida = 2; // de 1 a 5 para elegir funcion
     
     private IFuncion funcion;
-    private ISeleccion ruleta; //Crear el metodo preferido
+    private ISeleccion selec; //Crear el metodo preferido
     
     
     private double[] maximums; //Guarda los maximos de cada generacion
@@ -113,8 +118,24 @@ public class Main {
     
     private void seleccionar() {
     	this.funcion.corregirAptitud();
-    	ruleta = new SeleccionRuleta(this.poblacion, funcion.getIndividuos(), this.r);
-    	funcion.seleccionar(ruleta.getSelection());
+    	
+    	switch (seleccion){
+    		case 1:
+    	    	selec = new SeleccionRuleta(this.poblacion, funcion.getIndividuos(), this.r);
+    		case 2:
+    	    	selec = new SeleccionTorneoDet(this.poblacion, funcion.getIndividuos(), this.r);
+    		case 3:
+    	    	selec = new SeleccionTorneoProb(this.poblacion, funcion.getIndividuos(), this.r);
+    		case 4:
+    	    	selec = new SeleccionEstocasticoUniversal(this.poblacion, funcion.getIndividuos(), this.r);
+    		case 5:
+    	    	selec = new SeleccionTruncamiento(this.poblacion, funcion.getIndividuos(), this.r);
+    		case 6:
+    	    	selec = new SeleccionRestos(this.poblacion, funcion.getIndividuos(), this.r);
+
+    	}
+    	
+    	funcion.seleccionar(selec.getSelection());
     }
     private void ejecutar() {
         init();

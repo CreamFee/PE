@@ -202,9 +202,7 @@ public class MainWindow {
             	
             	//DELETE OTHER LINES
             	plot.removeAllPlots();
-            	
-            	//ADD OPTIONS FOR EACH SELECTION
-            	
+            	            	
             	Main.poblacion = Integer.parseInt(textField_poblacion.getText());
             	Main.generaciones = Integer.parseInt(textField_generaciones.getText());
             	Main.mutar = (double)Integer.parseInt(textField_mutacion.getText())/100;
@@ -298,7 +296,7 @@ public class MainWindow {
          			}
          		}
          		
-         		textField_results.setText(abs[Main.generaciones - 1] + "   " + sb);
+         		textField_results.setText("Solucion: " + abs[Main.generaciones - 1] + "   " + sb);
             }
         };
 
