@@ -19,6 +19,7 @@ public class Funcion5 implements IFuncion {
     private double precision = 0.001; // Precision de la representaci�n
     private CromosomaDouble[] individuos;
     private boolean tipoCruce;
+    private double[] xx;//resultado
     private Random r;
     private double elite;
     private CromosomaDouble[] elitistas;
@@ -30,6 +31,7 @@ public class Funcion5 implements IFuncion {
         this.rangos = new double[2*genes];
         this.mutacion = mutacion;
         this.cruce = cruce;
+        this.xx = new double[this.genes];
         this.precision = precision;
         this.poblacion = poblacion;
         this.tipoCruce = tipoCruce;
@@ -94,6 +96,7 @@ public class Funcion5 implements IFuncion {
             tmp = this.individuos[i].getAptitud();
             if (max < tmp){
                 max = tmp;
+                xx = this.individuos[i].traducir(tamGen);
             }
         }
         return max;
@@ -198,9 +201,16 @@ public class Funcion5 implements IFuncion {
     	double min = 0, tmp = 0;
         for (int i = 0; i < poblacion; i++){
             tmp = this.individuos[i].getAptitud();
-            if (min > tmp)
+            if (min > tmp) {
                 min = tmp;
+                xx = this.individuos[i].traducir(tamGen);
+            }
         }
         return min;
     }
+
+	@Override
+	public double[] getXX() {
+		return this.xx;
+	}
 }

@@ -7,17 +7,18 @@ import interfaces.IFuncion;
 import objects.Cromosoma2;
 
 public class Funcion1 implements IFuncion{
-    private int genes; // Número de genes
-    private int[] tamGen; // Tamaño de cada uno de los genes
-    private int tamCrom; // Tamaño total del cromosoma
+    private int genes; // Nï¿½mero de genes
+    private int[] tamGen; // Tamaï¿½o de cada uno de los genes
+    private int tamCrom; // Tamaï¿½o total del cromosoma
     private double[] rangos; // Rangos de cada gen del cromosoma
-    private int poblacion; // Tamaño población
-    private double mutacion; // Probabilidad de mutación
+    private int poblacion; // Tamaï¿½o poblaciï¿½n
+    private double mutacion; // Probabilidad de mutaciï¿½n
     private double cruce; // Probabilidad de cruce
-    private double precision = 0.001; // Precisión de la representación
+    private double precision = 0.001; // Precisiï¿½n de la representaciï¿½n
     private Cromosoma2[] individuos;
     private boolean tipoCruce;
     private Random r;
+    private double[] xx;
     private double elite;
     private Cromosoma2[] elitistas;
     public Funcion1(int poblacion, double precision, double mutacion, double cruce, boolean tipoCruce, Random r, double elite){
@@ -31,6 +32,7 @@ public class Funcion1 implements IFuncion{
         this.poblacion = poblacion;
         this.tipoCruce = tipoCruce;
         this.r = r;
+        this.xx = new double[this.genes];
         this.elite = elite;
         this.elitistas = new Cromosoma2[(int)(elite * poblacion)];
         iniciar();
@@ -77,6 +79,7 @@ public class Funcion1 implements IFuncion{
             tmp = this.individuos[i].getAptitud();
             if (max < tmp){
                 max = tmp;
+                xx = this.individuos[i].traducir(tamGen);
             }
         }
         return max;
@@ -185,6 +188,7 @@ public class Funcion1 implements IFuncion{
             tmp = this.individuos[i].getAptitud();
             if (min > tmp)
                 min = tmp;
+            	xx = this.individuos[i].traducir(tamGen);
         }
         return min;
     }
@@ -193,4 +197,10 @@ public class Funcion1 implements IFuncion{
 		// No se corrige, todos son positivos
 		
 	}
+
+	@Override
+	public double[] getXX() {
+		return this.xx;
+	}
+
 }

@@ -17,6 +17,7 @@ public class Funcion2 implements IFuncion {
     private double mutacion; // Probabilidad de mutacion
     private double cruce; // Probabilidad de cruce
     private double precision = 0.001; // Precision de la representacion
+    private double[] xx;//resultado
     private Cromosoma2[] individuos; //Lista de individuos
     private boolean tipoCruce; //Tipo de cruce que vamos a tener
     private Random r; //random para generaciones aleatorias
@@ -32,6 +33,7 @@ public class Funcion2 implements IFuncion {
         this.precision = precision;
         this.poblacion = poblacion;
         this.tipoCruce = tipoCruce;
+        this.xx = new double[this.genes];
         this.r = r;
         this.elite = elite;
         this.elitistas = new Cromosoma2[(int)(elite * poblacion)];
@@ -108,6 +110,7 @@ public class Funcion2 implements IFuncion {
             tmp = this.individuos[i].getAptitud();
             if (min > tmp)
                 min = tmp;
+            	xx = this.individuos[i].traducir(tamGen);
         }
         return min;
     }
@@ -206,5 +209,10 @@ public class Funcion2 implements IFuncion {
         }
         return result;
     }
+    
+	@Override
+	public double[] getXX() {
+		return this.xx;
+	}
 
 }

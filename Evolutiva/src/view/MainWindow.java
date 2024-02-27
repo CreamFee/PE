@@ -19,6 +19,7 @@ import main.Main;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.SwingConstants;
 
 public class MainWindow {
 
@@ -33,7 +34,7 @@ public class MainWindow {
 	private JTextField textField_elitismo;
 	private JTextField textField_dimension;
 	private Main main;
-	private JTextField textField_tipocruce;
+	private JTextField textField_results;
 
 	/**
 	 * Launch the application.
@@ -65,7 +66,7 @@ public class MainWindow {
 	private void initialize() {
 		frmPractica = new JFrame();
 		frmPractica.setTitle("Practica 1");
-		frmPractica.setBounds(100, 100, 744, 585);
+		frmPractica.setBounds(100, 100, 937, 712);
 		frmPractica.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmPractica.getContentPane().setLayout(null);
 		
@@ -134,7 +135,8 @@ public class MainWindow {
  		frmPractica.getContentPane().add(plot);
 		
 		label_RESULT = new JLabel("Results:");
-		label_RESULT.setBounds(168, 438, 562, 29);
+		label_RESULT.setVerticalAlignment(SwingConstants.TOP);
+		label_RESULT.setBounds(168, 438, 69, 21);
 		label_RESULT.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		frmPractica.getContentPane().add(label_RESULT);
 		
@@ -176,19 +178,23 @@ public class MainWindow {
 		frmPractica.getContentPane().add(lblNewLabel_5_1_2);
 		
 		JButton btnNewButton = new JButton("EXEC");
-		btnNewButton.setBounds(635, 517, 85, 21);
+		btnNewButton.setBounds(22, 590, 85, 21);
 		frmPractica.getContentPane().add(btnNewButton);
 		
-		textField_tipocruce = new JTextField();
-		textField_tipocruce.setText("0");
-		textField_tipocruce.setColumns(10);
-		textField_tipocruce.setBounds(22, 409, 96, 19);
-		frmPractica.getContentPane().add(textField_tipocruce);
-		
-		JLabel lblNewLabel_5_2 = new JLabel("Tipo Cruce (1 o 0)");
+		JLabel lblNewLabel_5_2 = new JLabel("Tipo Cruce");
 		lblNewLabel_5_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel_5_2.setBounds(22, 380, 126, 31);
 		frmPractica.getContentPane().add(lblNewLabel_5_2);
+		
+		JComboBox comboBox_cruce = new JComboBox();
+		comboBox_cruce.setModel(new DefaultComboBoxModel(new String[] {"Monopunto", "Uniforme"}));
+		comboBox_cruce.setBounds(22, 409, 96, 21);
+		frmPractica.getContentPane().add(comboBox_cruce);
+		
+		textField_results = new JTextField();
+		textField_results.setBounds(158, 469, 755, 59);
+		frmPractica.getContentPane().add(textField_results);
+		textField_results.setColumns(10);
 		
         ActionListener listener = new ActionListener() {
             @Override
@@ -204,7 +210,10 @@ public class MainWindow {
             	Main.mutar = (double)Integer.parseInt(textField_mutacion.getText())/100;
             	Main.cruce = (double)Integer.parseInt(textField_cruce.getText())/100;
             	Main.precision = Double.parseDouble(textField_precision.getText());
-            	Main.tipoCruce = Boolean.parseBoolean(textField_tipocruce.getText());
+            	
+            	if (comboBox_cruce.getSelectedIndex() == 0) Main.tipoCruce = false; //solo hay dos opciones
+            	else Main.tipoCruce = true;
+            	
               	Main.elitismo = (double)Integer.parseInt(textField_elitismo.getText())/100;
             	Main.dimension = Integer.parseInt(textField_dimension.getText());
             	
@@ -275,7 +284,21 @@ public class MainWindow {
          			
          		frmPractica.getContentPane().add(plot);
          		
-         		label_RESULT.setText("Result: " + abs[Main.generaciones - 1]); //add X and Y coords
+         		StringBuilder sb = new StringBuilder();
+         		
+         		double[] t;
+         		
+         		
+         		for (int i = 0; i < main.getCont() + 1; ++i) {
+         			t = main.getXfinal()[i];
+         			for (int j = 0; j < t.length; ++j) {
+         				if (j == t.length - 1) sb.append(" X" + j + "[" + t[j] + "]");
+         				else sb.append(" X" + j + "[" + t[j] + "]" + ", ");
+         				sb.append("\n");
+         			}
+         		}
+         		
+         		textField_results.setText(abs[Main.generaciones - 1] + "   " + sb);
             }
         };
 
