@@ -14,5 +14,5 @@ public interface IFuncion {
     void generarElite();
 	void corregirAptitud();
 	double getMin();
-
+	double[] getXX();
 }

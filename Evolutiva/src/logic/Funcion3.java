@@ -17,6 +17,7 @@ public class Funcion3 implements IFuncion {
     private double cruce; // Probabilidad de cruce
     private double precision = 0.001; // Precision de la representaci�n
     private Cromosoma2[] individuos;
+    private double[] xx;//resultado
     private boolean tipoCruce;
     private Random r;
     private double elite;
@@ -31,6 +32,7 @@ public class Funcion3 implements IFuncion {
         this.precision = precision;
         this.poblacion = poblacion;
         this.tipoCruce = tipoCruce;
+        this.xx = new double[this.genes];
         this.r = r;
         this.elite = elite;
         this.elitistas = new Cromosoma2[(int)(elite * poblacion)];
@@ -89,6 +91,7 @@ public class Funcion3 implements IFuncion {
             tmp = this.individuos[i].getAptitud();
             if (max < tmp){
                 max = tmp;
+                xx = this.individuos[i].traducir(tamGen);
             }
         }
         return max;
@@ -104,18 +107,18 @@ public class Funcion3 implements IFuncion {
     }
 
     public void cruzar(){
-        Cromosoma2 pareja = null;
+        int pareja = -1;
         for(int i = 0; i < this.poblacion; i++){
             if(r.nextDouble() < this.cruce){
-                if(pareja != null){
+                if(pareja != -1){
                     if(this.tipoCruce){
-                        this.individuos[i].cruceUniforme(pareja);
+                        this.individuos[i].cruceUniforme(this.individuos[pareja]);
                     } else {
-                        this.individuos[i].cruceMonopunto(pareja);
+                        this.individuos[i].cruceMonopunto(this.individuos[pareja]);
                     }
-                    pareja = null;
+                    pareja = -1;
                 } else {
-                    pareja = this.individuos[i];
+                    pareja = i;
                 }
             }
         }
@@ -135,7 +138,7 @@ public class Funcion3 implements IFuncion {
     	int[] used = new int[(int)(this.elite * this.poblacion)];
     	int pos = 0;
     	boolean find = false;
-    	for (int i = 0; i < this.elite * this.poblacion; i++) { //Colocamos la elite
+    	for (int i = 0; i < (int) (this.elite * this.poblacion); i++) { //Colocamos la elite
         	for(int j = 0; j < this.poblacion; j++) {//Buscamos el mejor individuo
         		aptaux = individuos[j].getAptitud();
         		if(aptaux > aptMax) {
@@ -193,9 +196,16 @@ public class Funcion3 implements IFuncion {
     	double min = 0, tmp = 0;
         for (int i = 0; i < poblacion; i++){
             tmp = this.individuos[i].getAptitud();
-            if (min > tmp)
+            if (min > tmp) {
                 min = tmp;
+                xx = this.individuos[i].traducir(tamGen);
+            }
         }
         return min;
     }
+
+	@Override
+	public double[] getXX() {
+		return this.xx;
+	}
 }

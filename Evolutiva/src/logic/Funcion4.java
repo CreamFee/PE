@@ -17,6 +17,7 @@ public class Funcion4 implements IFuncion {
     private double cruce; // Probabilidad de cruce
     private double precision = 0.001; // Precision de la representaci�n
     private Cromosoma2[] individuos;
+    private double[] xx;//resultado
     private boolean tipoCruce;
     private Random r;
     private double elite;
@@ -29,6 +30,7 @@ public class Funcion4 implements IFuncion {
         this.rangos = new double[2*genes];
         this.mutacion = mutacion;
         this.cruce = cruce;
+        this.xx = new double[this.genes];
         this.precision = precision;
         this.poblacion = poblacion;
         this.tipoCruce = tipoCruce;
@@ -92,6 +94,7 @@ public class Funcion4 implements IFuncion {
             tmp = this.individuos[i].getAptitud();
             if (max < tmp){
                 max = tmp;
+                xx = this.individuos[i].traducir(tamGen);
             }
         }
         return max;
@@ -107,18 +110,18 @@ public class Funcion4 implements IFuncion {
     }
 
     public void cruzar(){
-        Cromosoma2 pareja = null;
+        int pareja = -1;
         for(int i = 0; i < this.poblacion; i++){
             if(r.nextDouble() < this.cruce){
-                if(pareja != null){
+                if(pareja != -1){
                     if(this.tipoCruce){
-                        this.individuos[i].cruceUniforme(pareja);
+                        this.individuos[i].cruceUniforme(this.individuos[pareja]);
                     } else {
-                        this.individuos[i].cruceMonopunto(pareja);
+                        this.individuos[i].cruceMonopunto(this.individuos[pareja]);
                     }
-                    pareja = null;
+                    pareja = -1;
                 } else {
-                    pareja = this.individuos[i];
+                    pareja = i;
                 }
             }
         }
@@ -196,10 +199,17 @@ public class Funcion4 implements IFuncion {
     	double min = 0, tmp = 0;
         for (int i = 0; i < poblacion; i++){
             tmp = this.individuos[i].getAptitud();
-            if (min > tmp)
+            if (min > tmp) {
                 min = tmp;
+                xx = this.individuos[i].traducir(tamGen);
+            }
         }
         return min;
     }
+
+	@Override
+	public double[] getXX() {
+		return this.xx;
+	}
 
 }
