@@ -6,6 +6,7 @@ public interface IFuncion {
     double getMax();
     double getPromedio();
     void cruzar();
+    void cruzarA();
     void mutar();
     ICromosoma[] getIndividuos();
     void seleccionar(int[] seleccion);

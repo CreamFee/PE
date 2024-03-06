@@ -21,7 +21,7 @@ public class Main {
     public static double mutar = 0.05; //probabilidad de mutacion
     public static double cruce = 0.6; //probabilidad de cruce
     public static double precision = 0.001; // double para indicar 
-    public static boolean tipoCruce = false; //false para monopunto, true para uniforme
+    public static int tipoCruce = 0; //0 monopunto, 1 uniforme, 2 Arimetrico, 3 BLX-a
     public static int generaciones = 100; // numero de generaciones
     public static int seleccion = 1; // de 1 a 6
     public static double elitismo = 0.02; //Elitismo, cantidad de poblacion que va a mantenerse de una a otra
@@ -95,7 +95,8 @@ public class Main {
     	
     }
     private void cruzar () {
-    	funcion.cruzar();
+    	if (tipoCruce != 2)funcion.cruzar();
+    	else funcion.cruzarA();
     }
     private void mutar() {
     	funcion.mutar();

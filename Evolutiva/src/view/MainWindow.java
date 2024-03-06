@@ -6,6 +6,8 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -157,7 +159,7 @@ public class MainWindow {
 		frmPractica.getContentPane().add(textField_elitismo);
 		
 		JComboBox comboBox_metodo = new JComboBox();
-		comboBox_metodo.setModel(new DefaultComboBoxModel(new String[] {"Ruleta", "Torneo 1", "Torneo 2", "Estocastico", "Truncamiento", "Restos"}));
+		comboBox_metodo.setModel(new DefaultComboBoxModel(new String[] {"Ruleta", "Torneo Det", "Torneo Prob", "Estocastico", "Truncamiento", "Restos"}));
 		comboBox_metodo.setBounds(22, 363, 96, 21);
 		frmPractica.getContentPane().add(comboBox_metodo);
 		
@@ -187,7 +189,7 @@ public class MainWindow {
 		frmPractica.getContentPane().add(lblNewLabel_5_2);
 		
 		JComboBox comboBox_cruce = new JComboBox();
-		comboBox_cruce.setModel(new DefaultComboBoxModel(new String[] {"Monopunto", "Uniforme"}));
+		comboBox_cruce.setModel(new DefaultComboBoxModel(new String[] {"Monopunto", "Uniforme", "Arimetrico", "BLX"}));
 		comboBox_cruce.setBounds(22, 409, 96, 21);
 		frmPractica.getContentPane().add(comboBox_cruce);
 		
@@ -209,9 +211,7 @@ public class MainWindow {
             	Main.cruce = (double)Integer.parseInt(textField_cruce.getText())/100;
             	Main.precision = Double.parseDouble(textField_precision.getText());
             	
-            	if (comboBox_cruce.getSelectedIndex() == 0) Main.tipoCruce = false; //solo hay dos opciones
-            	else Main.tipoCruce = true;
-            	
+            	Main.tipoCruce = comboBox_cruce.getSelectedIndex(); //0 monopunto, 1 uniforme, 2 arimetrico, 3 BLX
               	Main.elitismo = (double)Integer.parseInt(textField_elitismo.getText())/100;
             	Main.dimension = Integer.parseInt(textField_dimension.getText());
             	
@@ -219,10 +219,10 @@ public class MainWindow {
             		case "Ruleta":
             			Main.seleccion = 1;
             			break;
-            		case "Torneo 1":
+            		case "Torneo Det":
             			Main.seleccion = 2;
             			break;
-            		case "Torneo 2":
+            		case "Torneo Prob":
             			Main.seleccion = 3;
             			break;
             		case "Estocastico":
@@ -237,72 +237,75 @@ public class MainWindow {
             	
             	}
  
-            	
-            	 switch (Integer.parseInt((String) comboBox_funcion.getSelectedItem())) {
-            	 	case 1:
-            	 		//llamar funcion 1
-            	 		
-            	 		main.set_funcion(1);
-            	 		break;
-            	 	case 2:
-            	 		//llamar funcion 2
-            	 		
-            	 		
-            	 		main.set_funcion(2);
-            	 		break;
-            	 	case 3:
-            	 		//llamar funcion 3
-            	 		
-            	 		
-            	 		main.set_funcion(3);
-            	 		break;
-            	 	case 4:
-            	 		//llamar funcion 4
-            	 		
-            	 		
-            	 		main.set_funcion(4);
-            	 		break;
-            	 	case 5:
-            	 		//llamar funcion 5
-            	 		
-            	 		
-            	 		main.set_funcion(5);
-            	 		break;
-            	 
-                 }
-            	 
-
-         		
-         		double[] avr = main.getAvr();
-         		double[] abs = main.getAbsMax();
-         		double[] max = main.getMax();
-         		double[] x = new double[Main.generaciones];
-         		for(int i = 0; i < Main.generaciones; ++i) {
-         			x[i] = i;
-         		}
-         		
-         		
-         		plot.addLinePlot("Average", Color.GREEN, x, avr);
-         		plot.addLinePlot("Absoulute Max", Color.BLACK, x, abs);
-         		plot.addLinePlot("Maximums", Color.RED, x, max);
-         			
-         		frmPractica.getContentPane().add(plot);
-         		
-         		StringBuilder sb = new StringBuilder();
-         		
-         		double[] t;
-         		
-         		
-         		for (int i = 0; i < main.getCont() + 1; ++i) {
-         			t = main.getXfinal();
-         			for (int j = 0; j < t.length; ++j) {
-         				if (j == t.length - 1) sb.append(" X" + j + "[" + t[j] + "]");
-         				else sb.append(" X" + j + "[" + t[j] + "]" + ", ");
-         				sb.append("\n");
-         			}
-         		}
-         		
-         		textField_results.setText("Solucion: " + abs[Main.generaciones - 1] + "   " + sb);
+            	if (!comboBox_funcion.getSelectedItem().equals("5") && comboBox_cruce.getSelectedIndex() > 1) JOptionPane.showMessageDialog(null, "Solo puedes elegir ese tipo de cruce para la funcion 5");//pop up
+            	else {
+	            	 switch (Integer.parseInt((String) comboBox_funcion.getSelectedItem())) {
+	            	 	case 1:
+	            	 		//llamar funcion 1
+	            	 		
+	            	 		main.set_funcion(1);
+	            	 		break;
+	            	 	case 2:
+	            	 		//llamar funcion 2
+	            	 		
+	            	 		
+	            	 		main.set_funcion(2);
+	            	 		break;
+	            	 	case 3:
+	            	 		//llamar funcion 3
+	            	 		
+	            	 		
+	            	 		main.set_funcion(3);
+	            	 		break;
+	            	 	case 4:
+	            	 		//llamar funcion 4
+	            	 		
+	            	 		
+	            	 		main.set_funcion(4);
+	            	 		break;
+	            	 	case 5:
+	            	 		//llamar funcion 5
+	            	 		
+	            	 		
+	            	 		main.set_funcion(5);
+	            	 		break;
+	            	 
+	                 }
+	            	 
+	
+	         		
+	         		double[] avr = main.getAvr();
+	         		double[] abs = main.getAbsMax();
+	         		double[] max = main.getMax();
+	         		double[] x = new double[Main.generaciones];
+	         		for(int i = 0; i < Main.generaciones; ++i) {
+	         			x[i] = i;
+	         		}
+	         		
+	         		
+	         		plot.addLinePlot("Average", Color.GREEN, x, avr);
+	         		plot.addLinePlot("Absoulute Max", Color.BLACK, x, abs);
+	         		plot.addLinePlot("Maximums", Color.RED, x, max);
+	         			
+	         		frmPractica.getContentPane().add(plot);
+	         		
+	         		StringBuilder sb = new StringBuilder();
+	         		
+	         		double[] t;
+	         		
+	         		
+	         		for (int i = 0; i < main.getCont() + 1; ++i) {
+	         			t = main.getXfinal();
+	         			for (int j = 0; j < t.length; ++j) {
+	         				if (j == t.length - 1) sb.append(" X" + j + "[" + t[j] + "]");
+	         				else sb.append(" X" + j + "[" + t[j] + "]" + ", ");
+	         				sb.append("\n");
+	         			}
+	         		}
+	         		
+	         		textField_results.setText("Solucion: " + abs[Main.generaciones - 1] + "   " + sb);
+	         		
+            	}
             }
         };
 

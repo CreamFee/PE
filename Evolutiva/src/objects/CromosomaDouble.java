@@ -86,6 +86,40 @@ public class CromosomaDouble implements ICromosoma{
         }
     }
     
+    public void cruceArimetrico(CromosomaDouble pareja){
+    	 if (r.nextDouble() < 0.5){
+    		double hijo;
+	    	for (int i = 0; i < this.tam; i++){
+	            	hijo = (( this.datos.getDatoI(i) + pareja.datos.getDatoI(i)) / 2);   
+	            	this.datos.setDatoI(hijo, i);
+	        }
+	    	
+    	 }
+    }
+    
+    public void cruceBLX(CromosomaDouble pareja){
+    	double max, min, I, alpha, hMax, hMin;
+        for (int i = 0; i < this.tam; i++){
+        	
+        	if(this.datos.getDatoI(i) > pareja.datos.getDatoI(i)) {
+				max = this.datos.getDatoI(i);
+				min = pareja.datos.getDatoI(i);
+			}
+			else {
+				min = this.datos.getDatoI(i);
+				max = pareja.datos.getDatoI(i);
+			}
+        	
+        	I = max - min;
+        	alpha = r.nextDouble();
+        	hMax = max + (I * alpha);
+        	hMin = min - (I * alpha);
+        	
+        	this.datos.setDatoI(r.nextDouble(hMin, hMax), i);
+            pareja.datos.setDatoI(r.nextDouble(hMin, hMax), i);
+        }
+    }
+    
     public double[] traducir(int[] tamGens) {
     	return this.datos.getDatos();
     }

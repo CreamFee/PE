@@ -18,13 +18,13 @@ public class Funcion5 implements IFuncion {
     private double cruce; // Probabilidad de cruce
     private double precision = 0.001; // Precision de la representaci�n
     private CromosomaDouble[] individuos;
-    private boolean tipoCruce;
+    private int tipoCruce;
     private double[] xx;//resultado
     private Random r;
     private double elite;
     private CromosomaDouble[] elitistas;
     private double m = 10;
-    public Funcion5(int poblacion, double precision, double mutacion, double cruce, boolean tipoCruce, Random r, double elite){
+    public Funcion5(int poblacion, double precision, double mutacion, double cruce, int tipoCruce, Random r, double elite){
     	this.tamCrom = 0;
         this.genes = Main.dimension; 
         this.tamGen = new int[genes];
@@ -116,10 +116,16 @@ public class Funcion5 implements IFuncion {
         for(int i = 0; i < this.poblacion; i++){
             if(r.nextDouble() < this.cruce){
                 if(pareja != -1){
-                    if(this.tipoCruce){
+                    if(this.tipoCruce == 1){
                         this.individuos[i].cruceUniforme(this.individuos[pareja]);
-                    } else {
+                    } else if (this.tipoCruce == 0){
                         this.individuos[i].cruceMonopunto(this.individuos[pareja]);
+                    }
+                    else if (this.tipoCruce == 2){
+                        this.individuos[i].cruceArimetrico(this.individuos[pareja]);//aqui no entra
+                    }
+                    else if (this.tipoCruce == 3){
+                        this.individuos[i].cruceBLX(this.individuos[pareja]);
                     }
                     pareja = -1;
                 } else {
@@ -128,6 +134,17 @@ public class Funcion5 implements IFuncion {
             }
         }
     }
+    
+    public void cruzarA(){
+        for(int i = 0; i < this.poblacion; i++){
+            if(r.nextDouble() < this.cruce){     
+                    if (this.tipoCruce == 2){
+                        this.individuos[i].cruceArimetrico(this.individuos[r.nextInt(0, this.poblacion)]);
+                    } 
+            }
+        }
+    }
+    
     
     public void mutar(){
         for(int i = 0; i < this.poblacion; i++){

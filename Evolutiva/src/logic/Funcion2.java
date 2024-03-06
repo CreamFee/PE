@@ -19,11 +19,11 @@ public class Funcion2 implements IFuncion {
     private double precision = 0.001; // Precision de la representacion
     private double[] xx;//resultado
     private Cromosoma2[] individuos; //Lista de individuos
-    private boolean tipoCruce; //Tipo de cruce que vamos a tener
+    private int tipoCruce; //Tipo de cruce que vamos a tener
     private Random r; //random para generaciones aleatorias
     private double elite; //porcentaje de elite
     private Cromosoma2[] elitistas; //Lista de individuos de la elite
-    public Funcion2(int poblacion, double precision, double mutacion, double cruce, boolean tipoCruce, Random r, double elite){
+    public Funcion2(int poblacion, double precision, double mutacion, double cruce, int tipoCruce, Random r, double elite){
         this.tamCrom = 0;
         this.genes = 2;
         this.tamGen = new int[genes];
@@ -127,7 +127,7 @@ public class Funcion2 implements IFuncion {
         for(int i = 0; i < this.poblacion; i++){
             if(r.nextDouble() < this.cruce){
                 if(pareja != -1){
-                    if(this.tipoCruce){
+                    if(this.tipoCruce == 1){
                         this.individuos[i].cruceUniforme(this.individuos[pareja]);
                     } else {
                         this.individuos[i].cruceMonopunto(this.individuos[pareja]);
@@ -212,6 +212,11 @@ public class Funcion2 implements IFuncion {
 	@Override
 	public double[] getXX() {
 		return this.xx;
+	}
+	@Override
+	public void cruzarA() {
+		//solo para funcion 5
+		
 	}
 
 }
