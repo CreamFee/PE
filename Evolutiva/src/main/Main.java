@@ -102,21 +102,26 @@ public class Main {
     }
     
     private void seleccionar() {
-    	this.funcion.corregirAptitud();
     	
     	switch (seleccion){
     		case 1:
     	    	selec = new SeleccionRuleta(this.poblacion, funcion.getIndividuos(), this.r);
+    			break;
     		case 2:
     	    	selec = new SeleccionTorneoDet(this.poblacion, funcion.getIndividuos(), this.r);
+    			break;
     		case 3:
     	    	selec = new SeleccionTorneoProb(this.poblacion, funcion.getIndividuos(), this.r);
+    			break;
     		case 4:
     	    	selec = new SeleccionEstocasticoUniversal(this.poblacion, funcion.getIndividuos(), this.r);
+    			break;
     		case 5:
     	    	selec = new SeleccionTruncamiento(this.poblacion, funcion.getIndividuos(), this.r);
+    			break;
     		case 6:
     	    	selec = new SeleccionRestos(this.poblacion, funcion.getIndividuos(), this.r);
+    			break;
 
     	}
     	
@@ -126,19 +131,6 @@ public class Main {
         init();
         evaluarPoblacion();
         recogerDatos(0);
-        /*
-        //Con esto comprobamos las direcciones d ememoria, efectivamente son diferentes
-        for(int i = 0; i < this.poblacion; i++) {
-    		System.out.println(this.funcion.getIndividuos()[i].getDatos());
-    	}
-        
-        double[][] aux;
-    	aux = funcion.getFenotipos();
-        for(int i = 0; i < this.poblacion; i++) {
-        	System.out.println("X0 = " + aux[i][0] + " X1 = " + aux[i][1]);
-        }
-        */
-         //Print de todos los individuos
 //        System.out.println("GENERACION: " + 0);
 //        System.out.println("Maximo de la generacion: " + maximums[0]);
 //        System.out.println("Maximo absoluto: " + absoluteMax[0]);
@@ -157,11 +149,7 @@ public class Main {
         	System.out.println("Maximo de la generacion: " + maximums[i]);
             System.out.println("Maximo absoluto: " + absoluteMax[i]);
             System.out.println("Media de la generacion: " + averages[i] + "\n");
-        	try {
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}*/
+        	*/
         }
         
     }

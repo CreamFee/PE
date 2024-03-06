@@ -26,7 +26,7 @@ public class SeleccionTorneoDet implements ISeleccion{
         	t = new int[p];
         	
         	for (int j = 0; j < p; ++j) {//seleccionamos 2 individuos al azar
-        		t[i] = r.nextInt(numIndividuos);
+        		t[j] = r.nextInt(numIndividuos);
 			}
 
         	if (individuos[t[0]].getAptitud() > individuos[t[1]].getAptitud()) seleccion[i] = t[0]; //comparamos y cogemos al mejor

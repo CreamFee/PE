@@ -218,16 +218,22 @@ public class MainWindow {
             	switch ((String) comboBox_metodo.getSelectedItem()) {
             		case "Ruleta":
             			Main.seleccion = 1;
+            			break;
             		case "Torneo 1":
             			Main.seleccion = 2;
+            			break;
             		case "Torneo 2":
             			Main.seleccion = 3;
+            			break;
             		case "Estocastico":
             			Main.seleccion = 4;
+            			break;
             		case "Truncamiento":
             			Main.seleccion = 5;
+            			break;
             		case "Restos":
             			Main.seleccion = 6;
+            			break;
             	
             	}
  

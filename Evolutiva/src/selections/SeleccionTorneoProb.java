@@ -28,7 +28,7 @@ public class SeleccionTorneoProb implements ISeleccion{
          	t = new int[p];
          	
          	for (int j = 0; j < p; ++j) {//se escogen 2 individuos la azar
-         		t[i] = r.nextInt(numIndividuos);
+         		t[j] = r.nextInt(numIndividuos);
  			}
 
         	double random = r.nextDouble();//generamos un numero aleatorio de 0 al 1

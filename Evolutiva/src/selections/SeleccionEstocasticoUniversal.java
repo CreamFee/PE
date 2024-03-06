@@ -16,7 +16,7 @@ public class SeleccionEstocasticoUniversal implements ISeleccion{
         this.individuos = iCromosomas;
         this.seleccion = new int[tam];
         this.r = r;
-        n = 50;
+        n = numIndividuos/2;
         init();
     }
 
@@ -68,20 +68,32 @@ public class SeleccionEstocasticoUniversal implements ISeleccion{
         	aptaux = 0;
         	find = false;
         }
-    	double inc = r.nextDouble() * 1/n;
-    
+    	double offset = r.nextDouble() * (double) 1/n;
+    	double elegir = offset;
         int i = 0;
- 
+        int contador = 0;
         cuenta = 0;
-        for(int j = 0; j < numIndividuos; j++){
-            cuenta += individuos[j].getAptitud();
-            if(cuenta >= inc){ //Cuando alcanzamos el numero que toca, guardamos ese individuo
-                seleccion[i] = j;
-                inc += inc;
-                ++i;
-                break;
+        cuenta += individuos[0].getAptitud();
+        for(int x = 0; x < n; x++) {
+        	for(int j = contador; j < numIndividuos; j++){
+        		contador ++;
+                
+                if(cuenta >= elegir){
+                	while(true) {
+                		 if(cuenta < elegir)
+                			 break;
+                		 seleccion[i] = j;
+                         elegir += (double)1/n;
+                         i++;
+                	}
+                    break;
+                }
+                else if(j < numIndividuos - 1){
+                	cuenta += individuos[j].getAptitud();
+                }
             }
         }
+        
         
         for(int j = i; j < numIndividuos; j++){
         	seleccion[j] = r.nextInt(numIndividuos);

@@ -95,18 +95,18 @@ public class Funcion1 implements IFuncion{
     }
 
     public void cruzar(){
-        Cromosoma2 pareja = null;
+        int pareja = -1;
         for(int i = 0; i < this.poblacion; i++){
             if(r.nextDouble() < this.cruce){
-                if(pareja != null){
+                if(pareja != -1){
                     if(this.tipoCruce){
-                        this.individuos[i].cruceUniforme(pareja);
+                        this.individuos[i].cruceUniforme(this.individuos[pareja]);
                     } else {
-                        this.individuos[i].cruceMonopunto(pareja);
+                        this.individuos[i].cruceMonopunto(this.individuos[pareja]);
                     }
-                    pareja = null;
+                    pareja = -1;
                 } else {
-                    pareja = this.individuos[i];
+                    pareja = i;
                 }
             }
         }
