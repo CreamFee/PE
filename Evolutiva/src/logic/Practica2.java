@@ -6,9 +6,9 @@ import interfaces.ICromosoma;
 import interfaces.IFuncion;
 import main.Main;
 import objects.CromosomaDouble;
-
-public class Funcion5 implements IFuncion {
-	private int genes; // Numero de genes
+//TODO hay que implementar la seleccion por ranking, el resto estan hechas
+public class Practica2 implements IFuncion {
+    private int genes; // Numero de genes
     private int[] tamGen; // Tamano de cada uno de los genes
     private int tamCrom; // Tamano total del cromosoma
     private double[] rangos; // Rangos de cada gen del cromosoma
@@ -23,7 +23,7 @@ public class Funcion5 implements IFuncion {
     private double elite; //Porcentaje de la elite
     private CromosomaDouble[] elitistas; //Listado de elitistas
     private double m = 10; //TODO no se que es esto
-    public Funcion5(int poblacion, double precision, double mutacion, double cruce, int tipoCruce, Random r, double elite){
+    public Practica2(int poblacion, double precision, double mutacion, double cruce, int tipoCruce, Random r, double elite){
     	this.tamCrom = 0;
         this.genes = Main.dimension; 
         this.tamGen = new int[genes];
@@ -83,7 +83,7 @@ public class Funcion5 implements IFuncion {
     		this.individuos[i].setAptitud(max - this.individuos[i].getAptitud());
 
     }
-    public int calcularTamGen (double precision, double rango0, double rango1){ //Sirve para calcular el tamano de lso genes, solo es util para cromosomas binarios
+    public int calcularTamGen (double precision, double rango0, double rango1){ //TODO hay que modificarlo para que funcione con la practica2, debe leer cada fichero y modificarlo
         int x = 0;
         x =  (int) (Math.log10(((rango1 - rango0) / precision) + 1) / Math.log10(2));
         this.tamCrom += x;
@@ -111,7 +111,7 @@ public class Funcion5 implements IFuncion {
         return promedio;
     }
 
-    public void cruzar(){//Realiza el cruce de los individuos segun la probabilidad y el tipo de cruce
+    public void cruzar(){//TODO hay que revisar todos los cruces que necesitamos e implementarlos
     	int pareja = -1;
         for(int i = 0; i < this.poblacion; i++){
             if(r.nextDouble() < this.cruce){

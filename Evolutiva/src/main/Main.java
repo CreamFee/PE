@@ -3,11 +3,12 @@ import java.util.Random;
 
 import interfaces.IFuncion;
 import interfaces.ISeleccion;
-import logic.Funcion1;
+import logic.Funcion1; //Funciones que contienen toda la logica del algoritmo
 import logic.Funcion2;
 import logic.Funcion3;
 import logic.Funcion4;
-import logic.Funcion5;
+import logic.Funcion5; 
+//Aqui crearemos la funcion de la practica 2
 import selections.SeleccionEstocasticoUniversal;
 import selections.SeleccionRestos;
 import selections.SeleccionRuleta;
