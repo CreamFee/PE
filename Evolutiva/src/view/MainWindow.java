@@ -213,7 +213,7 @@ public class MainWindow {
             	
             	Main.tipoCruce = comboBox_cruce.getSelectedIndex(); //0 monopunto, 1 uniforme, 2 arimetrico, 3 BLX
               	Main.elitismo = (double)Integer.parseInt(textField_elitismo.getText())/100;
-            	Main.dimension = Integer.parseInt(textField_dimension.getText());
+              	
             	
             	switch ((String) comboBox_metodo.getSelectedItem()) {
             		case "Ruleta":

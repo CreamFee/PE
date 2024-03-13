@@ -42,5 +42,10 @@ public class IntegerData {
 		
 		return aux;
 	}
+	public void setDatos(Integer[] intArray) {
+		for (int i = 0; i < this.tam; i++){
+			this.datos[i] = intArray[i];
+		}
+	}
 	
 }

@@ -15,6 +15,6 @@ public interface ICromosoma{
     int getTamano();
     int getGenes();
     double[] getRangos();
-	double[] traducir(int[] tamGen);
+	double[] traducir();
 	
 }

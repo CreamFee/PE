@@ -1,7 +1,9 @@
 package objects;
 
 import java.util.Random;
-
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import interfaces.ICromosoma;
 import logic.IntegerData;
 
@@ -13,6 +15,7 @@ public class CromosomaInteger implements ICromosoma{
     private double aptitud; //valor de fitness del cromosoma
     public Random r; //Random para generar los valores aleatorios
     
+    private int inicial[]; 
     public CromosomaInteger (int tamanio, int gens, double[] rangos, Random r){
         this.tam = tamanio;
         this.genes = gens;
@@ -36,98 +39,87 @@ public class CromosomaInteger implements ICromosoma{
         this.rangos = a.rangos;
         this.r = a.r;
     }
-    public void inicializar(){ //TODO modificar para inicializar correctamente los individuos
-        int aux;
-        double rango;
-        for (int i = 0; i < this.genes; i++){
-            aux = r.nextInt();
-            //Valculamos la posici�n en la que deber�a encontrarse
-            //Total de valores posibles = incremento en los rangos dividido 
-            rango = rangos[2 * i + 1] - rangos[2 * i]; //Final menos inicial
-            aux *= rango; //Ahora aux contiene el valor comprendido en nuestro rango desplazado, solo hay que desplazarlo de nuevo
-            aux += rangos[2 * i];
-            this.datos.setDatoI(aux, i);
+    public void inicializar(){ //DONE, los individuos se inicializan aleatorios
+        if(this.tam == 12) {
+        	Integer[] intArray = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+        	List<Integer> intList = Arrays.asList(intArray);
+
+    		Collections.shuffle(intList);
+
+    		intList.toArray(intArray);
+    		this.datos.setDatos(intArray);
+        }
+        else {
+        	Integer[] intArray = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25};
+        	List<Integer> intList = Arrays.asList(intArray);
+
+    		Collections.shuffle(intList);
+
+    		intList.toArray(intArray);
+    		this.datos.setDatos(intArray);
         }
     }
     
     public void mutar(double probabilidad){ //TODO Modificar ya que al ser enteros no puede mutar de este modo
-        double aux;
+        int aux;
+        double tmp;
         double rango;
         for (int i = 0; i < this.genes; i++){
-            aux = r.nextDouble();
-            if(aux <= probabilidad){ 
-            	aux = r.nextDouble();
+            tmp = r.nextDouble();
+            if(tmp <= probabilidad){ 
+            	tmp = r.nextDouble();
             	
             	rango = rangos[2 * i + 1] - rangos[2 * i];
-                aux *= rango;
+                aux = (int) (rango * tmp);
                 aux += rangos[2 * i];
                 
                 this.datos.setDatoI(aux, i);
             }
         }
     }
-    
-    public void cruceMonopunto(CromosomaInteger pareja){ //TODO Verificar cruces
-        int posicion = r.nextInt(this.genes - 1) + 1;
-        for (int i = posicion; i < this.genes; i++){
-        	double aux = this.datos.getDatoI(i);
-            this.datos.setDatoI(pareja.getDatos().getDatoI(i), i);
-            this.datos.setDatoI(pareja.datos.getDatoI(i), i);
-            pareja.datos.setDatoI(aux, i);
-        }
-    }
-    
-    public void cruceUniforme(CromosomaInteger pareja){ //TODO Verificar cruces
-        for (int i = 0; i < this.tam; i++){
-            if (r.nextDouble() < 0.5){
-            	double aux = this.datos.getDatoI(i); 
-                this.datos.setDatoI(pareja.datos.getDatoI(i), i);
-                pareja.datos.setDatoI(aux, i);
-            }
-        }
-    }
-    
-    public void cruceArimetrico(CromosomaInteger pareja){ //TODO Verificar cruces
-    	 if (r.nextDouble() < 0.5){
-    		double hijo;
-	    	for (int i = 0; i < this.tam; i++){
-	            	hijo = (( this.datos.getDatoI(i) + pareja.datos.getDatoI(i)) / 2);   
-	            	this.datos.setDatoI(hijo, i);
-	        }
-	    	
-    	 }
-    }
-    
-    public void cruceBLX(CromosomaInteger pareja){ //TODO Verificar cruces
-    	double max, min, I, alpha, hMax, hMin;
-        for (int i = 0; i < this.tam; i++){
-        	
-        	if(this.datos.getDatoI(i) > pareja.datos.getDatoI(i)) {
-				max = this.datos.getDatoI(i);
-				min = pareja.datos.getDatoI(i);
-			}
-			else {
-				min = this.datos.getDatoI(i);
-				max = pareja.datos.getDatoI(i);
-			}
-        	
-        	I = max - min;
-        	alpha = r.nextDouble();
-        	hMax = max + (I * alpha);
-        	hMin = min - (I * alpha);
-        	
-        	this.datos.setDatoI(r.nextDouble(hMin, hMax), i);
-            pareja.datos.setDatoI(r.nextDouble(hMin, hMax), i);
-        }
-    }
-    
     public void crucePMX(CromosomaInteger pareja, int corte1, int corte2){ //TODO Cruce PMX, revisar cuando hay problemas de repetidos, y terminar de rellenarlos
-        
+    	CromosomaInteger izquierdo, derecho;
+    	izquierdo = new CromosomaInteger (pareja);
+    	derecho = new CromosomaInteger (this);
         int tmp;
-        for(int i = (corte1 - 1); i < corte2; i++ ){
+        for(int i = (corte1 - 1); i < corte2; i++ ){ //Sustituimos los valores de los genes entre los puntos de corte
             tmp = pareja.datos.getDatoI(i);
             pareja.datos.setDatoI(this.datos.getDatoI(i), i);
             this.datos.setDatoI(tmp, i);
+        }
+        boolean found = false;
+        int pos = 0;
+        //sustituimos aquellos sin conflicto en this
+        for(int i = 0; i < this.tam; i ++) {
+        	if (i < corte1  || i > corte2) {
+            	for(int j = corte1; j < corte2; j++) {
+            		if(this.datos.getDatoI(j) == this.datos.getDatoI(i)) {
+            			found = true;
+            			pos = j;
+            			break;
+            		}
+            	}
+            	if (found) {
+            		found = false;
+            		this.datos.setDatoI(derecho.datos.getDatoI(pos), pos);
+            	}
+        	}
+        }
+      //sustituimos aquellos sin conflicto en pareja
+        for(int i = 0; i < this.tam; i ++) {
+        	if (i < corte1  || i > corte2) {
+            	for(int j = corte1; j < corte2; j++) {
+            		if(pareja.datos.getDatoI(j) == pareja.datos.getDatoI(i)) {
+            			found = true;
+            			pos = j;
+            			break;
+            		}
+            	}
+            	if (found) {
+            		found = false;
+            		pareja.datos.setDatoI(izquierdo.datos.getDatoI(pos), pos);
+            	}
+        	}
         }
     }
 
@@ -183,9 +175,6 @@ public class CromosomaInteger implements ICromosoma{
             }
         }
         return contador;
-    }
-    public double[] traducir(int[] tamGens) { 
-    	return this.datos.getDatosDouble();
     }
     public double[] traducir() { 
         return this.datos.getDatosDouble();

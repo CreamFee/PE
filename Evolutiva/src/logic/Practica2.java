@@ -6,59 +6,61 @@ import interfaces.ICromosoma;
 import interfaces.IFuncion;
 import main.Main;
 import objects.CromosomaDouble;
+import objects.CromosomaInteger;
 //TODO hay que implementar la seleccion por ranking, el resto estan hechas
 public class Practica2 implements IFuncion {
     private int genes; // Numero de genes
-    private int[] tamGen; // Tamano de cada uno de los genes
     private int tamCrom; // Tamano total del cromosoma
     private double[] rangos; // Rangos de cada gen del cromosoma
-    private int poblacion; // Tamano poblaci�n
+    private int poblacion; // Tamano poblacion
     private double mutacion; // Probabilidad de mutacion
     private double cruce; // Probabilidad de cruce
-    private double precision = 0.001; // Precision de la representaci�n, irrelevante cuando se trata de cromosomas del tipo double
-    private CromosomaDouble[] individuos; //Lista de individuos
+    private double precision = 0.001; // Precision de la representacion, irrelevante cuando se trata de cromosomas del tipo double
+    private CromosomaInteger[] individuos; //Lista de individuos
     private int tipoCruce; //Cruce utilizado
+    private int tipoMutacion; //matacion utilizada
     private double[] xx;//resultado
     private Random r; //Random compartido en todas las diferentes partes del codigo
     private double elite; //Porcentaje de la elite
-    private CromosomaDouble[] elitistas; //Listado de elitistas
+    private CromosomaInteger[] elitistas; //Listado de elitistas
+    
     private double m = 10; //TODO no se que es esto
-    public Practica2(int poblacion, double precision, double mutacion, double cruce, int tipoCruce, Random r, double elite){
-    	this.tamCrom = 0;
-        this.genes = Main.dimension; 
-        this.tamGen = new int[genes];
+    
+    public Practica2(int poblacion, double precision, double mutacion, double cruce, Random r, double elite){
+    	if(Main.funcionElegida == 1)
+    		this.tamCrom = 12;
+    	else
+    		this.tamCrom = 25;
+        this.genes = this.tamCrom; 
         this.rangos = new double[2*genes];
         this.mutacion = mutacion;
         this.cruce = cruce;
         this.xx = new double[this.genes];
-        this.precision = precision;
         this.poblacion = poblacion;
-        this.tipoCruce = tipoCruce;
+        this.tipoCruce = Main.tipoCruce;
+        this.tipoMutacion = Main.tipoMutacion;
         this.r = r;
         this.elite = elite;
-        this.elitistas = new CromosomaDouble[(int)(elite * poblacion)];
+        this.elitistas = new CromosomaInteger[(int)(elite * poblacion)];
         iniciar();
     }
 
     private void iniciar(){ //Inicializa la funcion con todo lo necesario para realizar los calculos
     	for (int i = 0; i < this.genes; i++) {
     		rangos[2 * i] = 0; 
-            rangos[2 * i + 1] = Math.PI;
+            rangos[2 * i + 1] = 12;
     	}
-    	for(int i = 0; i < genes; i++){
-            tamGen[i] = 1;
-        }
-        this.individuos = new CromosomaDouble[this.poblacion];
+        this.individuos = new CromosomaInteger[this.poblacion];
         for(int i = 0; i < this.poblacion; i++){
-            this.individuos[i] = new CromosomaDouble (this.tamCrom, this.genes, this.rangos, this.r); 
+            this.individuos[i] = new CromosomaInteger (this.tamCrom, this.genes, this.rangos, this.r); 
             this.individuos[i].inicializar(); 
         }
     };
     
-    private double evaluar (ICromosoma c){ //Evalua el individuo proporcionado como parametro y actualiza su fitness en su atributo
-    	 double[] tmp = c.traducir(tamGen);
+    private double evaluar (ICromosoma c){ //TODO EVALUAR
+    	 double[] tmp = c.traducir();
     	 double result = 0;
-    	 for (int i = 0; i < this.genes; i++) {
+    	 for (int i = 0; i < this.genes; i++) { //TODO esto esta mal
     		 result += Math.sin(tmp[i]) * Math.pow(Math.sin(((i + 1) * Math.pow(tmp[i], 2)) / Math.PI), 2 * this.m);
     	 }
          c.setAptitud(-result);
@@ -83,12 +85,6 @@ public class Practica2 implements IFuncion {
     		this.individuos[i].setAptitud(max - this.individuos[i].getAptitud());
 
     }
-    public int calcularTamGen (double precision, double rango0, double rango1){ //TODO hay que modificarlo para que funcione con la practica2, debe leer cada fichero y modificarlo
-        int x = 0;
-        x =  (int) (Math.log10(((rango1 - rango0) / precision) + 1) / Math.log10(2));
-        this.tamCrom += x;
-        return x;
-    }
     
     public double getMax(){  //Devuelve el maximo de la generacion actual (fitness mayor)
         double max = 0, tmp = 0;
@@ -96,7 +92,7 @@ public class Practica2 implements IFuncion {
             tmp = this.individuos[i].getAptitud();
             if (max < tmp){
                 max = tmp;
-                xx = this.individuos[i].traducir(tamGen);
+                xx = this.individuos[i].traducir();
             }
         }
         return max;
@@ -116,31 +112,28 @@ public class Practica2 implements IFuncion {
         for(int i = 0; i < this.poblacion; i++){
             if(r.nextDouble() < this.cruce){
                 if(pareja != -1){
-                    if(this.tipoCruce == 1){
-                        this.individuos[i].cruceUniforme(this.individuos[pareja]); //Cruce uniforme, intercambia de manera uniforme los genes de los individuos
-                    } else if (this.tipoCruce == 0){
-                        this.individuos[i].cruceMonopunto(this.individuos[pareja]); //Cruce monopunto, intercambia los genes a partir del gen n, escogido aletoriamente
+                    if(this.tipoCruce == 0){
+                    	int a, b;
+                    	a = r.nextInt(this.tamCrom);//Si coinciden los puntos de corte, se queda igual
+                    	b = r.nextInt(this.tamCrom);
+                    	if (a < b)
+                    		this.individuos[i].crucePMX(this.individuos[pareja], a, b);
+                    	else if (b < a) 
+                    		this.individuos[i].crucePMX(this.individuos[pareja], b, a);
+                    } 
+                    else if (this.tipoCruce == 1){
+                    	
                     }
                     else if (this.tipoCruce == 2){
-                        this.individuos[i].cruceArimetrico(this.individuos[pareja]);//aqui no entra porque se trata de manera especial, ya que solo nproporciona un hijo
+                    	
                     }
                     else if (this.tipoCruce == 3){
-                        this.individuos[i].cruceBLX(this.individuos[pareja]); //Cruce BLX para cromosomas reales
+                    	
                     }
                     pareja = -1;
                 } else {
                     pareja = i;
                 }
-            }
-        }
-    }
-    
-    public void cruzarA(){ //Cruce aritmetico se realiza aqui, ya que es el unico 
-        for(int i = 0; i < this.poblacion; i++){
-            if(r.nextDouble() < this.cruce){     
-                    if (this.tipoCruce == 2){
-                        this.individuos[i].cruceArimetrico(this.individuos[r.nextInt(0, this.poblacion)]);
-                    } 
             }
         }
     }
@@ -182,7 +175,7 @@ public class Practica2 implements IFuncion {
         	}
         	used[i] = pos;
         	//Guardar el elitista
-        	elitistas[i] = new CromosomaDouble(individuos[pos]);
+        	elitistas[i] = new CromosomaInteger(individuos[pos]);
         	//Reiniciamos valores para seguir la busqueda
         	pos = 0;
         	aptMax = 0;
@@ -193,24 +186,24 @@ public class Practica2 implements IFuncion {
     
     public void introducirElite() { //Introduce la lista de la elite en lso primeros individuos de la lsita de individuos
     	for(int i = 0; i < (int)(this.elite * this.poblacion); i++) {
-    		individuos[i] = new CromosomaDouble(elitistas[i]);
+    		individuos[i] = new CromosomaInteger(elitistas[i]);
     	}
     }
     public void seleccionar(int[] seleccion) { //Sustituye los individuos actuales por copias de los que se han seleccionado
     	
-    	CromosomaDouble [] antiguos = new CromosomaDouble[poblacion];
+    	CromosomaInteger [] antiguos = new CromosomaInteger[poblacion];
         for(int i = 0; i < poblacion; i++) { //Hacemos copias de los originales
-            antiguos[i] = new CromosomaDouble (individuos[i]);
+            antiguos[i] = new CromosomaInteger (individuos[i]);
         }
         for(int i = 0; i < poblacion; i++) { //Colocamos la seleccion
-            individuos[i + (int) this.elite * this.poblacion] = new CromosomaDouble(antiguos[seleccion[i]]); 
+            individuos[i + (int) this.elite * this.poblacion] = new CromosomaInteger(antiguos[seleccion[i]]); 
         }
     }
     
     public double[][] getFenotipos() { //Devuelve una matriz con los fenotipos de cada gen de cada individuo
         double[][] result = new double[this.poblacion][this.genes];
         for(int i = 0; i < this.poblacion; i++) {
-            result[i] = individuos[i].traducir(this.tamGen);
+            result[i] = individuos[i].traducir();
         }
         return result;
     }
@@ -220,7 +213,7 @@ public class Practica2 implements IFuncion {
             tmp = this.individuos[i].getAptitud();
             if (min > tmp) {
                 min = tmp;
-                xx = this.individuos[i].traducir(tamGen);
+                xx = this.individuos[i].traducir();
             }
         }
         return min;
