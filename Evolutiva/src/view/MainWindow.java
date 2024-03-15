@@ -11,6 +11,13 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.JTextField;
 
@@ -37,6 +44,7 @@ public class MainWindow {
 	private JTextField textField_dimension;
 	private Main main;
 	private JTextField textField_results;
+	private JTextField datos_entrad;
 
 	/**
 	 * Launch the application.
@@ -68,7 +76,7 @@ public class MainWindow {
 	private void initialize() {
 		frmPractica = new JFrame();
 		frmPractica.setTitle("Practica 1");
-		frmPractica.setBounds(100, 100, 937, 607);
+		frmPractica.setBounds(100, 100, 1278, 631);
 		frmPractica.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmPractica.getContentPane().setLayout(null);
 		
@@ -194,16 +202,85 @@ public class MainWindow {
 		frmPractica.getContentPane().add(comboBox_cruce);
 		
 		textField_results = new JTextField();
-		textField_results.setBounds(158, 469, 755, 59);
+		textField_results.setBounds(158, 469, 1060, 59);
 		frmPractica.getContentPane().add(textField_results);
 		textField_results.setColumns(10);
+		
+		JLabel lblNewLabel_6 = new JLabel("FILE NAMES:");
+		lblNewLabel_6.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblNewLabel_6.setBounds(930, 82, 117, 50);
+		frmPractica.getContentPane().add(lblNewLabel_6);
+		
+		datos_entrad = new JTextField();
+		datos_entrad.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		datos_entrad.setText("TEL1.txt vuelos1.txt ");
+		datos_entrad.setBounds(930, 150, 225, 31);
+		frmPractica.getContentPane().add(datos_entrad);
+		datos_entrad.setColumns(10);
 		
         ActionListener listener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
             	
+            	
             	//DELETE OTHER LINES
             	plot.removeAllPlots();
+            	
+            	//datos de entrada
+            	
+            	//VUELOS PRIMERO LUEGO AVIONES
+            	
+            	Map mapaAvionesinit = new TreeMap<String, Character>();
+            	Map mapaTELinit = new TreeMap<Integer, List<Integer>>();
+            	
+            	String filenames = datos_entrad.getText();
+                String[] fileNamesArray = filenames.split(" ");
+
+                if (fileNamesArray.length != 2) {
+                    //solo puede haber 2 ficheros
+                	JOptionPane.showMessageDialog(null, "Solo dos ficheros separados por un espacio, primero TEL, luego vuelos");
+                    return;
+                }
+
+                String telFileName = fileNamesArray[0];
+                String sepFileName = fileNamesArray[1];
+
+            
+                try (BufferedReader br = new BufferedReader(new FileReader(telFileName))) {
+                	String line;
+                    int columnCount = -1;
+                    while ((line = br.readLine()) != null) {
+                        String[] parts = line.split("\\s+");
+                        if (columnCount == -1) {
+                            columnCount = parts.length;
+                        }
+                        if (parts.length == columnCount) {
+                            for (int i = 0; i < parts.length; i++) {
+                                List<Integer> values = (List<Integer>) mapaTELinit.getOrDefault(i, new ArrayList<>());
+                                values.add(Integer.parseInt(parts[i]));
+                                mapaTELinit.put(i, values);
+                            }
+                        }
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
+                try (BufferedReader br = new BufferedReader(new FileReader(sepFileName))) {
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        String[] parts = line.split("\\s+");
+                        if (parts.length == 2) {
+                        	mapaAvionesinit.put(parts[0], parts[1]);
+                        }
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            	
+            	
+                Main.mapaAviones = mapaAvionesinit;
+                Main.mapaTEL = mapaTELinit;
             	            	
             	Main.poblacion = Integer.parseInt(textField_poblacion.getText());
             	Main.generaciones = Integer.parseInt(textField_generaciones.getText());

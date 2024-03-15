@@ -1,5 +1,9 @@
 package main;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.TreeMap;
 
 import interfaces.IFuncion;
 import interfaces.ISeleccion;
@@ -24,6 +28,10 @@ public class Main {
     public static int seleccion = 1; // de 1 a 6
     public static double elitismo = 0.02; //Elitismo, cantidad de poblacion que va a mantenerse de una a otra
 
+    public static Map mapaAviones;//aviones con su codigo y tipo de avion
+    public static Map mapaTEL;	  //Tiempos de espera. Cada posicion corresponde con la misma posicion del mapa de aviones
+    							  //Cada posicion tiene sus 3 tiempos (eg. pista 0 = 9, pista 1 = 10, pista 2 = 5)
+    
     public static int funcionElegida = 1; // de 1 a 2 para elegir fichero
     
     private IFuncion funcion;
@@ -52,6 +60,8 @@ public class Main {
         averages = new double [this.generaciones];
         absoluteMax = new double [this.generaciones];
         puntosX = new double [32];
+        this.mapaAviones = new TreeMap<String, Character>(); 
+        this.mapaTEL = new TreeMap<Integer, List<Integer>>();	
     }
     
     private void evaluarPoblacion() {
