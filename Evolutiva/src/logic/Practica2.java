@@ -1,35 +1,34 @@
 package logic;
 
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 
 import interfaces.ICromosoma;
 import interfaces.IFuncion;
 import main.Main;
-import objects.CromosomaDouble;
 import objects.CromosomaInteger;
 //TODO hay que implementar la seleccion por ranking, el resto estan hechas
 public class Practica2 implements IFuncion {
     private int genes; // Numero de genes
     private int tamCrom; // Tamano total del cromosoma
-    private double[] rangos; // Rangos de cada gen del cromosoma
     private int poblacion; // Tamano poblacion
     private double mutacion; // Probabilidad de mutacion
     private double cruce; // Probabilidad de cruce
-    private double precision = 0.001; // Precision de la representacion, irrelevante cuando se trata de cromosomas del tipo double
     private CromosomaInteger[] individuos; //Lista de individuos
     private int tipoCruce; //Cruce utilizado
-    private int tipoMutacion; //matacion utilizada
+    private int tipoMutacion; //mutacion utilizada
     private double[] xx;//resultado
     private Random r; //Random compartido en todas las diferentes partes del codigo
     private double elite; //Porcentaje de la elite
     private CromosomaInteger[] elitistas; //Listado de elitistas
-    private TreeMap mapaSEP;
-    private TreeMap mapaTEL;
+    private float[][] mapaSEP = {{1 , (float)1.5, 2}, {1, (float)1.5, (float)1.5},{1, 1, 1}}; //Tiempos entre aviones de los diferentes tipos, comun a todos los aeropuertos
+    private Map<Integer, List<Integer>> mapaTEL;
+    private double[][] TLALIST;
     //a pair for the maps
     
-    private int m = 3; //TODO no se que es esto (numero de pistas de aterrizaje)
+    private int m = 3; //TODO no se que es esto (numero de pistas de aterrizaje) (sigo pensando que sobra)
     private int n = 10;//numero de vuelos
     
     public Practica2(int poblacion, double precision, double mutacion, double cruce, Random r, double elite){
@@ -37,12 +36,17 @@ public class Practica2 implements IFuncion {
     		this.tamCrom = 12;
     	else
     		this.tamCrom = 25;
+        TLALIST = new double[3][this.tamCrom + 1];
+        for(int j= 0; j < 3; j++){
+            for(int i = 0; i < this.tamCrom + 1; i++)//Inicializamos la matriz de TLA
+                TLALIST[j][i] = 0;
+        }
+        
+        
         this.genes = this.tamCrom; 
-        this.rangos = new double[2*genes];
         this.mutacion = mutacion;
         this.cruce = cruce;
-        this.mapaSEP = new TreeMap<Character, HashMap<Character, Double>>(); //aqui poner Pair en ver de hashmap, no me deja
-        this.mapaTEL = new TreeMap<Integer, HashMap<Integer, Double>>();	 //aqui igual	,   n * m
+        this.mapaTEL = new TreeMap<Integer, List<Integer>>();	 
         this.xx = new double[this.genes];
         this.poblacion = poblacion;
         this.tipoCruce = Main.tipoCruce;
@@ -54,54 +58,108 @@ public class Practica2 implements IFuncion {
     }
 
     private void iniciar(){ //Inicializa la funcion con todo lo necesario para realizar los calculos
-    	for (int i = 0; i < this.genes; i++) {
-    		rangos[2 * i] = 0; 
-            rangos[2 * i + 1] = 12;
-    	}
+
         this.individuos = new CromosomaInteger[this.poblacion];
         for(int i = 0; i < this.poblacion; i++){
-            this.individuos[i] = new CromosomaInteger (this.tamCrom, this.genes, this.rangos, this.r); 
+            this.individuos[i] = new CromosomaInteger (this.tamCrom, this.genes, this.r); 
             this.individuos[i].inicializar(); 
         }
     };
     
     private double evaluar (ICromosoma c){ //TODO EVALUAR
     	double fitness = 0;
-    	
-    	/*
-    	  double tla = 0;
-    	  menor_TEL = tel(0);
-    	  for (int i = 0; i < c.size(); ++i){
-	    	  double menor_TLA = 10000;
-	    	  int pista_actual = 0;
-	    	  
-	    	  	for (pista p : pistas){
-	    	  		tla = max(p.tla(last) + sep(p(last).avion, c(i).avion), tel(i)); //hay que recorrer todas las pistas
-	    	  		
-		    	  	if (menor_TLA > tla){
-		    	  		menor_TLA = tla;
-		    	  		pista_actual = p.numero;
-		    	  		}
-		    	  	if (menor_TEL > tel(i)) menor_TEL = tel(i);	
-	    	  	}
-    	  	  fitness = fitness + Math.pow((menor_TLA - menor_TEL), 2);	
-    	  		
-    	  		
-    	  }
-    	  	
-    	  
-    	 
-    	 */
+        int punto = 0;
+        int pista[] = new int[3];//Empezamos en el vuelo 1 ya que el 0 se mantiene en 0 siempre
+        pista[0] = 1;
+        pista[1] = 1;
+        pista[2] = 1;
+        
+        double menor = 100;
+        double [] listTLE = new double[3];
+
+    	for(int i = 0; i < this.tamCrom; i++){
+            //Calcular TLA a cada pista (en funcion del avion anterior), es el valor mayor entre el TLA del vuelo anterior (0 para el primero)
+            // + el SEP entre este vuelo y el anterior (el inicial tiene 0) y entre el TEL a la pista en cuestion
+
+            for(int j= 0; j < 3; j++){
+                this.TLALIST[j][pista[j]] = Math.max(TLALIST[j][pista[j] - 1], TEL(c.getDatos().getDatoI(i), j)); //TODO falta sumar el SEP
+                if(this.TLALIST[j][pista[j]] < menor){
+                    menor = this.TLALIST[j][pista[j]];
+                    pista[j]++;
+                    punto = 0;
+                }
+                
+            }
+            //Guardamos el menor de ellos y borramos los otros dos
+            if(punto == 0){
+                //Borra de la pista 1 y 2
+                this.TLALIST[1][pista[1]] = 0;
+                pista[1]--;
+
+                this.TLALIST[2][pista[2]] = 0;
+                pista[2]--;
+            }
+            else if(punto == 1){
+                //Borra de la pista 0 y 2
+                this.TLALIST[0][pista[0]] = 0;
+                pista[0]--;
+
+                this.TLALIST[2][pista[2]] = 0;
+                pista[2]--;
+            }
+            else{
+                //Borra de la pista 0 y 1
+                this.TLALIST[0][pista[0]] = 0;
+                pista[0]--;
+
+                this.TLALIST[1][pista[1]] = 0;
+                pista[1]--;
+            }
+            
+            //Comprobamos los TEL del vuelo a cada pista
+            listTLE[0] = TEL(c.getDatos().getDatoI(i), 0);
+            menor = listTLE[0];
+            listTLE[1] = TEL(c.getDatos().getDatoI(i), 1);
+            if(menor > listTLE[1])
+                menor = listTLE[1];
+            listTLE[2] = TEL(c.getDatos().getDatoI(i), 2);
+            if(menor > listTLE[2])
+                menor = listTLE[2];
+            
+            //hacemos la operacion:
+            fitness += Math.pow(this.TLALIST[punto][pista[punto]] - menor, 2);
+
+            //reset al menor
+            menor = 100;
+            punto = 0;
+        }
     	
     	return fitness;
     }
-    
-    private double sep(char a, char b) {
+    private double TEL(int vuelo, int pista){
+        List<Integer> aux = this.mapaTEL.get(vuelo);
+        if(pista < 0 || pista > 2){
+            return 0;
+        }
+        return aux.get(pista);
+    }
+    private float sep(char a, char b) {
     	//mirar mapa de separaciones y comparar los dos aviones
-    	double sep = 0;
-    	
-    	
-    	return sep;
+    	int i = 0, j = 0;
+    	if(a == 'W')
+            i = 0;
+        else if(a == 'G')
+            i = 1;
+        else
+            i = 2;
+        if(b == 'W')
+            i = 0;
+        else if(b == 'G')
+            i = 1;
+        else
+            i = 2;
+        
+    	return this.mapaSEP[i][j];
     }
     
     

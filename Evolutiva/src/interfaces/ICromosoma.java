@@ -1,6 +1,8 @@
 
 package interfaces;
 
+import logic.IntegerData;
+
 public interface ICromosoma{
 	void inicializar();
     void mutar(double probabilidad);
@@ -16,5 +18,6 @@ public interface ICromosoma{
     int getGenes();
     double[] getRangos();
 	double[] traducir();
+    IntegerData getDatos();
 	
 }

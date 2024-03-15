@@ -11,24 +11,21 @@ public class CromosomaInteger implements ICromosoma{
     private IntegerData datos; //Array de doubles con los datos
     private int tam; //tamano cromosoma total va a coincidir con el numero de genes ya que la codificacion es en double
     private int genes; //numero genes
-    private double[] rangos; //Valor inferior del rango de valores
     private double aptitud; //valor de fitness del cromosoma
     public Random r; //Random para generar los valores aleatorios
     
     private int inicial[]; 
-    public CromosomaInteger (int tamanio, int gens, double[] rangos, Random r){
+    public CromosomaInteger (int tamanio, int gens, Random r){
         this.tam = tamanio;
         this.genes = gens;
-        this.rangos = rangos;
         this.datos = new IntegerData(this.genes);
         this.r = r;
     }
-    public CromosomaInteger (IntegerData data, int tamanio, int gens, double[] rangos, Random r, double aptitud){
+    public CromosomaInteger (IntegerData data, int tamanio, int gens, Random r, double aptitud){
     	this.datos = new IntegerData(data);
     	this.aptitud = aptitud;
         this.tam = tamanio;
         this.genes = gens;
-        this.rangos = rangos;
         this.r = r;
     }
     public CromosomaInteger (CromosomaInteger a) {
@@ -36,7 +33,6 @@ public class CromosomaInteger implements ICromosoma{
     	this.aptitud = a.aptitud;
         this.tam = a.tam;
         this.genes = a.genes;
-        this.rangos = a.rangos;
         this.r = a.r;
     }
     public void inicializar(){ //DONE, los individuos se inicializan aleatorios
@@ -66,15 +62,14 @@ public class CromosomaInteger implements ICromosoma{
         double rango;
         for (int i = 0; i < this.genes; i++){
             tmp = r.nextDouble();
-            if(tmp <= probabilidad){ 
-            	tmp = r.nextDouble();
-            	
-            	rango = rangos[2 * i + 1] - rangos[2 * i];
-                aux = (int) (rango * tmp);
-                aux += rangos[2 * i];
-                
-                this.datos.setDatoI(aux, i);
-            }
+            
+
+
+
+
+
+
+
         }
     }
     public void crucePMX(CromosomaInteger pareja, int corte1, int corte2){ //TODO Cruce PMX, revisar cuando hay problemas de repetidos, y terminar de rellenarlos
@@ -82,7 +77,7 @@ public class CromosomaInteger implements ICromosoma{
     	izquierdo = new CromosomaInteger (pareja);
     	derecho = new CromosomaInteger (this);
         int tmp;
-        for(int i = (corte1 - 1); i < corte2; i++ ){ //Sustituimos los valores de los genes entre los puntos de corte
+        for(int i = corte1; i < corte2; i++ ){ //Sustituimos los valores de los genes entre los puntos de corte
             tmp = pareja.datos.getDatoI(i);
             pareja.datos.setDatoI(this.datos.getDatoI(i), i);
             this.datos.setDatoI(tmp, i);
@@ -200,7 +195,7 @@ public class CromosomaInteger implements ICromosoma{
 
 	@Override
 	public double[] getRangos() {
-		return this.rangos;
+		return null;
 	}
 
 	@Override
