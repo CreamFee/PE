@@ -119,13 +119,7 @@ public class CromosomaInteger implements ICromosoma{
     }
 
     public void cruceOX(CromosomaInteger pareja, int corte1, int corte2){ //TODO Cruce OX, revisar cuando hay problemas de repetidos, y terminar de rellenarlos
-        
-        int tmp;
-        for(int i = (corte1 - 1); i < corte2; i++ ){
-            tmp = pareja.datos.getDatoI(i);
-            pareja.datos.setDatoI(this.datos.getDatoI(i), i);
-            this.datos.setDatoI(tmp, i);
-        }
+
         
         CromosomaInteger izquierdo, derecho;
     	izquierdo = new CromosomaInteger (pareja);
