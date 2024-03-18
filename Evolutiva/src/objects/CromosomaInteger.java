@@ -126,9 +126,48 @@ public class CromosomaInteger implements ICromosoma{
             pareja.datos.setDatoI(this.datos.getDatoI(i), i);
             this.datos.setDatoI(tmp, i);
         }
+        
+        CromosomaInteger izquierdo, derecho;
+    	izquierdo = new CromosomaInteger (pareja);
+    	derecho = new CromosomaInteger (this);
+    	 for(int i = 0; i < this.tam; i++ ){//inicializamos dos auxiliares a 0 para saber que posiciones estan cogidas
+             izquierdo.datos.setDatoI(0, i);
+             derecho.datos.setDatoI(0, i);
+         }
+    	  for(int i = (corte1 - 1); i < corte2; i++ ){//no seria corte1 a secas? sin el menos 1?
+              izquierdo.datos.setDatoI(this.datos.getDatoI(i), i);
+              derecho.datos.setDatoI(pareja.datos.getDatoI(i), i);
+          }
+    	
+    	  int j = corte2;
+    	  int k = j;
+    	  while (derecho.datos.getDatoI(corte1 - 2) == 0) {//mientras el ultimo en cambiar sea 0
+    		 
+    		  if (j == this.tam) j = 0;//cuando llega al final del individuo vuelve a la posicion 0
+    		  if (k == this.tam) k = 0;
+    		  if(!izquierdo.contains(this.datos.getDatoI(j))) {//si no contiene el numero a bajar, baja el numero y salta a la siguiente posicion a llenar
+    			  izquierdo.datos.setDatoI(this.datos.getDatoI(j), k);
+    			  ++k;
+    		  }
+    		  ++j;
+    		  
+    	  }
+    	  j = corte2;//igual para el derecho
+    	  k = j;
+    	  while (derecho.datos.getDatoI(corte1 - 2) == 0) {//mientras el ultimo en cambiar sea 0
+    		 
+    		  if (j == this.tam) j = 0;//cuando llega al final del individuo vuelve a la posicion 0
+    		  if (k == this.tam) k = 0;
+    		  if(!izquierdo.contains(pareja.datos.getDatoI(j))) {
+    			  derecho.datos.setDatoI(pareja.datos.getDatoI(j), k);
+    			  ++k;
+    		  }
+    		  ++j;
+    	  }
     }
 
-    public void cruceOXpp(CromosomaInteger pareja){ //TODO Cruce OX posicion prioritaria, revisar cuando hay problemas de repetidos, y terminar de rellenarlos
+
+	public void cruceOXpp(CromosomaInteger pareja){ //TODO Cruce OX posicion prioritaria, revisar cuando hay problemas de repetidos, y terminar de rellenarlos
         //Hay que elegir unas posiciones aleatorias, no se cuantas
         //Luego hay que ver las ciudades en este cromosoma (this) que estan en esas posiciones,
         //ponemos las ciudades de la pareja en this (las de esas posiciones)
@@ -211,5 +250,12 @@ public class CromosomaInteger implements ICromosoma{
 	public IntegerData getDatos() {
 		
 		return this.datos;
+	}
+    private boolean contains(int datoI) {
+    	for (int i = 0; i < this.tam; ++i) {
+    		if (this.datos.getDatoI(i) == datoI) return true;
+    	}
+    	
+    	return false;
 	}
 }

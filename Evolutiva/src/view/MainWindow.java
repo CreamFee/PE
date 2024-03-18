@@ -29,6 +29,9 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.JTable;
 
 public class MainWindow {
 
@@ -37,14 +40,13 @@ public class MainWindow {
 	private JTextField textField_generaciones;
 	private JTextField textField_cruce;
 	private JTextField textField_mutacion;
-	private JTextField textField_precision;
 	private Plot2DPanel plot;
 	private JLabel label_RESULT;
 	private JTextField textField_elitismo;
-	private JTextField textField_dimension;
 	private Main main;
-	private JTextField textField_results;
 	private JTextField datos_entrad;
+	private JTable table;
+	private JTable table_1;
 
 	/**
 	 * Launch the application.
@@ -75,40 +77,35 @@ public class MainWindow {
 	 */
 	private void initialize() {
 		frmPractica = new JFrame();
-		frmPractica.setTitle("Practica 1");
+		frmPractica.setTitle("Practica 2");
 		frmPractica.setBounds(100, 100, 1278, 631);
 		frmPractica.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmPractica.getContentPane().setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Funcion");
-		lblNewLabel.setBounds(22, 10, 69, 31);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		frmPractica.getContentPane().add(lblNewLabel);
-		
 		JLabel lblNewLabel_1 = new JLabel("Poblacion");
-		lblNewLabel_1.setBounds(22, 71, 108, 31);
+		lblNewLabel_1.setBounds(22, 22, 108, 31);
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		frmPractica.getContentPane().add(lblNewLabel_1);
 		
 		textField_poblacion = new JTextField();
 		textField_poblacion.setText("100");
-		textField_poblacion.setBounds(22, 100, 96, 19);
+		textField_poblacion.setBounds(22, 63, 96, 19);
 		textField_poblacion.setColumns(10);
 		frmPractica.getContentPane().add(textField_poblacion);
 		
 		JLabel lblNewLabel_2 = new JLabel("N Generaciones");
-		lblNewLabel_2.setBounds(22, 123, 108, 31);
+		lblNewLabel_2.setBounds(22, 92, 108, 31);
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		frmPractica.getContentPane().add(lblNewLabel_2);
 		
 		textField_generaciones = new JTextField();
 		textField_generaciones.setText("100");
-		textField_generaciones.setBounds(22, 150, 96, 19);
+		textField_generaciones.setBounds(22, 133, 96, 19);
 		textField_generaciones.setColumns(10);
 		frmPractica.getContentPane().add(textField_generaciones);
 		
 		JLabel lblNewLabel_3 = new JLabel("% Cruce");
-		lblNewLabel_3.setBounds(22, 179, 69, 31);
+		lblNewLabel_3.setBounds(22, 162, 69, 31);
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		frmPractica.getContentPane().add(lblNewLabel_3);
 		
@@ -119,26 +116,15 @@ public class MainWindow {
 		frmPractica.getContentPane().add(textField_cruce);
 		
 		JLabel lblNewLabel_4 = new JLabel("% Mutacion");
-		lblNewLabel_4.setBounds(22, 235, 108, 31);
+		lblNewLabel_4.setBounds(22, 231, 108, 31);
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		frmPractica.getContentPane().add(lblNewLabel_4);
 		
 		textField_mutacion = new JTextField();
 		textField_mutacion.setText("5");
-		textField_mutacion.setBounds(22, 262, 96, 19);
+		textField_mutacion.setBounds(22, 272, 96, 19);
 		textField_mutacion.setColumns(10);
 		frmPractica.getContentPane().add(textField_mutacion);
-		
-		JLabel lblNewLabel_5 = new JLabel("Precision");
-		lblNewLabel_5.setBounds(22, 291, 96, 31);
-		lblNewLabel_5.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		frmPractica.getContentPane().add(lblNewLabel_5);
-		
-		textField_precision = new JTextField();
-		textField_precision.setText("0.01");
-		textField_precision.setBounds(22, 320, 96, 19);
-		textField_precision.setColumns(10);
-		frmPractica.getContentPane().add(textField_precision);
 		
     	plot = new Plot2DPanel();
  		plot.setBounds(158, 10, 562, 418);
@@ -146,77 +132,76 @@ public class MainWindow {
 		
 		label_RESULT = new JLabel("Results:");
 		label_RESULT.setVerticalAlignment(SwingConstants.TOP);
-		label_RESULT.setBounds(168, 438, 69, 21);
+		label_RESULT.setBounds(742, 151, 69, 21);
 		label_RESULT.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		frmPractica.getContentPane().add(label_RESULT);
 		
-		JComboBox comboBox_funcion = new JComboBox();
-		comboBox_funcion.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5"}));
-		comboBox_funcion.setBounds(22, 40, 96, 21);
-		frmPractica.getContentPane().add(comboBox_funcion);
-		
 		JLabel lblNewLabel_5_1 = new JLabel("% Elitismo");
 		lblNewLabel_5_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_5_1.setBounds(22, 436, 96, 31);
+		lblNewLabel_5_1.setBounds(22, 490, 96, 31);
 		frmPractica.getContentPane().add(lblNewLabel_5_1);
 		
 		textField_elitismo = new JTextField();
 		textField_elitismo.setText("2");
 		textField_elitismo.setColumns(10);
-		textField_elitismo.setBounds(22, 460, 96, 19);
+		textField_elitismo.setBounds(22, 531, 96, 19);
 		frmPractica.getContentPane().add(textField_elitismo);
 		
 		JComboBox comboBox_metodo = new JComboBox();
 		comboBox_metodo.setModel(new DefaultComboBoxModel(new String[] {"Ruleta", "Torneo Det", "Torneo Prob", "Estocastico", "Truncamiento", "Restos"}));
-		comboBox_metodo.setBounds(22, 363, 96, 21);
+		comboBox_metodo.setBounds(22, 387, 96, 21);
 		frmPractica.getContentPane().add(comboBox_metodo);
 		
 		JLabel lblNewLabel_5_1_1 = new JLabel("Metodo de Seleccion");
 		lblNewLabel_5_1_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_5_1_1.setBounds(22, 337, 138, 31);
+		lblNewLabel_5_1_1.setBounds(22, 347, 138, 31);
 		frmPractica.getContentPane().add(lblNewLabel_5_1_1);
 		
-		textField_dimension = new JTextField();
-		textField_dimension.setText("4");
-		textField_dimension.setColumns(10);
-		textField_dimension.setBounds(22, 514, 96, 19);
-		frmPractica.getContentPane().add(textField_dimension);
-		
-		JLabel lblNewLabel_5_1_2 = new JLabel("Dimension (4 y 5)");
-		lblNewLabel_5_1_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_5_1_2.setBounds(22, 473, 126, 31);
-		frmPractica.getContentPane().add(lblNewLabel_5_1_2);
-		
 		JButton btnNewButton = new JButton("EXEC");
-		btnNewButton.setBounds(22, 543, 85, 21);
+		btnNewButton.setBounds(158, 465, 108, 41);
 		frmPractica.getContentPane().add(btnNewButton);
 		
 		JLabel lblNewLabel_5_2 = new JLabel("Tipo Cruce");
 		lblNewLabel_5_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_5_2.setBounds(22, 380, 126, 31);
+		lblNewLabel_5_2.setBounds(22, 418, 126, 31);
 		frmPractica.getContentPane().add(lblNewLabel_5_2);
 		
 		JComboBox comboBox_cruce = new JComboBox();
 		comboBox_cruce.setModel(new DefaultComboBoxModel(new String[] {"Monopunto", "Uniforme", "Arimetrico", "BLX"}));
-		comboBox_cruce.setBounds(22, 409, 96, 21);
+		comboBox_cruce.setBounds(22, 459, 96, 21);
 		frmPractica.getContentPane().add(comboBox_cruce);
-		
-		textField_results = new JTextField();
-		textField_results.setBounds(158, 469, 1060, 59);
-		frmPractica.getContentPane().add(textField_results);
-		textField_results.setColumns(10);
 		
 		JLabel lblNewLabel_6 = new JLabel("FILE NAMES:");
 		lblNewLabel_6.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel_6.setBounds(930, 82, 117, 50);
+		lblNewLabel_6.setBounds(740, 22, 117, 50);
 		frmPractica.getContentPane().add(lblNewLabel_6);
 		
 		datos_entrad = new JTextField();
 		datos_entrad.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		datos_entrad.setText("TEL1.txt vuelos1.txt ");
-		datos_entrad.setBounds(930, 150, 225, 31);
+		datos_entrad.setBounds(730, 72, 225, 31);
 		frmPractica.getContentPane().add(datos_entrad);
 		datos_entrad.setColumns(10);
+		
+
+		
+		JComboBox comboBox_metodo_1 = new JComboBox();
+		comboBox_metodo_1.setModel(new DefaultComboBoxModel(new String[] {"Inserción", "Intercambio", "Inversión", "Heurística", "Método propio"}));
+		comboBox_metodo_1.setBounds(22, 330, 96, 21);
+		frmPractica.getContentPane().add(comboBox_metodo_1);
+		
+		JLabel lblNewLabel_5_1_1_1 = new JLabel("Tipo Mutación");
+		lblNewLabel_5_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_5_1_1_1.setBounds(22, 290, 138, 31);
+		frmPractica.getContentPane().add(lblNewLabel_5_1_1_1);
+		
+		table_1 = new JTable();
+		table_1.setBounds(882, 368, 1, 1);
+		frmPractica.getContentPane().add(table_1);
+		
+		JLabel lblNewLabel = new JLabel();
+		lblNewLabel.setBounds(752, 182, 395, 21);
+		frmPractica.getContentPane().add(lblNewLabel);
 		
         ActionListener listener = new ActionListener() {
             @Override
@@ -230,7 +215,7 @@ public class MainWindow {
             	
             	//VUELOS PRIMERO LUEGO AVIONES
             	
-            	Map mapaAvionesinit = new TreeMap<String, Character>();
+            	Map mapaAvionesinit = new TreeMap<Integer, String[]>();
             	Map mapaTELinit = new TreeMap<Integer, List<Integer>>();
             	
             	String filenames = datos_entrad.getText();
@@ -256,9 +241,9 @@ public class MainWindow {
                         }
                         if (parts.length == columnCount) {
                             for (int i = 0; i < parts.length; i++) {
-                                List<Integer> values = (List<Integer>) mapaTELinit.getOrDefault(i, new ArrayList<>());
+                                List<Integer> values = (List<Integer>) mapaTELinit.getOrDefault(i + 1, new ArrayList<>());
                                 values.add(Integer.parseInt(parts[i]));
-                                mapaTELinit.put(i, values);
+                                mapaTELinit.put(i + 1, values);
                             }
                         }
                     }
@@ -268,10 +253,11 @@ public class MainWindow {
 
                 try (BufferedReader br = new BufferedReader(new FileReader(sepFileName))) {
                     String line;
+                    int cont = 1;
                     while ((line = br.readLine()) != null) {
                         String[] parts = line.split("\\s+");
                         if (parts.length == 2) {
-                        	mapaAvionesinit.put(parts[0], parts[1]);
+                        	mapaAvionesinit.put(cont++, parts);
                         }
                     }
                 } catch (IOException ex) {
@@ -286,7 +272,6 @@ public class MainWindow {
             	Main.generaciones = Integer.parseInt(textField_generaciones.getText());
             	Main.mutar = (double)Integer.parseInt(textField_mutacion.getText())/100;
             	Main.cruce = (double)Integer.parseInt(textField_cruce.getText())/100;
-            	Main.precision = Double.parseDouble(textField_precision.getText());
             	
             	Main.tipoCruce = comboBox_cruce.getSelectedIndex(); //0 monopunto, 1 uniforme, 2 arimetrico, 3 BLX
               	Main.elitismo = (double)Integer.parseInt(textField_elitismo.getText())/100;
@@ -313,43 +298,9 @@ public class MainWindow {
             			break;
             	
             	}
- 
-            	if (!comboBox_funcion.getSelectedItem().equals("5") && comboBox_cruce.getSelectedIndex() > 1) JOptionPane.showMessageDialog(null, "Solo puedes elegir ese tipo de cruce para la funcion 5");//pop up
-            	else {
-	            	 switch (Integer.parseInt((String) comboBox_funcion.getSelectedItem())) {
-	            	 	case 1:
-	            	 		//llamar funcion 1
-	            	 		
-	            	 		main.set_funcion(1);
-	            	 		break;
-	            	 	case 2:
-	            	 		//llamar funcion 2
-	            	 		
-	            	 		
-	            	 		main.set_funcion(2);
-	            	 		break;
-	            	 	case 3:
-	            	 		//llamar funcion 3
-	            	 		
-	            	 		
-	            	 		main.set_funcion(3);
-	            	 		break;
-	            	 	case 4:
-	            	 		//llamar funcion 4
-	            	 		
-	            	 		
-	            	 		main.set_funcion(4);
-	            	 		break;
-	            	 	case 5:
-	            	 		//llamar funcion 5
-	            	 		
-	            	 		
-	            	 		main.set_funcion(5);
-	            	 		break;
-	            	 
-	                 }
 	            	 
 	
+            		main.set_funcion();
 	         		
 	         		double[] avr = main.getAvr();
 	         		double[] abs = main.getAbsMax();
@@ -366,7 +317,27 @@ public class MainWindow {
 	         			
 	         		frmPractica.getContentPane().add(plot);
 	         		
-	         		StringBuilder sb = new StringBuilder();
+	         		
+	         			         		
+	         		Object[][] data = {//para testeo mientras
+	                        {"Nombre", "ID", "okey", "Nombre", "ID", "okey", "Nombre", "ID", "okey"},
+	                        {2, "AUX12", "okey", 2, "AUX12", "okey", 2, "AUX12", "okey"},
+	                        {2, "AUX12", "okey", 2, "AUX12", "okey", 2, "AUX12", "okey",}
+	                };
+
+	                String[] columnNames = {"Nombre", "ID", "okey", "Nombre", "ID", "okey", "Nombre", "ID", "okey"};
+	         		
+	         		DefaultTableModel model = new DefaultTableModel(data, columnNames);
+	         		
+	        		table = new JTable(model);
+	        		table.setBounds(740, 208, 471, 277);
+	        		frmPractica.getContentPane().add(table);
+	        		
+	        		lblNewLabel.setText("Pista 1                                     Pista 2                                      Pista 3");
+	        		
+	        		frmPractica.setVisible(false);
+	        		frmPractica.setVisible(true);
+	         		/*StringBuilder sb = new StringBuilder();
 	         		
 	         		double[] t;
 	         		
@@ -378,12 +349,11 @@ public class MainWindow {
 	         				else sb.append(" X" + j + "[" + t[j] + "]" + ", ");
 	         				sb.append("\n");
 	         			}
-	         		}
+	         		}*/
 	         		
-	         		textField_results.setText("Solucion: " + abs[Main.generaciones - 1] + "   " + sb);
 	         		
             	}
-            }
+            
         };
 
         // Add the ActionListener to the button

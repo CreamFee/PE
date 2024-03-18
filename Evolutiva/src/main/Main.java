@@ -29,7 +29,7 @@ public class Main {
     public static double elitismo = 0.02; //Elitismo, cantidad de poblacion que va a mantenerse de una a otra
 
     public static Map mapaAviones;//aviones con su codigo y tipo de avion
-    public static Map mapaTEL;	  //Tiempos de espera. Cada posicion corresponde con la misma posicion del mapa de aviones
+    public static Map<Integer, List<Integer>> mapaTEL;	  //Tiempos de espera. Cada posicion corresponde con la misma posicion del mapa de aviones
     							  //Cada posicion tiene sus 3 tiempos (eg. pista 0 = 9, pista 1 = 10, pista 2 = 5)
     
     public static int funcionElegida = 1; // de 1 a 2 para elegir fichero
@@ -179,8 +179,7 @@ public class Main {
 		 return this.puntosX;
 	 }
 	 
-	 public void set_funcion(int f) { //TODO solo debe funcionar con practica2.java
-		 this.funcionElegida = f;
+	 public void set_funcion() { //TODO solo debe funcionar con practica2.java
 		 this.funcion = new Practica2(poblacion, precision, mutar, cruce, r, elitismo);
 		 this.ejecutar();
 	 }
