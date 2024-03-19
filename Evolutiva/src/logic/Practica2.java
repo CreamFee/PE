@@ -79,8 +79,8 @@ public class Practica2 implements IFuncion {
     private double evaluar (ICromosoma c){
     	double fitness = 0;
         int punto = 0;
-        int vuelo[] = new int[m + 1];//Empezamos en el vuelo 1 ya que el 0 se mantiene en 0 siempre
-        for(int i = 0; i < m + 1; i++) {
+        int vuelo[] = new int[m];//Empezamos en el vuelo 1 ya que el 0 se mantiene en 0 siempre
+        for(int i = 0; i < m; i++) {
         	vuelo [i] = 1;
         }
         double menor = 100;
@@ -106,6 +106,7 @@ public class Practica2 implements IFuncion {
                 
             }
             vuelo[punto]++;
+            this.vueloList[punto][vuelo[punto] - 1] = c.getDatos().getDatoI(i);
             this.TLALIST[punto][vuelo[punto] -1] = tmp;
             menor = (double)TEL(c.getDatos().getDatoI(i), 0);
             
@@ -206,7 +207,13 @@ public class Practica2 implements IFuncion {
                     		this.individuos[i].crucePMX(this.individuos[pareja], b, a);
                     } 
                     else if (this.tipoCruce == 1){
-                    	
+                    	int a, b;
+                    	a = r.nextInt(this.tamCrom);//Si coinciden los puntos de corte, se queda igual
+                    	b = r.nextInt(this.tamCrom);
+                    	if (a < b)
+                    		this.individuos[i].cruceOX(this.individuos[pareja], a, b);
+                    	else if (b < a) 
+                    		this.individuos[i].cruceOX(this.individuos[pareja], b, a);
                     }
                     else if (this.tipoCruce == 2){
                     	
