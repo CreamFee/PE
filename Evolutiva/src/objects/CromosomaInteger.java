@@ -77,46 +77,50 @@ public class CromosomaInteger implements ICromosoma{
     	CromosomaInteger izquierdo, derecho;
     	izquierdo = new CromosomaInteger (pareja);
     	derecho = new CromosomaInteger (this);
-        int tmp;
+        
+        
+        for(int i = 0; i < this.tam; i++ ){//inicializamos dos auxiliares a 0 para saber que posiciones estan cogidas
+            izquierdo.datos.setDatoI(0, i);
+            derecho.datos.setDatoI(0, i);
+        }
+        
         for(int i = corte1; i < corte2; i++ ){ //Sustituimos los valores de los genes entre los puntos de corte
-            tmp = pareja.datos.getDatoI(i);
-            pareja.datos.setDatoI(this.datos.getDatoI(i), i);
-            this.datos.setDatoI(tmp, i);
+            izquierdo.datos.setDatoI(this.datos.getDatoI(i), i);
+            derecho.datos.setDatoI(pareja.datos.getDatoI(i), i);
         }
-        boolean found = false;
-        int pos = 0;
-        //sustituimos aquellos sin conflicto en this
-        for(int i = 0; i < this.tam; i ++) {
-        	if (i < corte1  || i > corte2) {
-            	for(int j = corte1; j < corte2; j++) {
-            		if(this.datos.getDatoI(j) == this.datos.getDatoI(i)) {
-            			found = true;
-            			pos = j;
-            			break;
-            		}
-            	}
-            	if (found) {
-            		found = false;
-            		this.datos.setDatoI(derecho.datos.getDatoI(pos), pos);
-            	}
-        	}
+        
+        
+        
+        for(int i = 0; i < corte1; i ++) {//0 hasta corte1
+        	for(int j = corte1; j < corte2; j++ ){ 
+                if (izquierdo.datos.getDatoI(j) == pareja.datos.getDatoI(i)) {
+                	izquierdo.datos.setDatoI(i, derecho.datos.getDatoI(j));
+                }
+                if (derecho.datos.getDatoI(j) == this.datos.getDatoI(i)) {
+                	derecho.datos.setDatoI(i, izquierdo.datos.getDatoI(j));
+                }
+            }
+            if (izquierdo.datos.getDatoI(i) == 0) izquierdo.datos.setDatoI(i, pareja.datos.getDatoI(i));//esto es si no hay conflicto
+            if (derecho.datos.getDatoI(i) == 0) derecho.datos.setDatoI(i, this.datos.getDatoI(i));
+
         }
-      //sustituimos aquellos sin conflicto en pareja
-        for(int i = 0; i < this.tam; i ++) {
-        	if (i < corte1  || i > corte2) {
-            	for(int j = corte1; j < corte2; j++) {
-            		if(pareja.datos.getDatoI(j) == pareja.datos.getDatoI(i)) {
-            			found = true;
-            			pos = j;
-            			break;
-            		}
-            	}
-            	if (found) {
-            		found = false;
-            		pareja.datos.setDatoI(izquierdo.datos.getDatoI(pos), pos);
-            	}
-        	}
+        
+        for(int i = corte2; i < this.tam; i ++) {//desde corte 2 al final
+        	for(int j = corte1; j < corte2; j++ ){ 
+                if (izquierdo.datos.getDatoI(j) == pareja.datos.getDatoI(i)) {
+                	izquierdo.datos.setDatoI(i, derecho.datos.getDatoI(j));
+                }
+                if (derecho.datos.getDatoI(j) == this.datos.getDatoI(i)) {
+                	derecho.datos.setDatoI(i, izquierdo.datos.getDatoI(j));
+                }
+            }
+            if (izquierdo.datos.getDatoI(i) == 0) izquierdo.datos.setDatoI(i, pareja.datos.getDatoI(i));//esto es si no hay conflicto
+            if (derecho.datos.getDatoI(i) == 0) derecho.datos.setDatoI(i, this.datos.getDatoI(i));
+
         }
+        
+        pareja.datos.setDatos(izquierdo.datos.getDatos());
+  	  	this.datos.setDatos(derecho.datos.getDatos());
     }
 
     public void cruceOX(CromosomaInteger pareja, int corte1, int corte2){ //TODO Cruce OX, revisar cuando hay problemas de repetidos, y terminar de rellenarlos
