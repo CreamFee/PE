@@ -70,36 +70,19 @@ public class Main {
     
     private void recogerDatos(int generacionActual) {
     	this.averages[generacionActual] = funcion.getPromedio();
-
-    	if(funcionElegida == 1) {
-    		this.maximums[generacionActual] = funcion.getMax();	
-    		if (generacionActual == 0) {
-        		this.absoluteMax[generacionActual] = this.maximums[generacionActual];
-    			this.puntosX = funcion.getXX();
-    		}
-        	else if (this.maximums[generacionActual] > this.absoluteMax[generacionActual - 1]) {
-        		this.absoluteMax[generacionActual] = this.maximums[generacionActual];
-    			this.puntosX = funcion.getXX();
-    			
-        	}
-
-        	else
-        		this.absoluteMax[generacionActual] = this.absoluteMax[generacionActual - 1];
+		this.maximums[generacionActual] = funcion.getMin();	
+		
+		if (generacionActual == 0) {
+    		this.absoluteMax[generacionActual] = this.maximums[generacionActual];
+			this.puntosX = funcion.getXX();
+		}
+    	else if (this.maximums[generacionActual] < this.absoluteMax[generacionActual - 1]) {
+    		this.absoluteMax[generacionActual] = this.maximums[generacionActual];
+			this.puntosX = funcion.getXX();
     	}
-    	else {
-    		this.maximums[generacionActual] = funcion.getMin();	
-    		if (generacionActual == 0) {
-        		this.absoluteMax[generacionActual] = this.maximums[generacionActual];
-    			this.puntosX = funcion.getXX();
-    		}
-        	else if (this.maximums[generacionActual] < this.absoluteMax[generacionActual - 1]) {
-        		this.absoluteMax[generacionActual] = this.maximums[generacionActual];
-    			this.puntosX = funcion.getXX();
-        	}
 
-        	else
-        		this.absoluteMax[generacionActual] = this.absoluteMax[generacionActual - 1];
-    	}
+    	else
+    		this.absoluteMax[generacionActual] = this.absoluteMax[generacionActual - 1];
     	
     }
     private void cruzar () {
@@ -153,11 +136,11 @@ public class Main {
         	this.funcion.introducirElite();
         	evaluarPoblacion();
         	recogerDatos(i);
-        	/*System.out.println("GENERACION: " + i); //usado para pruebas
+        	System.out.println("GENERACION: " + i); //usado para pruebas
         	System.out.println("Maximo de la generacion: " + maximums[i]);
             System.out.println("Maximo absoluto: " + absoluteMax[i]);
             System.out.println("Media de la generacion: " + averages[i] + "\n");
-        	*/
+        	
         }
         
     }
@@ -183,6 +166,4 @@ public class Main {
 		 this.funcion = new Practica2(poblacion, precision, mutar, cruce, r, elitismo);
 		 this.ejecutar();
 	 }
-	 
-    
 }

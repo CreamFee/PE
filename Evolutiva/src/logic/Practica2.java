@@ -30,8 +30,6 @@ public class Practica2 implements IFuncion {
     private double[][] TLALIST;
     private int[][] vueloList;
     
-    //a pair for the maps
-    
     private int m; //numero de pistas de aterrizaje
     
     public Practica2(int poblacion, double precision, double mutacion, double cruce, Random r, double elite){
@@ -94,13 +92,12 @@ public class Practica2 implements IFuncion {
             for(int j= 0; j < m; j++){
             	if (this.vueloList[j][vuelo[j] - 1] != 0) {
             		tmp = Math.max(TLALIST[j][vuelo[j] - 1] + 
-                    		sep(this.mapaAvionesinit.get(this.vueloList[j][vuelo[j]])[1].charAt(0), 
+                    		sep(this.mapaAvionesinit.get(this.vueloList[j][vuelo[j] - 1])[1].charAt(0), 
                 				this.mapaAvionesinit.get(c.getDatos().getDatoI(i))[1].charAt(0)), 
                     		TEL(c.getDatos().getDatoI(i), j));
             	}
             	else { //Cuando no hay vuelo anterior, el sep es 0
-            		tmp = Math.max(TLALIST[j][vuelo[j] - 1] + 0, 
-                    		TEL(c.getDatos().getDatoI(i), j));
+            		tmp = TEL(c.getDatos().getDatoI(i), j);
             	}
                 if(tmp < menor){
                     menor = tmp;
@@ -109,8 +106,8 @@ public class Practica2 implements IFuncion {
                 
             }
             vuelo[punto]++;
-            this.TLALIST[punto][vuelo[punto]] = tmp;
-            menor = TEL(c.getDatos().getDatoI(i), 0);
+            this.TLALIST[punto][vuelo[punto] -1] = tmp;
+            menor = (double)TEL(c.getDatos().getDatoI(i), 0);
             
             //Comprobamos los TEL del vuelo a cada pista
             for(int x = 0; x < m; x++) {
@@ -119,13 +116,13 @@ public class Practica2 implements IFuncion {
             }
             
             //hacemos la operacion:
-            fitness += Math.pow(this.TLALIST[punto][vuelo[punto]] - menor, 2);
+            fitness += Math.pow(this.TLALIST[punto][vuelo[punto] - 1] - menor, 2);
 
             //reset al menor
             menor = 100;
             punto = 0;
         }
-    	
+    	c.setAptitud(fitness);
     	return fitness;
     }
     private double TEL(int vuelo, int pista){
@@ -295,7 +292,7 @@ public class Practica2 implements IFuncion {
         return result;
     }
     public double getMin() { //Sera util cuando queramos maximizar una funcion con numeros negativos
-    	double min = 0, tmp = 0;
+    	double min = this.individuos[0].getAptitud(), tmp = 0;
         for (int i = 0; i < poblacion; i++){
             tmp = this.individuos[i].getAptitud();
             if (min > tmp) {
