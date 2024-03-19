@@ -1,6 +1,7 @@
 package objects;
 
 import java.util.Random;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -158,6 +159,9 @@ public class CromosomaInteger implements ICromosoma{
     		  }
     		  ++j;
     	  }
+    	  pareja.datos.setDatos(izquierdo.datos.getDatos());
+    	  this.datos.setDatos(derecho.datos.getDatos());
+
     }
 
 
@@ -169,19 +173,134 @@ public class CromosomaInteger implements ICromosoma{
 
         
     }
-//Este no es obligatorio, el OXOP
+	//Este no es obligatorio, el OXOP
     public void cruceOXop(CromosomaInteger pareja){ //TODO Cruce OX orden prioritario, revisar cuando hay problemas de repetidos, y terminar de rellenarlos
-        //Hay que elegir unas posiciones aleatorias, no se cuantas
-        //Luego hay que ver las ciudades en este cromosoma (this) que estan en esas posiciones,
-        //Tras eso, buscamos las posiciones de estas cidudades en el otro cromosoma (pareja),
-        //copiamos todas las ciudades de la pareja que no estan en las elegidas aleatoriamente, colocamos las que habiamos elegido en this,
-        //El otro hijo lo mismo pero eliges las posiciones de la pareja, las guardas, rellenas con el resto de ciudades de this, colocas las de pareja elegidas
+    	
+        CromosomaInteger izquierdo, derecho;
+    	izquierdo = new CromosomaInteger (pareja);
+    	derecho = new CromosomaInteger (this);
+    	
+      	 for(int i = 0; i < this.tam; i++ ){//inicializamos dos auxiliares a 0 para saber que posiciones estan cogidas
+             izquierdo.datos.setDatoI(0, i);
+             derecho.datos.setDatoI(0, i);
+         }
+    	
+    	int num = 3; //numero de posiciones a intercambiar
+    	List<Integer> posiciones = new ArrayList<Integer>();//posiciones para el segundo cromosoma
+    	posiciones.add(num - 1, -1);
+    	int numeros[] = new int[num];//numeros del primer cromosoma
 
+    	
+    	for (int i = 0; i < num; ++i) {//cogemos posiciones al azar
+    		numeros[i] = this.datos.getDatoI(r.nextInt(this.tam));
+    	}
+    	int j = 0;
+    	while(posiciones.size() < num) {
+    		for (int i = 0; i < this.tam; ++i) {
+    			if (numeros[j] == pareja.datos.getDatoI(i)) {
+    				posiciones.add(j, i);
+    				++j;
+    			}
+    		}
+    	}
+    	 Collections.sort(posiciones);
+    	 
+    	 int k = 0;
+    	 for(int i = 0; i < this.tam; i++ ){
+    	 
+    		 if (i == posiciones.get(k)) {
+    			 izquierdo.datos.setDatoI(i, numeros[k]);
+    			 ++k;
+    		 }
+    		 else izquierdo.datos.setDatoI(i, pareja.datos.getDatoI(i));
+    	 }
+    	 
+    	 
+        	posiciones = new ArrayList<Integer>();//posiciones para el segundo cromosoma
+        	posiciones.add(num - 1, -1);
+        	numeros = new int[num];//numeros del primer cromosoma
 
+        	
+        	for (int i = 0; i < num; ++i) {//cogemos posiciones al azar
+        		numeros[i] = pareja.datos.getDatoI(r.nextInt(this.tam));
+        	}
+        	j = 0;
+        	while(posiciones.size() < num) {
+        		for (int i = 0; i < this.tam; ++i) {
+        			if (numeros[j] == this.datos.getDatoI(i)) {
+        				posiciones.add(j, i);
+        				++j;
+        			}
+        		}
+        	}
+        	 Collections.sort(posiciones);
+        	 
+        	 k = 0;
+        	 for(int i = 0; i < this.tam; i++ ){
+        	 
+        		 if (i == posiciones.get(k)) {
+        			 derecho.datos.setDatoI(i, numeros[k]);
+        			 ++k;
+        		 }
+        		 else derecho.datos.setDatoI(i, this.datos.getDatoI(i));
+        	 }
         
+        	 pareja.datos.setDatos(izquierdo.datos.getDatos());
+        	 this.datos.setDatos(derecho.datos.getDatos());
     }
 
     public void cruceCX (CromosomaInteger pareja){//TODO revisar
+        //Cruce por ciclos
+    	
+    	 CromosomaInteger izquierdo, derecho;
+     	izquierdo = new CromosomaInteger (pareja);
+     	derecho = new CromosomaInteger (this);
+     	int current, first;
+     	
+     	first = this.datos.getDatoI(0);
+     	current = pareja.datos.getDatoI(0);
+     	
+     	 for(int i = 0; i < this.tam; i++ ){//inicializamos dos auxiliares a 0 para saber que posiciones estan cogidas
+             izquierdo.datos.setDatoI(0, i);
+             derecho.datos.setDatoI(0, i);
+         }
+    	
+     	
+        while(first != current){
+        	 for(int i = 0; i < this.tam; i ++){
+                 if (this.datos.getDatoI(i) == current) {
+                	 derecho.datos.setDatoI(i, current);
+                	 current = pareja.datos.getDatoI(i);
+                	 break;
+                 }
+             }
+
+        }
+        
+     	first = pareja.datos.getDatoI(0);
+     	current = this.datos.getDatoI(0);
+     	
+        while(first != current){
+       	 for(int i = 0; i < this.tam; i ++){
+                if (this.datos.getDatoI(i) == current) {
+               	 izquierdo.datos.setDatoI(i, current);
+               	 current = this.datos.getDatoI(i);
+               	 break;
+                }
+            }
+
+       }
+        for(int i = 0; i < this.tam; i ++){//rellenamos las posiciones restantes
+            if (izquierdo.datos.getDatoI(i) == 0) izquierdo.datos.setDatoI(i, this.datos.getDatoI(i));
+            if (derecho.datos.getDatoI(i) == 0) derecho.datos.setDatoI(i, pareja.datos.getDatoI(i));
+        }
+        
+        
+        pareja.datos.setDatos(izquierdo.datos.getDatos());
+  	  	this.datos.setDatos(derecho.datos.getDatos());
+    }
+    
+    public void cruceCO (CromosomaInteger pareja){//TODO revisar
         //Cruce por ciclos
         IntegerData tmp1 = new IntegerData(this.datos), tmp2 = new IntegerData(pareja.datos);
         for(int i = 0; i < this.tam; i ++){ //Comprobar 
@@ -192,6 +311,10 @@ public class CromosomaInteger implements ICromosoma{
         for(int i = 0; i < this.tam; i ++){
             
         }
+    }
+    
+    public void crucePROPIO (CromosomaInteger pareja){//TODO revisar
+        
     }
 
     private int getPos(int city){
