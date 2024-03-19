@@ -192,34 +192,40 @@ public class Practica2 implements IFuncion {
         return promedio;
     }
 
-    public void cruzar(){//TODO hay que revisar todos los cruces que necesitamos e implementarlos
+    public void cruzar() {
     	int pareja = -1;
         for(int i = 0; i < this.poblacion; i++){
             if(r.nextDouble() < this.cruce){
                 if(pareja != -1){
-                    if(this.tipoCruce == 0){
+                    if(this.tipoCruce == 0){ //PMX
                     	int a, b;
-                    	a = r.nextInt(this.tamCrom);//Si coinciden los puntos de corte, se queda igual
+                    	a = r.nextInt(this.tamCrom);
                     	b = r.nextInt(this.tamCrom);
                     	if (a < b)
                     		this.individuos[i].crucePMX(this.individuos[pareja], a, b);
                     	else if (b < a) 
                     		this.individuos[i].crucePMX(this.individuos[pareja], b, a);
                     } 
-                    else if (this.tipoCruce == 1){
+                    else if (this.tipoCruce == 1){//ox
                     	int a, b;
-                    	a = r.nextInt(this.tamCrom);//Si coinciden los puntos de corte, se queda igual
+                    	a = r.nextInt(this.tamCrom);
                     	b = r.nextInt(this.tamCrom);
                     	if (a < b)
                     		this.individuos[i].cruceOX(this.individuos[pareja], a, b);
                     	else if (b < a) 
                     		this.individuos[i].cruceOX(this.individuos[pareja], b, a);
                     }
-                    else if (this.tipoCruce == 2){
-                    	
+                    else if (this.tipoCruce == 2){//oxpp
+                    	this.individuos[i].cruceOXpp(this.individuos[pareja]);
                     }
-                    else if (this.tipoCruce == 3){
-                    	
+                    else if (this.tipoCruce == 3){ //cx
+                    	this.individuos[i].cruceCX(this.individuos[pareja]);
+                    }
+                    else if (this.tipoCruce == 4){ //co
+                    	this.individuos[i].cruceCO(this.individuos[pareja]);
+                    }
+                    else if (this.tipoCruce == 5){ //metodo propio
+                    	this.individuos[i].crucePROPIO(this.individuos[pareja]);
                     }
                     pareja = -1;
                 } else {

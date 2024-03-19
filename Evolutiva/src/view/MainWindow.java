@@ -167,7 +167,7 @@ public class MainWindow {
 		frmPractica.getContentPane().add(lblNewLabel_5_2);
 		
 		JComboBox comboBox_cruce = new JComboBox();
-		comboBox_cruce.setModel(new DefaultComboBoxModel(new String[] {"Monopunto", "Uniforme", "Arimetrico", "BLX"}));
+		comboBox_cruce.setModel(new DefaultComboBoxModel(new String[] {"PMX", "OX", "OXPP", "CX", "CO","Metodo Propio"}));
 		comboBox_cruce.setBounds(22, 459, 96, 21);
 		frmPractica.getContentPane().add(comboBox_cruce);
 		
@@ -186,7 +186,7 @@ public class MainWindow {
 
 		
 		JComboBox comboBox_metodo_1 = new JComboBox();
-		comboBox_metodo_1.setModel(new DefaultComboBoxModel(new String[] {"Inserción", "Intercambio", "Inversión", "Heurística", "Método propio"}));
+		comboBox_metodo_1.setModel(new DefaultComboBoxModel(new String[] {"Insercion", "Intercambio", "Inversion", "Heuristica", "Metodo propio"}));
 		comboBox_metodo_1.setBounds(22, 330, 96, 21);
 		frmPractica.getContentPane().add(comboBox_metodo_1);
 		
@@ -273,7 +273,7 @@ public class MainWindow {
             	Main.mutar = (double)Integer.parseInt(textField_mutacion.getText())/100;
             	Main.cruce = (double)Integer.parseInt(textField_cruce.getText())/100;
             	
-            	Main.tipoCruce = comboBox_cruce.getSelectedIndex(); //0 monopunto, 1 uniforme, 2 arimetrico, 3 BLX
+            	Main.tipoCruce = comboBox_cruce.getSelectedIndex();//0 PMX, 1 OX, 2 OXPP, 3 CX, 4 CO, 5 METODO PROPIO
               	Main.elitismo = (double)Integer.parseInt(textField_elitismo.getText())/100;
               	
             	
