@@ -130,8 +130,42 @@ public class CromosomaInteger implements ICromosoma{
 					}
 				}
 				break;
-			case 3: //TODO falta
+			case 3: 
 				//Mutacion heuristica
+				
+				int n = 3;
+				List<Integer> list = new ArrayList<>();
+				List<Integer> perms = new ArrayList<>();
+				List<CromosomaInteger> torn = new ArrayList<>();
+				
+				for (int i = 0; i < n; ++i) {//buscamos n posiciones al azar
+					int posaux = r.nextInt();
+					if (!list.contains(posaux)) list.add(posaux);
+					else --i;
+				}
+				
+				perms = generatePermutations(list);//generamos todas las premutaciones
+				
+				CromosomaInteger first = new CromosomaInteger(this);//añadimos el primer cromosoma
+				torn.add(first);
+				
+				for (int i = 1; i < 6; ++i) { //como n es 3 conseguimos 6 cromosomas
+					CromosomaInteger aux = new CromosomaInteger(this);
+					aux.datos.setDatoI(this.datos.getDatoI(perms.get(3)), perms.get(0));
+					aux.datos.setDatoI(this.datos.getDatoI(perms.get(4)), perms.get(1));
+					aux.datos.setDatoI(this.datos.getDatoI(perms.get(5)), perms.get(2));
+
+					torn.add(aux);
+					
+					perms.remove(3);
+					perms.remove(4);
+					perms.remove(5);
+				}
+				
+				for (CromosomaInteger c : torn) {
+					if (this.aptitud < c.aptitud) this.datos.setDatos(c.datos.getDatos());
+				}
+				
 				break;
 			case 4://TODO falta
 				//Nuestra propia mutacion
@@ -169,7 +203,15 @@ public class CromosomaInteger implements ICromosoma{
         	//Hijo izquierdo
         	if(izquierdo.datos.getDatoI(i) == 0) {
         		if(contieneValor(inserted1, this.datos.getDatoI(i))) {
-            		izquierdo.datos.setDatoI(inserted2[getIndex(inserted1, this.datos.getDatoI(i))], i);
+        			int tm = this.datos.getDatoI(i);
+        			int posi = getIndex(inserted1, tm); 
+        			tm = inserted2[posi];
+
+            		while (contieneValor(inserted1, tm)) {
+            			posi = getIndex(inserted1, tm); 
+            			tm = inserted2[posi];
+            		}
+            		izquierdo.datos.setDatoI(tm, i);
             	}
             	else {
             		izquierdo.datos.setDatoI(this.datos.getDatoI(i), i);
@@ -178,12 +220,22 @@ public class CromosomaInteger implements ICromosoma{
         	//Hijo derecho
         	if(derecho.datos.getDatoI(i) == 0) {
 	        	if(contieneValor(inserted2, pareja.datos.getDatoI(i))) {
-	        		derecho.datos.setDatoI(inserted1[getIndex(inserted2, pareja.datos.getDatoI(i))], i);
+	        		int tm = pareja.datos.getDatoI(i);
+	    			int posi = getIndex(inserted2, tm); 
+	    			tm = inserted1[posi];
+
+
+	        		while (contieneValor(inserted2, tm)) {
+	        			posi = getIndex(inserted2, tm); 
+		    			tm = inserted1[posi];
+	        		}
+	        		derecho.datos.setDatoI(tm, i);
 	        	}
-	        	else {
-	        		derecho.datos.setDatoI(pareja.datos.getDatoI(i), i);
-	        	}
-        	}
+	        
+		        else {
+		        	derecho.datos.setDatoI(pareja.datos.getDatoI(i), i);
+		        }
+        	}	
         }
         pareja.datos.setDatos(derecho.datos.getDatos());
   	  	this.datos.setDatos(izquierdo.datos.getDatos());
@@ -212,7 +264,9 @@ public class CromosomaInteger implements ICromosoma{
     	
     	  int j = corte2;
     	  int k = j;
-    	  while (derecho.datos.getDatoI(corte1 - 2) == 0) {//mientras el ultimo en cambiar sea 0
+    	  int aux = corte1 - 1;
+    	  if (corte1 == 0) aux = this.tam - 1;
+    	  while (izquierdo.datos.getDatoI(aux) == 0) {//mientras el ultimo en cambiar sea 0
     		 
     		  if (j == this.tam) j = 0;//cuando llega al final del individuo vuelve a la posicion 0
     		  if (k == this.tam) k = 0;
@@ -225,11 +279,11 @@ public class CromosomaInteger implements ICromosoma{
     	  }
     	  j = corte2;//igual para el derecho
     	  k = j;
-    	  while (derecho.datos.getDatoI(corte1 - 2) == 0) {//mientras el ultimo en cambiar sea 0
+    	  while (derecho.datos.getDatoI(aux) == 0) {//mientras el ultimo en cambiar sea 0
     		 
     		  if (j == this.tam) j = 0;//cuando llega al final del individuo vuelve a la posicion 0
     		  if (k == this.tam) k = 0;
-    		  if(!izquierdo.contains(pareja.datos.getDatoI(j))) {
+    		  if(!derecho.contains(pareja.datos.getDatoI(j))) {
     			  derecho.datos.setDatoI(pareja.datos.getDatoI(j), k);
     			  ++k;
     		  }
@@ -306,7 +360,7 @@ public class CromosomaInteger implements ICromosoma{
 	
 	
 	//Este no es obligatorio, el OXOP
-	/*
+	
     public void cruceOXop(CromosomaInteger pareja){ // Cruce OX orden prioritario, revisar cuando hay problemas de repetidos, y terminar de rellenarlos
     	
         CromosomaInteger izquierdo, derecho;
@@ -381,9 +435,9 @@ public class CromosomaInteger implements ICromosoma{
         	 pareja.datos.setDatos(izquierdo.datos.getDatos());
         	 this.datos.setDatos(derecho.datos.getDatos());
     }
-    */
+    
 
-    public void cruceCX (CromosomaInteger pareja){//TODO a veces se queda en bucle
+    public void cruceCX (CromosomaInteger pareja){
         //Cruce por ciclos
     	
     	CromosomaInteger izquierdo, derecho;
@@ -398,35 +452,28 @@ public class CromosomaInteger implements ICromosoma{
              izquierdo.datos.setDatoI(0, i);
              derecho.datos.setDatoI(0, i);
          }
-    	
+     	derecho.datos.setDatoI(this.datos.getDatoI(0), 0);
+     	izquierdo.datos.setDatoI(pareja.datos.getDatoI(0), 0);
+
      	
         while(first != current){
-        	 for(int i = 0; i < this.tam; i ++){
-                 if (this.datos.getDatoI(i) == current) {
-                	 derecho.datos.setDatoI(i, current);
-                	 current = pareja.datos.getDatoI(i);
-                	 break;
-                 }
-             }
-
+        	int index = getIndex(this.datos.getDatos(), current);
+        	derecho.datos.setDatoI(current, index);
+          	current = pareja.datos.getDatoI(index);
         }
         
      	first = pareja.datos.getDatoI(0);
      	current = this.datos.getDatoI(0);
      	
         while(first != current){
-       	 for(int i = 0; i < this.tam; i ++){
-                if (this.datos.getDatoI(i) == current) {
-               	 izquierdo.datos.setDatoI(i, current);
-               	 current = this.datos.getDatoI(i);
-               	 break;
-                }
-            }
+        	int index = getIndex(pareja.datos.getDatos(), current);
+        	izquierdo.datos.setDatoI(current, index);
+            current = this.datos.getDatoI(index);            
 
        }
         for(int i = 0; i < this.tam; i ++){//rellenamos las posiciones restantes
-            if (izquierdo.datos.getDatoI(i) == 0) izquierdo.datos.setDatoI(i, this.datos.getDatoI(i));
-            if (derecho.datos.getDatoI(i) == 0) derecho.datos.setDatoI(i, pareja.datos.getDatoI(i));
+            if (izquierdo.datos.getDatoI(i) == 0) izquierdo.datos.setDatoI(this.datos.getDatoI(i), i);
+            if (derecho.datos.getDatoI(i) == 0) derecho.datos.setDatoI(pareja.datos.getDatoI(i), i);
         }
         
         
@@ -436,18 +483,73 @@ public class CromosomaInteger implements ICromosoma{
     
     public void cruceCO (CromosomaInteger pareja){//TODO falta
         //Cruce por ciclos
-    	CromosomaInteger izquierdo = new CromosomaInteger(this);
-    	CromosomaInteger derecho = new CromosomaInteger(pareja);
-        for(int i = 0; i < this.tam; i ++){ //Comprobar 
-            
-            
-
+    	CromosomaInteger derecho = new CromosomaInteger(this);
+    	CromosomaInteger izquierdo = new CromosomaInteger(pareja);
+    	
+    	CromosomaInteger derechoDeco = new CromosomaInteger(this);
+    	CromosomaInteger izquierdoDeco = new CromosomaInteger(pareja);
+    	
+    	
+    	//CODIFICACION
+    	
+    	List<Integer> lista = new ArrayList<>();
+    	
+        for(int i = 1; i <= this.tam; i++){ 
+            lista.add(i);
         }
         for(int i = 0; i < this.tam; i ++){
-            
+        	int pos = lista.indexOf(this.datos.getDatoI(i)) + 1;
+            derecho.datos.setDatoI(pos, i);
+            lista.remove(pos - 1);
         }
-        pareja.datos.setDatos(izquierdo.datos.getDatos());
-  	  	this.datos.setDatos(derecho.datos.getDatos());
+        
+        lista.clear();
+        
+        for(int i = 1; i <= this.tam; i++){  
+            lista.add(i);
+        }
+        for(int i = 0; i < this.tam; i ++){
+        	int pos = lista.indexOf(pareja.datos.getDatoI(i)) + 1;
+            izquierdo.datos.setDatoI(pos, i);
+            lista.remove(pos - 1);
+        }
+        
+        //MONOPUNTO
+        
+        int aux;
+        int monopunto = r.nextInt(this.tam);
+        
+        for(int i = monopunto; i < this.tam; i++){ 
+        	aux = derecho.datos.getDatoI(i);
+        	derecho.datos.setDatoI(izquierdo.datos.getDatoI(i), i);
+        	izquierdo.datos.setDatoI(aux, i);
+
+        }
+        
+        
+        //DECODIFICACION
+        
+        lista.clear();
+
+        for(int i = 1; i <= this.tam; i++){ 
+            lista.add(i);
+        }
+        for(int i = 0; i < this.tam; i++){
+            derechoDeco.datos.setDatoI(lista.get(derecho.datos.getDatoI(i) - 1), i);
+            lista.remove(derecho.datos.getDatoI(i) - 1);
+        }
+        
+        lista.clear();
+        for(int i = 1; i <= this.tam; i++){ 
+            lista.add(i);
+        }
+        for(int i = 0; i < this.tam; i++){
+            izquierdoDeco.datos.setDatoI(lista.get(izquierdo.datos.getDatoI(i) - 1), i);
+            lista.remove(izquierdo.datos.getDatoI(i) - 1);
+        }
+        
+        pareja.datos.setDatos(izquierdoDeco.datos.getDatos());
+  	  	this.datos.setDatos(derechoDeco.datos.getDatos());
     }
     
     public void crucePROPIO (CromosomaInteger pareja){//TODO falta
@@ -512,4 +614,28 @@ public class CromosomaInteger implements ICromosoma{
     	
     	return false;
 	}
+    
+    public static List<Integer> generatePermutations(List<Integer> list) {
+        List<Integer> permutations = new ArrayList<>();
+        generatePermutationsHelper(permutations, list, 0);
+        return permutations;
+    }
+
+    private static void generatePermutationsHelper(List<Integer> permutations, List<Integer> list, int start) {
+        if (start == list.size() - 1) {
+            permutations.addAll(list);
+        } else {
+            for (int i = start; i < list.size(); i++) {
+                swap(list, start, i);
+                generatePermutationsHelper(permutations, list, start + 1);
+                swap(list, start, i);
+            }
+        }
+    }
+
+    private static void swap(List<Integer> list, int i, int j) {
+        int temp = list.get(i);
+        list.set(i, list.get(j));
+        list.set(j, temp);
+    }
 }
