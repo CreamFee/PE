@@ -50,7 +50,7 @@ public class MainWindow {
 	private JTable table_1;
 
 	/**
-	 * Launch the application.
+	 * 
 	 */
 	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -66,7 +66,7 @@ public class MainWindow {
 	}*/
 
 	/**
-	 * Create the application.
+	 * 
 	 */
 	public MainWindow(Main main) {
 		this.main = main;
@@ -74,12 +74,12 @@ public class MainWindow {
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Initialize
 	 */
 	private void initialize() {
 		frmPractica = new JFrame();
 		frmPractica.setTitle("Practica 2");
-		frmPractica.setBounds(100, 100, 1278, 631);
+		frmPractica.setBounds(100, 100, 1400, 677);
 		frmPractica.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmPractica.getContentPane().setLayout(null);
 		
@@ -201,7 +201,7 @@ public class MainWindow {
 		frmPractica.getContentPane().add(table_1);
 		
 		JLabel lblNewLabel = new JLabel();
-		lblNewLabel.setBounds(752, 182, 395, 21);
+		lblNewLabel.setBounds(752, 182, 500, 21);
 		frmPractica.getContentPane().add(lblNewLabel);
 		
         ActionListener listener = new ActionListener() {
@@ -323,15 +323,21 @@ public class MainWindow {
 	         		String [][] data1 = new String[(3 * a) + 1][b];
 	         		
 	                String[] columnNames = {"Vuelo", "Nombre", "TLA", "Vuelo", "Nombre", "TLA", "Vuelo", "Nombre", "TLA"};
-	         		
-	         		data1[0] = columnNames;
-	         		
+	                String[] columnNamesActual;
+	                if (a == 5) {
+	                	String[] columnNames5 = {"Vuelo", "Nombre", "TLA", "Vuelo", "Nombre", "TLA", "Vuelo", "Nombre", "TLA", "Vuelo", "Nombre", "TLA", "Vuelo", "Nombre", "TLA"};
+	                	columnNamesActual = columnNames5;
+	                }
+	                else columnNamesActual = columnNames;
+	                
+	                data1[0] = columnNamesActual;
+
 	         		int acum = 0;
 	         		
 	         		for (int jj = 0; jj < a; ++jj) {
 	        
 		         		for(int i = 1; i < Practica2.vueloListSol[jj].length; ++i) {
-		         			if (Practica2.vueloListSol[1][i] != 0) {
+		         			if (Practica2.vueloListSol[jj][i] != 0) {
 		         				data1[i][0 + acum] = String.valueOf(Practica2.vueloListSol[jj][i]);
 			         			data1[i][1 + acum] = mapaAvionesinit.get(Practica2.vueloListSol[jj][i])[0];
 			         			data1[i][2 + acum] = String.valueOf(Practica2.TLALISTsol[jj][i]);
@@ -340,16 +346,17 @@ public class MainWindow {
 		         		acum += 3;
 	         		}
 	         		
+	         
+	         		DefaultTableModel model = new DefaultTableModel(data1, columnNamesActual);
 	         		
 	         		
-	         		DefaultTableModel model = new DefaultTableModel(data1, columnNames);
 	         		
 	        		table = new JTable(model);
-	        		table.setBounds(740, 208, 471, 277);
+	        		table.setBounds(740, 208, 580, 277);
 	        		frmPractica.getContentPane().add(table);
 	        		
-	        		lblNewLabel.setText("Pista 1                                       Pista 2                                        Pista 3");
-	        		if (a == 5) lblNewLabel.setText("Pista 1               Pista 2               Pista 3               Pista 4               Pista 5");
+	        		lblNewLabel.setText("Pista 1                                                Pista 2                                                  Pista 3");
+	        		if (a == 5) lblNewLabel.setText("Pista 1                       Pista 2                        Pista 3                         Pista 4                        Pista 5");
 	        		
 	        		frmPractica.setVisible(false);
 	        		frmPractica.setVisible(true);
