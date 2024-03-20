@@ -216,7 +216,7 @@ public class MainWindow {
             	//VUELOS PRIMERO LUEGO AVIONES
             	
             	Map mapaAvionesinit = new TreeMap<Integer, String[]>();
-            	Map mapaTELinit = new TreeMap<Integer, List<Integer>>();
+            	Map<Integer, List<Integer>> mapaTELinit = new TreeMap<Integer, List<Integer>>();
             	
             	String filenames = datos_entrad.getText();
                 String[] fileNamesArray = filenames.split(" ");
@@ -316,7 +316,15 @@ public class MainWindow {
 	         		plot.addLinePlot("Maximums", Color.RED, x, max);
 	         			
 	         		frmPractica.getContentPane().add(plot);
-	         		
+	         		int a, b;
+	         		a = mapaTELinit.get(1).size();
+	         		b = mapaTELinit.size();
+	         		String [][] data1 = new String[3 * a][b];
+	         		for (int i = 0; i < a; i++) {
+	         			for(int j= 0; j < b; j++) {//TODO rellenar la tabla de datos, incluir las cabeceras de las columnas
+	         				//data1[i][j] = Funcion2;
+	         			}
+	         		}
 	         		
 	         			         		
 	         		Object[][] data = {//para testeo mientras
@@ -324,7 +332,7 @@ public class MainWindow {
 	                        {2, "AUX12", "okey", 2, "AUX12", "okey", 2, "AUX12", "okey"},
 	                        {2, "AUX12", "okey", 2, "AUX12", "okey", 2, "AUX12", "okey",}
 	                };
-
+	         		
 	                String[] columnNames = {"Nombre", "ID", "okey", "Nombre", "ID", "okey", "Nombre", "ID", "okey"};
 	         		
 	         		DefaultTableModel model = new DefaultTableModel(data, columnNames);

@@ -32,6 +32,13 @@ public class Practica2 implements IFuncion {
     
     private int m; //numero de pistas de aterrizaje
     
+    public static double[][] TLALISTsol; //Lista de datos necesarios para mostrar la solucion
+    public static int[][] vueloListSol;
+    public static CromosomaInteger solucion;
+    private double fitnessSol;
+    
+    private boolean check = false;
+    
     public Practica2(int poblacion, double precision, double mutacion, double cruce, Random r, double elite){
     	if(Main.funcionElegida == 1)
     		this.tamCrom = 12;
@@ -53,7 +60,7 @@ public class Practica2 implements IFuncion {
         this.r = r;
         this.elite = elite;
         this.elitistas = new CromosomaInteger[(int)(elite * poblacion)];
-        
+        fitnessSol = 1000;
         
         iniciar();
     }
@@ -114,6 +121,13 @@ public class Practica2 implements IFuncion {
             menor = 100;
             punto = 0;
         }
+    	if(check) {//Guardamos la solucion como optima
+    		this.TLALISTsol = this.TLALIST;
+    		this.vueloListSol = this.vueloList;
+    		
+    		this.check = false;
+    	}
+    		
     	resetTLA();
     	resetVuelos();
     	c.setAptitud(fitness);
@@ -242,7 +256,26 @@ public class Practica2 implements IFuncion {
             }
         }
     }
-    
+    public void checkSol() {
+    	
+    	int ind = -1;
+    	double min = this.fitnessSol, tmp = 0;
+        for (int i = 0; i < poblacion; i++){
+            tmp = this.individuos[i].getAptitud();
+            if (min > tmp) {
+            	ind = i;
+                min = tmp;
+                this.check = true;
+                xx = this.individuos[i].traducir();
+            }
+        }
+        if (ind != -1) {
+        	this.solucion = this.individuos[ind];
+        	evaluar(this.solucion);
+        	this.fitnessSol = this.solucion.getAptitud();
+        }
+        
+    }
     
     public void mutar(){ //Realiza la mutacion de los individuos
         for(int i = 0; i < this.poblacion; i++){
@@ -313,6 +346,7 @@ public class Practica2 implements IFuncion {
         return result;
     }
     public double getMin() { //Sera util cuando queramos maximizar una funcion con numeros negativos
+    	checkSol();
     	double min = this.individuos[0].getAptitud(), tmp = 0;
         for (int i = 0; i < poblacion; i++){
             tmp = this.individuos[i].getAptitud();
@@ -321,6 +355,7 @@ public class Practica2 implements IFuncion {
                 xx = this.individuos[i].traducir();
             }
         }
+        
         return min;
     }
 

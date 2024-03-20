@@ -136,6 +136,7 @@ public class Main {
         	this.funcion.introducirElite();
         	evaluarPoblacion();
         	recogerDatos(i);
+        	
         	System.out.println("GENERACION: " + i); //usado para pruebas
         	System.out.println("Maximo de la generacion: " + maximums[i]);
             System.out.println("Maximo absoluto: " + absoluteMax[i]);
