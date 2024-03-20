@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 
 import org.math.plot.Plot2DPanel;
 
+import logic.Practica2;
 import main.Main;
 
 import javax.swing.JComboBox;
@@ -215,7 +216,7 @@ public class MainWindow {
             	
             	//VUELOS PRIMERO LUEGO AVIONES
             	
-            	Map mapaAvionesinit = new TreeMap<Integer, String[]>();
+            	Map<Integer, String[]> mapaAvionesinit = new TreeMap<Integer, String[]>();
             	Map<Integer, List<Integer>> mapaTELinit = new TreeMap<Integer, List<Integer>>();
             	
             	String filenames = datos_entrad.getText();
@@ -319,52 +320,46 @@ public class MainWindow {
 	         		int a, b;
 	         		a = mapaTELinit.get(1).size();
 	         		b = mapaTELinit.size();
-	         		String [][] data1 = new String[3 * a][b];
-	         		for (int i = 0; i < a; i++) {
-	         			for(int j= 0; j < b; j++) {//TODO rellenar la tabla de datos, incluir las cabeceras de las columnas
-	         				//data1[i][j] = Funcion2;
-	         			}
+	         		String [][] data1 = new String[(3 * a) + 1][b];
+	         		
+	                String[] columnNames = {"Vuelo", "Nombre", "TLA", "Vuelo", "Nombre", "TLA", "Vuelo", "Nombre", "TLA"};
+	         		
+	         		data1[0] = columnNames;
+	         		
+	         		int acum = 0;
+	         		
+	         		for (int jj = 0; jj < a; ++jj) {
+	        
+		         		for(int i = 1; i < Practica2.vueloListSol[jj].length; ++i) {
+		         			if (Practica2.vueloListSol[1][i] != 0) {
+		         				data1[i][0 + acum] = String.valueOf(Practica2.vueloListSol[jj][i]);
+			         			data1[i][1 + acum] = mapaAvionesinit.get(Practica2.vueloListSol[jj][i])[0];
+			         			data1[i][2 + acum] = String.valueOf(Practica2.TLALISTsol[jj][i]);
+		         			}
+		         		}
+		         		acum += 3;
 	         		}
 	         		
-	         			         		
-	         		Object[][] data = {//para testeo mientras
-	                        {"Nombre", "ID", "okey", "Nombre", "ID", "okey", "Nombre", "ID", "okey"},
-	                        {2, "AUX12", "okey", 2, "AUX12", "okey", 2, "AUX12", "okey"},
-	                        {2, "AUX12", "okey", 2, "AUX12", "okey", 2, "AUX12", "okey",}
-	                };
 	         		
-	                String[] columnNames = {"Nombre", "ID", "okey", "Nombre", "ID", "okey", "Nombre", "ID", "okey"};
 	         		
-	         		DefaultTableModel model = new DefaultTableModel(data, columnNames);
+	         		DefaultTableModel model = new DefaultTableModel(data1, columnNames);
 	         		
 	        		table = new JTable(model);
 	        		table.setBounds(740, 208, 471, 277);
 	        		frmPractica.getContentPane().add(table);
 	        		
-	        		lblNewLabel.setText("Pista 1                                     Pista 2                                      Pista 3");
+	        		lblNewLabel.setText("Pista 1                                       Pista 2                                        Pista 3");
+	        		if (a == 5) lblNewLabel.setText("Pista 1               Pista 2               Pista 3               Pista 4               Pista 5");
 	        		
 	        		frmPractica.setVisible(false);
 	        		frmPractica.setVisible(true);
-	         		/*StringBuilder sb = new StringBuilder();
-	         		
-	         		double[] t;
-	         		
-	         		
-	         		for (int i = 0; i < main.getCont() + 1; ++i) {
-	         			t = main.getXfinal();
-	         			for (int j = 0; j < t.length; ++j) {
-	         				if (j == t.length - 1) sb.append(" X" + j + "[" + t[j] + "]");
-	         				else sb.append(" X" + j + "[" + t[j] + "]" + ", ");
-	         				sb.append("\n");
-	         			}
-	         		}*/
+	         	
 	         		
 	         		
             	}
             
         };
 
-        // Add the ActionListener to the button
         btnNewButton.addActionListener(listener);
 		
 		
