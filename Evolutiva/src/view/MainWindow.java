@@ -190,7 +190,7 @@ public class MainWindow {
 		comboBox_metodo_1.setBounds(22, 330, 96, 21);
 		frmPractica.getContentPane().add(comboBox_metodo_1);
 		
-		JLabel lblNewLabel_5_1_1_1 = new JLabel("Tipo Mutación");
+		JLabel lblNewLabel_5_1_1_1 = new JLabel("Tipo Mutacion");
 		lblNewLabel_5_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel_5_1_1_1.setBounds(22, 290, 138, 31);
 		frmPractica.getContentPane().add(lblNewLabel_5_1_1_1);

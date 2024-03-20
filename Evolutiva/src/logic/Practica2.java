@@ -39,17 +39,8 @@ public class Practica2 implements IFuncion {
     		this.tamCrom = 25;
     	this.m = Main.mapaTEL.get(1).size();
     	
-        TLALIST = new double[m][this.tamCrom + 1];
-        for(int j= 0; j < m; j++){
-            for(int i = 0; i < this.tamCrom + 1; i++)//Inicializamos la matriz de TLA
-                TLALIST[j][i] = 0;
-        }
-        this.vueloList = new int[m][this.tamCrom];
-        for(int i = 0; i < this.tamCrom; i++) {
-        	for(int j = 0; j  < m; j++) {
-        		this.vueloList[j][i] = 0;
-        	}
-        }
+        resetTLA();
+        resetVuelos();
         this.mapaAvionesinit = Main.mapaAviones;
         this.genes = this.tamCrom; 
         this.mutacion = mutacion;
@@ -91,9 +82,9 @@ public class Practica2 implements IFuncion {
 
             for(int j= 0; j < m; j++){
             	if (this.vueloList[j][vuelo[j] - 1] != 0) {
-            		tmp = Math.max(TLALIST[j][vuelo[j] - 1] + 
+            		tmp = Math.max((TLALIST[j][vuelo[j] - 1] + 
                     		sep(this.mapaAvionesinit.get(this.vueloList[j][vuelo[j] - 1])[1].charAt(0), 
-                				this.mapaAvionesinit.get(c.getDatos().getDatoI(i))[1].charAt(0)), 
+                				this.mapaAvionesinit.get(c.getDatos().getDatoI(i))[1].charAt(0))), 
                     		TEL(c.getDatos().getDatoI(i), j));
             	}
             	else { //Cuando no hay vuelo anterior, el sep es 0
@@ -107,7 +98,7 @@ public class Practica2 implements IFuncion {
             }
             vuelo[punto]++;
             this.vueloList[punto][vuelo[punto] - 1] = c.getDatos().getDatoI(i);
-            this.TLALIST[punto][vuelo[punto] -1] = tmp;
+            this.TLALIST[punto][vuelo[punto] -1] = menor;
             menor = (double)TEL(c.getDatos().getDatoI(i), 0);
             
             //Comprobamos los TEL del vuelo a cada pista
@@ -123,8 +114,25 @@ public class Practica2 implements IFuncion {
             menor = 100;
             punto = 0;
         }
+    	resetTLA();
+    	resetVuelos();
     	c.setAptitud(fitness);
     	return fitness;
+    }
+    private void resetTLA() {
+    	TLALIST = new double[m][this.tamCrom + 1];
+        for(int j= 0; j < m; j++){
+            for(int i = 0; i < this.tamCrom + 1; i++)//Inicializamos la matriz de TLA
+                TLALIST[j][i] = 0;
+        }
+    }
+    private void resetVuelos() {
+    	this.vueloList = new int[m][this.tamCrom];
+        for(int i = 0; i < this.tamCrom; i++) {
+        	for(int j = 0; j  < m; j++) {
+        		this.vueloList[j][i] = 0;
+        	}
+        }
     }
     private double TEL(int vuelo, int pista){
         List<Integer> aux = this.mapaTEL.get(vuelo);
@@ -143,11 +151,11 @@ public class Practica2 implements IFuncion {
         else
             i = 2;
         if(b == 'W')
-            i = 0;
+            j = 0;
         else if(b == 'G')
-            i = 1;
+            j = 1;
         else
-            i = 2;
+            j = 2;
         
     	return this.mapaSEP[i][j];
     }
