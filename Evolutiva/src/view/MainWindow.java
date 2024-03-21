@@ -48,7 +48,9 @@ public class MainWindow {
 	private JTextField datos_entrad;
 	private JTable table;
 	private JTable table_1;
-
+	private ResultWindow resultados;
+	private JLabel printta;
+	private JLabel fitness;
 	/**
 	 * 
 	 */
@@ -79,7 +81,7 @@ public class MainWindow {
 	private void initialize() {
 		frmPractica = new JFrame();
 		frmPractica.setTitle("Practica 2");
-		frmPractica.setBounds(100, 100, 1400, 677);
+		frmPractica.setBounds(100, 100, 1000, 600);
 		frmPractica.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmPractica.getContentPane().setLayout(null);
 		
@@ -130,13 +132,13 @@ public class MainWindow {
     	plot = new Plot2DPanel();
  		plot.setBounds(158, 10, 562, 418);
  		frmPractica.getContentPane().add(plot);
-		
+		/*
 		label_RESULT = new JLabel("Results:");
 		label_RESULT.setVerticalAlignment(SwingConstants.TOP);
 		label_RESULT.setBounds(742, 151, 69, 21);
 		label_RESULT.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		frmPractica.getContentPane().add(label_RESULT);
-		
+		*/
 		JLabel lblNewLabel_5_1 = new JLabel("% Elitismo");
 		lblNewLabel_5_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel_5_1.setBounds(22, 490, 96, 31);
@@ -158,8 +160,9 @@ public class MainWindow {
 		lblNewLabel_5_1_1.setBounds(22, 347, 138, 31);
 		frmPractica.getContentPane().add(lblNewLabel_5_1_1);
 		
+		
 		JButton btnNewButton = new JButton("EXEC");
-		btnNewButton.setBounds(158, 465, 108, 41);
+		btnNewButton.setBounds(158, 500, 100, 40);
 		frmPractica.getContentPane().add(btnNewButton);
 		
 		JLabel lblNewLabel_5_2 = new JLabel("Tipo Cruce");
@@ -209,7 +212,6 @@ public class MainWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
             	
-            	table.removeAll();
             	//DELETE OTHER LINES
             	plot.removeAllPlots();
             	
@@ -340,20 +342,51 @@ public class MainWindow {
 	         			}
 	         		}
          		}
-         		
-         
-         		DefaultTableModel model = new DefaultTableModel(data1, columnNames);
-         		
+         		JTable pistas;
+        		if (a == 5) {
+        			String titulo5[] = {"Pista 1", "Pista 2", "Pista 3", "Pista 4", "Pista 5"};
+
+             		String [][] data0 = {titulo5};
+        			DefaultTableModel model5 = new DefaultTableModel(data0, titulo5);
+        			pistas = new JTable(model5);
+        		}	
+        		else {
+        			String titulo3[] = {"Pista 1", "Pista 2", "Pista 3"};
+        			String [][] data0 = {titulo3};
+        			DefaultTableModel model3 = new DefaultTableModel(data0, titulo3);
+        			pistas = new JTable(model3);
+        		}
+    			pistas.setBounds(0, 0, 200 * a, 16);
+        		DefaultTableModel model = new DefaultTableModel(data1, columnNames);
         		table = new JTable(model);
-        		table.setBounds(740, 208, 580, 277);
-        		frmPractica.getContentPane().add(table);
-        		
-        		lblNewLabel.setText("Pista 1                                                Pista 2                                                  Pista 3");
-        		if (a == 5) lblNewLabel.setText("Pista 1                       Pista 2                        Pista 3                         Pista 4                        Pista 5");
+        		table.setBounds(0, 16, 200 * a, 300);
         		
         		frmPractica.setVisible(false);
         		frmPractica.setVisible(true);
-         		
+        		if(resultados != null)
+        			resultados.eliminar();
+        		resultados = new ResultWindow(table, pistas);
+        		double[] resultado = main.getXfinal();
+        		String printa = "Resultado: [";
+        		for (int i = 0; i < resultado.length; i++) {
+        			if(i != resultado.length - 1)
+        				printa += (int)resultado[i] + ", ";
+        			else
+        				printa += (int)resultado[i] + "]";
+        		}
+        		if(printta != null)
+        			frmPractica.remove(printta);
+        		printta = new JLabel(printa);
+        		printta.setBounds(158, 430, printa.length() * 10, 40);
+        		printta.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        		frmPractica.getContentPane().add(printta);
+        		
+        		if(fitness != null)
+        			frmPractica.remove(fitness);
+        		fitness = new JLabel("Fitness: " + main.getFitnessMax());
+        		fitness.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        		fitness.setBounds(158, 450, 100, 40);
+        		frmPractica.getContentPane().add(fitness);
         	}
         };
 
