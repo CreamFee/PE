@@ -21,19 +21,17 @@ public class SeleccionEstocasticoUniversal implements ISeleccion{
     }
 
     private void init(){
-        
-        //En este metodo de seleccion no estan ordenados los cromosomas por ningun orden especifico
-        double total = 0;
-        double cuenta;
-        for(int i = 0; i < numIndividuos; i++){
-            //suma total de las aptitudes
-            total += individuos[i].getAptitud();
-        }
-        for(int i = 0; i < numIndividuos; i++){
-            //Vamos a calcular su probabilidad de seleccion de cada individuo
-            individuos[i].setAptitud(individuos[i].getAptitud() / total);
-        }
-        
+
+    	
+      	double totalFitness = 0;
+    	for (int i = 0; i < numIndividuos; i++) {
+    	    totalFitness += individuos[i].getAptitud();
+    	}
+
+    	for (int i = 0; i < numIndividuos; i++) {
+    	    individuos[i].setAptitud(individuos[i].getAptitud() / totalFitness);
+    	}
+    	
         //ordenamos los individuos
         
         double aptMax = 0, aptaux;
@@ -68,36 +66,33 @@ public class SeleccionEstocasticoUniversal implements ISeleccion{
         	aptaux = 0;
         	find = false;
         }
-    	double offset = r.nextDouble() * (double) 1/n;
-    	double elegir = offset;
-        int i = 0;
-        int contador = 0;
-        cuenta = 0;
-        cuenta += individuos[0].getAptitud();
-        for(int x = 0; x < n; x++) {
-        	for(int j = contador; j < numIndividuos; j++){
-        		contador ++;
-                
-                if(cuenta >= elegir){
-                	while(true) {
-                		 if(cuenta < elegir)
-                			 break;
-                		 seleccion[i] = j;
-                         elegir += (double)1/n;
-                         i++;
-                	}
-                    break;
-                }
-                else if(j < numIndividuos - 1){
-                	cuenta += individuos[j].getAptitud();
-                }
-            }
-        }
-        
-        
-        for(int j = i; j < numIndividuos; j++){
-        	seleccion[j] = r.nextInt(numIndividuos);
-        }
+
+
+  
+
+    	// Seleccion
+    	double[] cumulativeProbability = new double[numIndividuos];
+    	cumulativeProbability[0] = individuos[0].getAptitud();
+    	for (int i = 1; i < numIndividuos; i++) {
+    	    cumulativeProbability[i] = cumulativeProbability[i - 1] + individuos[i].getAptitud();
+    	}
+
+    	int[] seleccion = new int[n];
+    	double increment = 1.0 / n;
+    	double threshold = increment;
+    	int selected = 0;
+
+    	for (int i = 0; i < numIndividuos && selected < n; i++) {
+    	    while (cumulativeProbability[i] >= threshold && selected < n) {
+    	        seleccion[selected++] = i;
+    	        threshold += increment;
+    	    }
+    	}
+
+    	for (int i = selected; i < n; i++) {
+    	    seleccion[i] = r.nextInt(numIndividuos);
+    	}
+
         
         	
     }
