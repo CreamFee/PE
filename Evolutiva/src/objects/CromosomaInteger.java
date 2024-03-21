@@ -144,7 +144,7 @@ public class CromosomaInteger implements ICromosoma{
 				List<CromosomaInteger> torn = new ArrayList<>();
 				
 				for (int i = 0; i < n; ++i) {//buscamos n posiciones al azar
-					int posaux = r.nextInt();
+					int posaux = r.nextInt(this.tam);
 					if (!list.contains(posaux)) list.add(posaux);
 					else --i;
 				}
@@ -163,9 +163,10 @@ public class CromosomaInteger implements ICromosoma{
 					aux.practica.evaluar(aux);
 					torn.add(aux);
 					
-					perms.remove(3);
-					perms.remove(4);
-					perms.remove(5);
+					
+					for(int j = 0; j < 3; ++j) {
+						perms.remove(3);//como se elimina el siguiente vuelve a su posicion
+					}
 				}
 				
 				for (CromosomaInteger c : torn) {
