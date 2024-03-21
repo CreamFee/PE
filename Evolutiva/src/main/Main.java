@@ -173,4 +173,8 @@ public class Main {
 		 this.funcion = new Practica2(poblacion, precision, mutar, cruce, r, elitismo);
 		 this.ejecutar();
 	 }
+	public double getFitnessMax() {
+		
+		return this.absoluteMax[this.generaciones - 1];
+	}
 }
