@@ -32,7 +32,7 @@ public class Main {
     public static Map<Integer, List<Integer>> mapaTEL;	  //Tiempos de espera. Cada posicion corresponde con la misma posicion del mapa de aviones
     							  //Cada posicion tiene sus 3 tiempos (eg. pista 0 = 9, pista 1 = 10, pista 2 = 5)
     
-    public static int funcionElegida = 1; // de 1 a 2 para elegir fichero
+    public static int funcionElegida = 2; // de 1 a 2 para elegir fichero
     
     private IFuncion funcion;
     private ISeleccion selec; //Crear el metodo preferido
@@ -136,12 +136,12 @@ public class Main {
         	this.funcion.introducirElite();
         	evaluarPoblacion();
         	recogerDatos(i);
-        	
+        	/*
         	System.out.println("GENERACION: " + i); //usado para pruebas
         	System.out.println("Maximo de la generacion: " + maximums[i]);
             System.out.println("Maximo absoluto: " + absoluteMax[i]);
             System.out.println("Media de la generacion: " + averages[i] + "\n");
-        	
+        	*/
         }
         
     }
@@ -164,6 +164,12 @@ public class Main {
 	 }
 	 
 	 public void set_funcion() { //TODO solo debe funcionar con practica2.java
+		 if(this.mapaTEL.size() == 12) {
+			 this.funcionElegida = 1;
+		 }
+		 else {
+			 this.funcionElegida = 2;
+		 }
 		 this.funcion = new Practica2(poblacion, precision, mutar, cruce, r, elitismo);
 		 this.ejecutar();
 	 }

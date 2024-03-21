@@ -69,12 +69,12 @@ public class Practica2 implements IFuncion {
 
         this.individuos = new CromosomaInteger[this.poblacion];
         for(int i = 0; i < this.poblacion; i++){
-            this.individuos[i] = new CromosomaInteger (this.tamCrom, this.genes, this.r); 
+            this.individuos[i] = new CromosomaInteger (this.tamCrom, this.genes, this.r, this); 
             this.individuos[i].inicializar(); 
         }
     };
     
-    private double evaluar (ICromosoma c){
+    public double evaluar (ICromosoma c){
     	double fitness = 0;
         int punto = 0;
         int vuelo[] = new int[m];//Empezamos en el vuelo 1 ya que el 0 se mantiene en 0 siempre

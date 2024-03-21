@@ -200,6 +200,7 @@ public class MainWindow {
 		table_1.setBounds(882, 368, 1, 1);
 		frmPractica.getContentPane().add(table_1);
 		
+		table = new JTable();
 		JLabel lblNewLabel = new JLabel();
 		lblNewLabel.setBounds(752, 182, 500, 21);
 		frmPractica.getContentPane().add(lblNewLabel);
@@ -208,7 +209,7 @@ public class MainWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
             	
-            	
+            	table.removeAll();
             	//DELETE OTHER LINES
             	plot.removeAllPlots();
             	
@@ -301,70 +302,59 @@ public class MainWindow {
             	}
 	            	 
 	
-            		main.set_funcion();
-	         		
-	         		double[] avr = main.getAvr();
-	         		double[] abs = main.getAbsMax();
-	         		double[] max = main.getMax();
-	         		double[] x = new double[Main.generaciones];
-	         		for(int i = 0; i < Main.generaciones; ++i) {
-	         			x[i] = i;
+        		main.set_funcion();
+         		
+         		double[] avr = main.getAvr();
+         		double[] abs = main.getAbsMax();
+         		double[] max = main.getMax();
+         		double[] x = new double[Main.generaciones];
+         		for(int i = 0; i < Main.generaciones; ++i) {
+         			x[i] = i;
+         		}
+         		
+         		
+         		plot.addLinePlot("Average", Color.GREEN, x, avr);
+         		plot.addLinePlot("Absoulute Max", Color.BLACK, x, abs);
+         		plot.addLinePlot("Maximums", Color.RED, x, max);
+         			
+         		frmPractica.getContentPane().add(plot);
+         		int a, b;
+         		a = mapaTELinit.get(1).size();
+         		b = mapaTELinit.size();
+         		String [][] data1 = new String[(3 * a) + 1][b];
+         		String[] columnNames = new String[3 * a];
+         		
+         		for(int i = 0; i < 3 * a; i+=3) {
+         			columnNames[i] = "Vuelo";
+         			columnNames[i + 1] = "Nombre";
+         			columnNames[i + 2] = "TLA";
+         		}
+                data1[0] = columnNames;
+         		
+         		for (int jj = 0; jj < a; ++jj) {
+	         		for(int i = 1; i < Practica2.vueloListSol[jj].length; ++i) {
+	         			if (Practica2.vueloListSol[jj][i] != 0) {
+	         				data1[i][0 + 3 * jj] = String.valueOf(Practica2.vueloListSol[jj][i]);
+		         			data1[i][1 + 3 * jj] = mapaAvionesinit.get(Practica2.vueloListSol[jj][i])[0];
+		         			data1[i][2 + 3 * jj] = String.valueOf(Practica2.TLALISTsol[jj][i]);
+	         			}
 	         		}
-	         		
-	         		
-	         		plot.addLinePlot("Average", Color.GREEN, x, avr);
-	         		plot.addLinePlot("Absoulute Max", Color.BLACK, x, abs);
-	         		plot.addLinePlot("Maximums", Color.RED, x, max);
-	         			
-	         		frmPractica.getContentPane().add(plot);
-	         		int a, b;
-	         		a = mapaTELinit.get(1).size();
-	         		b = mapaTELinit.size();
-	         		String [][] data1 = new String[(3 * a) + 1][b];
-	         		
-	                String[] columnNames = {"Vuelo", "Nombre", "TLA", "Vuelo", "Nombre", "TLA", "Vuelo", "Nombre", "TLA"};
-	                String[] columnNamesActual;
-	                if (a == 5) {
-	                	String[] columnNames5 = {"Vuelo", "Nombre", "TLA", "Vuelo", "Nombre", "TLA", "Vuelo", "Nombre", "TLA", "Vuelo", "Nombre", "TLA", "Vuelo", "Nombre", "TLA"};
-	                	columnNamesActual = columnNames5;
-	                }
-	                else columnNamesActual = columnNames;
-	                
-	                data1[0] = columnNamesActual;
-
-	         		int acum = 0;
-	         		
-	         		for (int jj = 0; jj < a; ++jj) {
-	        
-		         		for(int i = 1; i < Practica2.vueloListSol[jj].length; ++i) {
-		         			if (Practica2.vueloListSol[jj][i] != 0) {
-		         				data1[i][0 + acum] = String.valueOf(Practica2.vueloListSol[jj][i]);
-			         			data1[i][1 + acum] = mapaAvionesinit.get(Practica2.vueloListSol[jj][i])[0];
-			         			data1[i][2 + acum] = String.valueOf(Practica2.TLALISTsol[jj][i]);
-		         			}
-		         		}
-		         		acum += 3;
-	         		}
-	         		
-	         
-	         		DefaultTableModel model = new DefaultTableModel(data1, columnNamesActual);
-	         		
-	         		
-	         		
-	        		table = new JTable(model);
-	        		table.setBounds(740, 208, 580, 277);
-	        		frmPractica.getContentPane().add(table);
-	        		
-	        		lblNewLabel.setText("Pista 1                                                Pista 2                                                  Pista 3");
-	        		if (a == 5) lblNewLabel.setText("Pista 1                       Pista 2                        Pista 3                         Pista 4                        Pista 5");
-	        		
-	        		frmPractica.setVisible(false);
-	        		frmPractica.setVisible(true);
-	         	
-	         		
-	         		
-            	}
-            
+         		}
+         		
+         
+         		DefaultTableModel model = new DefaultTableModel(data1, columnNames);
+         		
+        		table = new JTable(model);
+        		table.setBounds(740, 208, 580, 277);
+        		frmPractica.getContentPane().add(table);
+        		
+        		lblNewLabel.setText("Pista 1                                                Pista 2                                                  Pista 3");
+        		if (a == 5) lblNewLabel.setText("Pista 1                       Pista 2                        Pista 3                         Pista 4                        Pista 5");
+        		
+        		frmPractica.setVisible(false);
+        		frmPractica.setVisible(true);
+         		
+        	}
         };
 
         btnNewButton.addActionListener(listener);
