@@ -113,24 +113,24 @@ public class CromosomaInteger implements ICromosoma{
 				//Se invierte el orden de los valores entre los dos puntos definidos
 				
 				if(pos1 < pos2) {
-					int j = pos2;
+					int j = pos2 - 1;
 					int aux = this.datos.getDatoI(pos1);
-					for(int i = 0; i < pos2 - pos1; i++) {
+					for(int i = pos1; i < pos2 - pos1; i++) {
 						this.datos.setDatoI(this.datos.getDatoI(j), i);  
 						this.datos.setDatoI(aux, j);
+						aux = this.datos.getDatoI(i + 1);
 						j--;
-						i++;
 						if( i >= j) break;
 					}
 				}
 				else if(pos2 < pos1) {
-					int j = pos1;
+					int j = pos1 - 1;
 					int aux = this.datos.getDatoI(pos2);
 					for(int i = pos2; i < pos1; i++) {
 						this.datos.setDatoI(this.datos.getDatoI(j), i);  
 						this.datos.setDatoI(aux, j);
+						aux = this.datos.getDatoI(i + 1);
 						j--;
-						i++;
 						if( i >= j) break;
 					}
 				}
@@ -180,12 +180,12 @@ public class CromosomaInteger implements ICromosoma{
 				CromosomaInteger copia = new CromosomaInteger(this);
 				int value1 = copia.datos.getDatoI(0);
 				int value2 = copia.datos.getDatoI(2);
-				for(int i = 2 ; i < this.tam - 2; i+=2) {
+				for(int i = 2 ; i < this.tam; i+=2) {
 					this.getDatos().setDatoI(value1, i);
 					value1 = value2;
-					value2 = copia.datos.getDatoI(i + 2);
+					value2 = copia.datos.getDatoI((i + 2)%this.tam);
 				}
-				this.getDatos().setDatoI(value2, 0);
+				this.getDatos().setDatoI(value1, 0);
 				break;
 			default:
 				break;
