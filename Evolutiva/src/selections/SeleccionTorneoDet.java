@@ -15,7 +15,7 @@ public class SeleccionTorneoDet implements ISeleccion{
         this.individuos = iCromosomas;
         this.seleccion = new int[tam];
         this.r = r;
-        p = 2;
+        p = 3;
         init();
     }
 
@@ -29,9 +29,11 @@ public class SeleccionTorneoDet implements ISeleccion{
         		t[j] = r.nextInt(numIndividuos);
 			}
 
-        	if (individuos[t[0]].getAptitud() > individuos[t[1]].getAptitud()) seleccion[i] = t[0]; //comparamos y cogemos al mejor
-        	else seleccion[i] = t[1];
+        	seleccion[i] = t[0];
 
+        	for(int j = 1; j < p; ++j) {
+            	if (individuos[t[j]].getAptitud() > individuos[seleccion[i]].getAptitud()) seleccion[i] = t[j]; //comparamos y cogemos al mejor
+        	}
         }
     }
     public int[] getSelection() {

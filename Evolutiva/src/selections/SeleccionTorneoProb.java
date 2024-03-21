@@ -17,7 +17,7 @@ public class SeleccionTorneoProb implements ISeleccion{
         this.seleccion = new int[tam];
         this.r = r;
         prob = 0.5;
-        p = 2;
+        p = 3;
         init();
     }
 
@@ -33,13 +33,17 @@ public class SeleccionTorneoProb implements ISeleccion{
 
         	double random = r.nextDouble();//generamos un numero aleatorio de 0 al 1
          	
-         	if (random > prob) {//si el numero aleatorio es mayor que prob (0.5), cogemos al mejor individuo, al contrario cogemos el peor
-         		if (individuos[t[0]].getAptitud() > individuos[t[1]].getAptitud()) seleccion[i] = t[0];
-             	else seleccion[i] = t[1];
+        	seleccion[i] = t[0];
+        	
+         	if (random > prob) {//si el numero aleatorio es mayor que prob (0.5), cogemos al mejor individuo, al contrario cogemos el peor      		
+         		for(int j = 1; j < p; ++j) {
+                	if (individuos[t[j]].getAptitud() > individuos[seleccion[i]].getAptitud()) seleccion[i] = t[j]; //comparamos y cogemos al mejor
+            	}
          	}
          	else {
-         		if (individuos[t[0]].getAptitud() < individuos[t[1]].getAptitud()) seleccion[i] = t[0];
-             	else seleccion[i] = t[1];
+         		for(int j = 1; j < p; ++j) {
+                	if (individuos[t[j]].getAptitud() < individuos[seleccion[i]].getAptitud()) seleccion[i] = t[j]; //comparamos y cogemos al peor
+            	}
          	}
 
          }
